@@ -1,0 +1,16 @@
+.vercel/
+.env
+.env.*
+!.env.example
+node_modules/
+*.log
+*.sqlite
+*.sqlite3
+*.db
+.DS_Store
+*.pem
+*.key
+coverage/
+dist/
+.tmp/
+tmp/
