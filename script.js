@@ -30,8 +30,12 @@ const diagnostics={
   }
 };
 
+const resultEl=document.querySelector('.diagnostic-result');
+
 let selected='slow_reply';
 function currentLang(){return root.dataset.lang==='zh'?'zh':'en'}
+function readSavedLanguage(){try{return localStorage.getItem('asap-language')}catch(error){return null}}
+function saveLanguage(lang){try{localStorage.setItem('asap-language',lang)}catch(error){}}
 function renderDiagnostic(){
   const content=diagnostics[selected][currentLang()];
   titleEl.textContent=content.title;
@@ -42,21 +46,30 @@ function renderDiagnostic(){
   optionButtons.forEach(button=>{
     const active=button.dataset.key===selected;
     button.classList.toggle('active',active);
-    button.setAttribute('aria-selected',String(active));
+    button.setAttribute('aria-pressed',String(active));
   });
 }
 function setLanguage(lang){
   root.dataset.lang=lang;
   root.lang=lang==='zh'?'zh-Hans':'en';
   document.querySelectorAll('[data-en][data-zh]').forEach(el=>{el.textContent=el.dataset[lang]});
+  document.querySelectorAll('[data-aria-en][data-aria-zh]').forEach(el=>el.setAttribute('aria-label',lang==='zh'?el.dataset.ariaZh:el.dataset.ariaEn));
   toggle.querySelectorAll('span').forEach((el,index)=>el.classList.toggle('active',lang==='en'?index===0:index===1));
-  document.title=lang==='zh'?'ASAP — 推动 Lead 进入下一步':'ASAP — AI Sales Agents That Move Leads Forward';
-  localStorage.setItem('asap-language',lang);
+  toggle.setAttribute('aria-label',lang==='zh'?'切换到英文 (English)':'Switch to Chinese (中文)');
+  document.title=lang==='zh'?'Wave AI — 推动 Lead 进入下一步':'Wave AI — AI Sales Agents That Move Leads Forward';
+  saveLanguage(lang);
   renderDiagnostic();
 }
-optionButtons.forEach(button=>button.addEventListener('click',()=>{selected=button.dataset.key;renderDiagnostic()}));
+optionButtons.forEach(button=>button.addEventListener('click',()=>{
+  if(button.dataset.key===selected)return;
+  selected=button.dataset.key;
+  renderDiagnostic();
+  resultEl.classList.remove('refresh');
+  void resultEl.offsetWidth;
+  resultEl.classList.add('refresh');
+}));
 toggle.addEventListener('click',()=>setLanguage(currentLang()==='en'?'zh':'en'));
-const saved=localStorage.getItem('asap-language');
+const saved=readSavedLanguage();
 const browserZh=navigator.language&&navigator.language.toLowerCase().startsWith('zh');
-setLanguage(saved||(browserZh?'zh':'en'));
+setLanguage(saved==='zh'||saved==='en'?saved:(browserZh?'zh':'en'));
 document.getElementById('year').textContent=new Date().getFullYear();
