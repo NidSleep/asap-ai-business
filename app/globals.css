@@ -11,6 +11,10 @@
   --font-display: var(--font-bricolage), "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
   --color-wave: var(--wave);
   --color-wave-soft: var(--wave-soft);
+  --color-navy: var(--navy);
+  --color-navy-soft: var(--navy-soft);
+  --color-green: var(--green);
+  --color-green-ink: var(--green-ink);
   --font-mono: var(--font-geist-mono);
   --font-heading: var(--font-display);
   --color-sidebar-ring: var(--sidebar-ring);
@@ -52,38 +56,45 @@
 }
 
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  /* Client palette: deep navy for trust, bright green only for actions. */
+  --navy: #0b1b3f;
+  --navy-soft: #13285a;
+  --green: #1fd16a;
+  --green-ink: #0a7a3a;
+  --background: #ffffff;
+  --foreground: #0b1b3f;
+  --card: #ffffff;
+  --card-foreground: #0b1b3f;
+  --popover: #ffffff;
+  --popover-foreground: #0b1b3f;
+  --primary: #1fd16a;
+  --primary-foreground: #0b1b3f;
+  --secondary: #f3f5f9;
+  --secondary-foreground: #0b1b3f;
+  --muted: #f3f5f9;
+  --muted-foreground: #5a6378;
+  --accent: #f3f5f9;
+  --accent-foreground: #0b1b3f;
+  --destructive: #dc3545;
+  --border: #e4e8f0;
+  --input: #d7dce6;
+  --ring: #1fd16a;
+  --wave: #1fd16a;
+  --wave-soft: rgb(31 209 106 / 0.12);
+  --chart-1: #1fd16a;
+  --chart-2: #0b1b3f;
+  --chart-3: #5a6378;
+  --chart-4: #b7bfcf;
+  --chart-5: #e4e8f0;
+  --radius: 0.75rem;
+  --sidebar: #ffffff;
+  --sidebar-foreground: #0b1b3f;
+  --sidebar-primary: #1fd16a;
+  --sidebar-primary-foreground: #0b1b3f;
+  --sidebar-accent: #f3f5f9;
+  --sidebar-accent-foreground: #0b1b3f;
+  --sidebar-border: #e4e8f0;
+  --sidebar-ring: #1fd16a;
 }
 
 .dark {
@@ -107,8 +118,8 @@
   --border: rgb(255 255 255 / 0.09);
   --input: rgb(255 255 255 / 0.14);
   --ring: #8b85ff;
-  --wave: #7a73ff;
-  --wave-soft: rgb(122 115 255 / 0.16);
+  --wave: #1fd16a;
+  --wave-soft: rgb(31 209 106 / 0.14);
   --chart-1: #7a73ff;
   --chart-2: #a2a2ad;
   --chart-3: #6b6b75;
@@ -147,11 +158,11 @@ html {
 }
 
 
-/* Soft ridge behind the phone row, like light falling over a hill. */
+/* Faint navy wash behind the hero. */
 .ridge {
   background:
-    radial-gradient(120% 70% at 50% 100%, rgb(255 255 255 / 0.07), transparent 60%),
-    radial-gradient(60% 50% at 50% 30%, rgb(122 115 255 / 0.12), transparent 70%);
+    radial-gradient(60% 60% at 70% 30%, rgb(31 209 106 / 0.10), transparent 70%),
+    radial-gradient(50% 50% at 15% 10%, rgb(11 27 63 / 0.06), transparent 70%);
 }
 
 .fade-bottom {
@@ -170,3 +181,4 @@ html[lang="zh-Hans"] .font-display {
   letter-spacing: 0 !important;
   line-height: 1.18 !important;
 }
+

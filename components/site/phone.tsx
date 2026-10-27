@@ -22,7 +22,7 @@ export function Phone({
   return (
     <div
       className={cn(
-        "relative w-[272px] shrink-0 rounded-[48px] bg-gradient-to-b from-[#3a3a42] via-[#1e1e23] to-[#141417] p-[7px]",
+        "dark relative w-[272px] shrink-0 rounded-[48px] bg-gradient-to-b from-[#3a3a42] via-[#1e1e23] to-[#141417] p-[7px]",
         "shadow-[0_40px_80px_-30px_rgb(0_0_0/0.8),inset_0_1px_0_rgb(255_255_255/0.08)]",
         className,
       )}

@@ -1,11 +1,12 @@
 import { Header } from "@/components/site/header";
 import {
-  Diagnostic,
-  Difference,
+  Features,
   Finale,
-  How,
   Hero,
-  SafetyAndFaq,
+  Levels,
+  Pain,
+  Pricing,
+  Proof,
 } from "@/components/site/sections";
 
 export default function Home() {
@@ -14,10 +15,11 @@ export default function Home() {
       <Header />
       <main>
         <Hero />
-        <How />
-        <Difference />
-        <Diagnostic />
-        <SafetyAndFaq />
+        <Pain />
+        <Levels />
+        <Features />
+        <Proof />
+        <Pricing />
       </main>
       <Finale />
     </>
