@@ -1,6 +1,9 @@
 import type { Copy } from "@/lib/i18n";
 
-/** "Book a demo" goes to the Telegram Agent until a booking page exists. */
+/**
+ * "Book a demo" should open the client's Calendly page, which books a Zoom
+ * demo. Until that link exists it falls back to the Telegram Agent.
+ */
 export const DEMO_URL = "https://t.me/presale_copyabc_bot";
 
 export const nav: { href: string; label: Copy }[] = [
@@ -8,6 +11,7 @@ export const nav: { href: string; label: Copy }[] = [
   { href: "#how", label: { en: "How it works", zh: "工作原理" } },
   { href: "#features", label: { en: "Features", zh: "功能" } },
   { href: "#pricing", label: { en: "Pricing", zh: "价格" } },
+  { href: "#faq", label: { en: "FAQ", zh: "常见问题" } },
 ];
 
 export const demo: Copy = { en: "Book a demo", zh: "预约演示" };
@@ -15,18 +19,18 @@ export const demo: Copy = { en: "Book a demo", zh: "预约演示" };
 /* ------------------------------------------------------------------ hero */
 
 export const hero = {
-  eyebrow: { en: "AI sales team for WhatsApp, Telegram and your website", zh: "WhatsApp · Telegram · 网站的 AI 销售团队" },
+  eyebrow: { en: "AI sales system for WhatsApp, Messenger and Instagram", zh: "WhatsApp · Messenger · Instagram 的 AI 销售系统" },
   title: { en: "Stop losing customers to slow replies.", zh: "别再因为回复慢​而流失客户。" },
   titleAccent: { en: "Your 24/7 AI sales team is ready.", zh: "你的全天候 AI 销售团队​已就绪。" },
   lede: {
-    en: "Wave AI replies to every customer within 30 seconds, follows up on the enquiries that went quiet, and keeps every customer record in your company, not in a salesperson’s phone.",
-    zh: "Wave AI 在 30 秒内回复每一位顾客，自动跟进没有下文的询问，并把每一条客户资料留在公司，而不是在销售的手机里。",
+    en: "An AI front-line salesperson replies within 30 seconds, works out what the customer needs, handles objections and follows up on days 1, 3, 5 and 7. An AI back-office manager reviews every chat, finds why leads were lost and reports back.",
+    zh: "AI 前线员工 30 秒内回复，识别客户需求、处理异议，并在第 1、3、5、7 天自动跟进；AI 后台经理分析每一段聊天记录，找出流失原因并生成报表。",
   },
   secondary: { en: "See how it works", zh: "看看怎么运作" },
   trust: [
-    { en: "English and 中文", zh: "中文与 English" },
-    { en: "Trained on your own material", zh: "用你自己的资料训练" },
-    { en: "Hands over to a person when needed", zh: "需要时转给真人" },
+    { en: "Replies in 30 seconds, 24/7", zh: "24/7 · 30 秒内回复" },
+    { en: "Not just a chatbot: an AI that sells", zh: "不只是客服，是会主动销售的 AI" },
+    { en: "Books the Zoom demo for you", zh: "自动预约 Zoom 演示" },
   ],
 };
 
@@ -34,18 +38,22 @@ export const hero = {
 export type Line = { text: string; lang: "en" | "zh"; gloss: string };
 const zh = (text: string, gloss: string): Line => ({ text, lang: "zh", gloss });
 
+/** The client's own sales script: short, split messages with a little emoji. */
 export const heroChat = {
-  business: { en: "Your property agency", zh: "你的地产公司" },
+  business: { en: "Wave AI", zh: "Wave AI" },
   channel: "WhatsApp",
-  ask: zh("你好，Mont Kiara 那间三房还有吗？", "Hi, is the 3-bedroom in Mont Kiara still available?"),
-  answer: zh("还有的。3 房 2 卫，1,450 sq ft，月租 RM 4,800。请问是自住还是投资？", "Yes. 3 bed, 2 bath, 1,450 sq ft, RM 4,800 a month. Is it for your own stay or an investment?"),
-  later: zh("我考虑一下。", "Let me think about it."),
-  followUp: zh("你好，昨天聊到的 Mont Kiara 三房，这个周末还可以看房。要帮你预留时间吗？", "Hi, about the Mont Kiara 3-bedroom from yesterday: there are viewing slots this weekend. Shall I hold one for you?"),
-  yes: zh("好，周六早上可以。", "OK, Saturday morning works."),
-  source: { en: "From your listings", zh: "来自你的房源资料" },
-  replied: { en: "Replied in 28 s", zh: "28 秒内回复" },
-  nextDay: { en: "Next day, 10:00 am · automatic follow-up", zh: "第二天 10:00 am · 自动跟进" },
-  booked: { en: "Viewing booked · Sat 11:00 am", zh: "看房已预约 · 周六 11:00 am" },
+  hello: zh("你好，我想了解你们的 AI 系统。", "Hi, I’d like to know about your AI system."),
+  greet: zh("您好！👋 欢迎了解我们的 AI 销售系统。", "Hi! 👋 Welcome to our AI sales system."),
+  diagnose: zh("请问您主要在哪个平台获客？主要是回复慢，还是转化低？", "Which platform do you mainly get customers from? Is the problem slow replies or low conversion?"),
+  pain: zh("WhatsApp，总是来不及回复。", "WhatsApp. We can never reply in time."),
+  solve: zh("非常理解！我们的系统能在 30 秒内自动回复客户，并且自动跟进。🚀", "Totally understand! Our system replies to customers within 30 seconds and follows up automatically. 🚀"),
+  objection: zh("设置会很难吗？", "Is it hard to set up?"),
+  reassure: zh("完全不会哦！专家会帮您配置好知识库和流程，您只需要把资料发给我们。", "Not at all! Our experts set up the knowledge base and flows for you. Just send us your material."),
+  book: zh("建议安排一个简短的 Zoom 演示，请选择方便的时间 👇", "Let’s set up a short Zoom demo. Pick a time that suits you 👇"),
+  pick: { en: "Choose a time", zh: "选择时间" },
+  replied: { en: "Replied in 30 s", zh: "30 秒内回复" },
+  diagnosed: { en: "Need identified", zh: "识别需求" },
+  booked: { en: "Zoom demo booked", zh: "Zoom 演示已预约" },
 };
 
 export const chatUi = {
@@ -60,7 +68,7 @@ export const pain = {
     {
       title: { en: "Replies are too slow", zh: "回复太慢" },
       body: {
-        en: "Customers ask three businesses at once, and the first to reply usually wins. Enquiries after hours and on weekends wait until the next day.",
+        en: "Customers ask several businesses at once, and the first to reply usually wins. Enquiries after hours and on weekends wait until the next day.",
         zh: "顾客通常同时问好几家，先回复的那家往往拿下生意。下班后和周末的询问，常常要等到隔天才有人回。",
       },
     },
@@ -86,83 +94,77 @@ export const pain = {
 export const how = {
   title: { en: "From AI customer service to AI sales manager", zh: "从 AI 客服，到 AI 销售经理" },
   lede: {
-    en: "Most chatbots stop at level 1: answering questions. Wave AI works all the way to level 4, moving every lead forward and showing you the whole sales picture.",
-    zh: "大部分聊天机器人停在第一层：回答问题。Wave AI 一路做到第四层：主动推进每一个商机，并让你看清整个销售过程。",
+    en: "Most chatbots stop at level 1 or 2: they answer when asked. Wave AI works at levels 3 and 4, selling on its own and reviewing the results.",
+    zh: "大部分聊天机器人停在第 1、2 层：有人问才回答。Wave AI 做到第 3、4 层：主动销售，并复盘结果。",
   },
-  service: { en: "AI customer service", zh: "AI 客服" },
-  serviceSub: { en: "answers questions", zh: "回答问题" },
-  manager: { en: "AI sales manager", zh: "AI 销售经理" },
-  managerSub: { en: "moves deals to close", zh: "推进成交" },
+  service: { en: "Typical chatbots", zh: "一般聊天机器人" },
+  serviceSub: { en: "answer when asked", zh: "被动回答" },
+  manager: { en: "Wave AI", zh: "Wave AI" },
+  managerSub: { en: "sells on its own", zh: "主动销售" },
   difference: {
-    en: "AI customer service answers when someone asks. An AI sales manager keeps pushing until the deal closes.",
-    zh: "AI 客服是“有人问才回答”，AI 销售经理是“主动推进，直到成交”。",
+    en: "AI customer service answers when someone asks. An AI sales team keeps pushing until the deal closes.",
+    zh: "AI 客服是“有人问才回答”，AI 销售团队是“主动推进，直到成交”。",
   },
-  includedIn: { en: "Included in", zh: "包含在" },
   levels: [
     {
       key: "l1",
-      name: { en: "Instant answers", zh: "即时回答" },
+      name: { en: "Traditional bot", zh: "传统机器人" },
       body: {
-        en: "Answers customers within 30 seconds, around the clock, from your price list, FAQs and product material.",
-        zh: "根据你的价目表、FAQ 和产品资料，30 秒内回答顾客，24 小时不休息。",
+        en: "Fixed menus and keywords. Anything outside the script gets “Sorry, I don’t understand”.",
+        zh: "固定菜单和关键词。客户问的超出脚本，就只能回答“抱歉，我不明白”。",
       },
     },
     {
       key: "l2",
-      name: { en: "Understands the need", zh: "了解需求" },
+      name: { en: "Basic AI Q&A", zh: "基础 AI 问答" },
       body: {
-        en: "Asks about budget, timing and needs, and separates serious buyers from people just browsing.",
-        zh: "主动追问预算、时间和需求，把认真想买的顾客和随便问问的分开。",
+        en: "Understands questions and answers them, but stops there. It never follows up or moves the customer toward buying.",
+        zh: "听得懂问题、也能回答，但就到此为止，不会跟进，也不会推动客户购买。",
       },
     },
     {
       key: "l3",
-      name: { en: "Follows up and books", zh: "跟进与预约" },
+      name: { en: "AI salesperson", zh: "AI 销售员工" },
       body: {
-        en: "When a customer goes quiet, it follows up on schedule. When they are ready, it books the appointment for you.",
-        zh: "顾客没回复，它会按时跟进；顾客准备好了，它直接帮你约好时间。",
+        en: "Identifies what the customer needs, handles objections, follows up on days 1, 3, 5 and 7, and pushes for the sale or a booking.",
+        zh: "识别客户需求、处理异议，在第 1、3、5、7 天主动跟进，并促单或预约。",
       },
     },
     {
       key: "l4",
-      name: { en: "Manages the pipeline", zh: "管理销售进度" },
+      name: { en: "AI sales manager", zh: "AI 销售经理" },
       body: {
-        en: "Tracks where every lead stands, tells your team who to call first today, and keeps all customer data in the company.",
-        zh: "追踪每一个商机的进度，告诉团队今天先跟进谁，所有客户资料都留在公司。",
+        en: "Reviews every conversation, finds where and why leads were lost, and turns it into reports so the whole system keeps improving.",
+        zh: "分析每一段聊天记录，找出客户在哪里、为什么流失，生成报表，让整个系统持续优化。",
       },
     },
   ],
   l1: {
-    q: { en: "How much is the 3-bedroom?", zh: "三房的租金多少？" },
-    a: { en: "RM 4,800 a month, with two parking bays.", zh: "月租 RM 4,800，附两个车位。" },
+    menu: { en: "Reply 1 for prices · 2 for location · 3 for a human", zh: "回复 1 查看价格 · 2 查看地址 · 3 转人工" },
+    q: { en: "Can I book for Saturday?", zh: "星期六可以预约吗？" },
+    a: { en: "Sorry, I don’t understand. Please reply 1, 2 or 3.", zh: "抱歉，我不明白。请回复 1、2 或 3。" },
   },
   l2: {
-    fields: [
-      { k: { en: "Looking for", zh: "需求" }, v: { en: "3-bedroom, own stay", zh: "三房，自住" } },
-      { k: { en: "Budget", zh: "预算" }, v: { en: "Up to RM 5,000 / month", zh: "每月 RM 5,000 以内" } },
-      { k: { en: "Move-in", zh: "入住时间" }, v: { en: "Next month", zh: "下个月" } },
-    ],
-    intent: { en: "High intent", zh: "高意向" },
+    q: { en: "How much is the package?", zh: "配套多少钱？" },
+    a: { en: "The package is RM 500 a month. Anything else?", zh: "配套是每月 RM 500。还有其他问题吗？" },
+    end: { en: "…and the conversation ends there.", zh: "……然后对话就停在这里。" },
   },
   l3: {
     steps: [
-      { day: { en: "Day 0", zh: "第 0 天" }, text: { en: "Enquiry answered", zh: "回答询问" } },
-      { day: { en: "Day 1", zh: "第 1 天" }, text: { en: "Follow-up sent", zh: "自动跟进" } },
-      { day: { en: "Day 3", zh: "第 3 天" }, text: { en: "Viewing booked", zh: "已约看房" } },
+      { day: { en: "Day 1", zh: "第 1 天" }, text: { en: "Follow-up with a relevant case", zh: "跟进，附上相关案例" } },
+      { day: { en: "Day 3", zh: "第 3 天" }, text: { en: "Answers the price objection", zh: "处理价格异议" } },
+      { day: { en: "Day 5", zh: "第 5 天" }, text: { en: "Offers a demo slot", zh: "提供演示时段" } },
+      { day: { en: "Day 7", zh: "第 7 天" }, text: { en: "Booked", zh: "已预约" } },
     ],
   },
   l4: {
-    columns: [
-      { label: { en: "New", zh: "新询问" }, count: 12 },
-      { label: { en: "Following up", zh: "跟进中" }, count: 7 },
-      { label: { en: "Booked", zh: "已预约" }, count: 4 },
+    reportTitle: { en: "Why leads were lost this week", zh: "本周客户流失原因" },
+    reasons: [
+      { label: { en: "Price concerns", zh: "价格疑虑" }, share: 0.42 },
+      { label: { en: "No reply after hours", zh: "下班后没回复" }, share: 0.31 },
+      { label: { en: "Chose a competitor", zh: "选择了竞争对手" }, share: 0.18 },
     ],
-    today: { en: "Call first today", zh: "今天先跟进" },
-    leads: [
-      { en: "Mont Kiara 3-bed · viewing Sat", zh: "Mont Kiara 三房 · 周六看房" },
-      { en: "Cheras terrace · ready to buy", zh: "Cheras 排屋 · 准备购买" },
-    ],
-    owned: { en: "Customer data stays with the company", zh: "客户资料留在公司" },
+    action: { en: "Suggested fix: send the case study on day 1", zh: "建议：第 1 天就发送客户案例" },
   },
   mock: { en: "Illustrative screen", zh: "界面示意" },
 };
@@ -176,32 +178,32 @@ export const features = {
       key: "reply",
       title: { en: "30-second replies", zh: "30 秒回复" },
       body: {
-        en: "Every enquiry gets an answer within 30 seconds, including at midnight and on weekends.",
-        zh: "每一条询问都在 30 秒内得到回复，包括半夜和周末。",
+        en: "Every enquiry is answered within 30 seconds, 24/7, so no customer waits for a human to come online.",
+        zh: "每一条询问都在 30 秒内回复，24/7 全天候，消除人工回复的延迟。",
       },
     },
     {
       key: "follow",
       title: { en: "Automatic follow-up", zh: "自动跟进" },
       body: {
-        en: "Reminds customers on the schedule you set, so “let me think about it” no longer means a lost lead.",
-        zh: "按你设定的节奏提醒顾客，“我考虑一下”不再等于失去这个商机。",
+        en: "Follows up on days 1, 3, 5 and 7 and handles scheduling, so “let me think about it” no longer means a lost lead.",
+        zh: "第 1、3、5、7 天自动跟进，自动处理排期，“我考虑一下”不再等于失去这个客户。",
       },
     },
     {
       key: "channels",
-      title: { en: "All channels connected", zh: "多渠道打通" },
+      title: { en: "Every channel connected", zh: "多渠道打通" },
       body: {
-        en: "WhatsApp, Telegram and website chat land in one inbox, with one record per customer.",
-        zh: "WhatsApp、Telegram、网站聊天，全部进同一个收件箱，每位顾客一份资料。",
+        en: "WhatsApp, Messenger and Instagram, including the WhatsApp Business API, all answered by the same AI.",
+        zh: "WhatsApp、Messenger、Instagram，包括 WhatsApp Business API，全部由同一个 AI 回复。",
       },
     },
     {
       key: "reports",
       title: { en: "Reports and analytics", zh: "数据报表分析" },
       body: {
-        en: "See enquiry volume, reply speed and conversion every day, and where deals are slipping.",
-        zh: "每天看到询问量、回复速度和转化率，知道生意在哪一步流失。",
+        en: "The AI manager analyses chat history, shows why customers dropped off and reports what to fix.",
+        zh: "AI 经理分析聊天记录，找出客户流失的原因，并生成报表告诉你该改什么。",
       },
     },
   ],
@@ -211,17 +213,16 @@ export const features = {
 
 export const proof = {
   title: { en: "Results from our customers", zh: "客户的真实成果" },
-  placeholder: { en: "Sample · replace with real data", zh: "示例 · 待替换为真实数据" },
   stats: [
-    { value: 80, suffix: { en: "%", zh: "%" }, label: { en: "less manual reply work", zh: "节省人工回复工作量" } },
-    { value: 2, suffix: { en: "×", zh: "×" }, label: { en: "sales growth", zh: "销量提升" } },
-    { value: 30, suffix: { en: " s", zh: " 秒" }, label: { en: "average first reply", zh: "平均首次回复" } },
+    { value: 85, suffix: { en: "%", zh: "%" }, label: { en: "lead diagnosis accuracy", zh: "线索精准诊断" } },
+    { value: 80, suffix: { en: "%", zh: "%" }, label: { en: "less manual work", zh: "节省工作量" } },
+    { value: 2, suffix: { en: "×", zh: "×" }, label: { en: "more bookings for an aesthetics clinic", zh: "某医美诊所预约量提升" } },
   ],
   caseSlot: {
-    title: { en: "Customer story goes here", zh: "客户案例位置" },
+    title: { en: "Customer story and dashboard screenshot", zh: "客户案例与后台截图" },
     body: {
-      en: "1–3 real customers: name, industry, and one sentence in their own words. Logos if they agree.",
-      zh: "放 1–3 个真实客户：名称、行业和一句他们自己说的话。客户同意的话可以放 logo。",
+      en: "Space for the aesthetics clinic case and a screenshot of the AI manager’s dashboard.",
+      zh: "这里放医美诊所的案例，以及 AI 经理后台报表的截图。",
     },
   },
 };
@@ -230,63 +231,90 @@ export const proof = {
 
 export const pricing = {
   title: { en: "Choose how you want to start", zh: "选择适合你的​开始方式" },
-  draft: {
-    en: "Draft: prices to be confirmed; channel counts are suggestions.",
-    zh: "草稿：价格待确认，渠道数量为建议。",
-  },
-  perMonth: { en: "/ month", zh: "/ 月" },
-  recommended: { en: "Most chosen", zh: "最多人选" },
-  levelsLabel: { en: "Levels included", zh: "开通层级" },
-  // Each plan unlocks more of the Level 1–4 ladder from the "How it works" section.
+  note: { en: "Reference prices. Final quote confirmed by our team.", zh: "参考价格，以最终报价为准。" },
+  recommended: { en: "Recommended", zh: "推荐" },
   tiers: [
     {
       key: "diy",
-      name: { en: "DIY", zh: "DIY 版" },
+      name: { en: "DIY", zh: "自助版" },
       pitch: { en: "Set it up yourself", zh: "自己动手设置" },
-      levels: 2,
-      price: "RM ___",
-      fit: { en: "For small teams who want to upload their material and configure it themselves.", zh: "适合想自己上传资料、自己设置的小团队。" },
+      price: "RM 500",
+      period: { en: "/ month", zh: "/ 月" },
+      fit: { en: "For teams who want to start quickly on their own.", zh: "适合想自己快速开始的团队。" },
       items: [
-        { en: "AI customer service: instant answers and qualifying questions", zh: "AI 客服：即时回答、了解需求" },
-        { en: "You set it up, with our guides and templates", zh: "自己设置，提供教程与模板" },
-        { en: "1 channel", zh: "1 个渠道" },
-        { en: "Basic reports: enquiries and reply speed", zh: "基础报表：询问量、回复速度" },
-        { en: "Chat support", zh: "在线支持" },
+        { en: "Basic AI salesperson", zh: "基础 AI 员工" },
+        { en: "A monthly allowance of credits", zh: "包含一定额度的积分" },
+        { en: "Self-service setup", zh: "自助设置" },
       ],
     },
     {
       key: "guided",
-      name: { en: "Guided launch", zh: "指导启动版" },
-      pitch: { en: "We launch it with you", zh: "我们陪你一起上线" },
-      levels: 3,
-      price: "RM ___",
-      fit: { en: "For businesses that want to go live fast, without figuring it out alone.", zh: "适合想快速上线、不想自己摸索的生意。" },
+      name: { en: "Guided Launch", zh: "指导启动版" },
+      pitch: { en: "Our experts launch it with you", zh: "专家陪你一起上线" },
+      price: "RM 6,000",
+      period: { en: "/ year", zh: "/ 年" },
+      fit: { en: "For businesses that want it set up properly from day one.", zh: "适合希望一开始就设置到位的生意。" },
       items: [
-        { en: "Everything in DIY, plus automatic follow-up and booking", zh: "包含 DIY 版，加上自动跟进与预约" },
-        { en: "We organise your material, train the AI and test it before launch", zh: "专人整理资料、训练 AI，上线前测试" },
-        { en: "Up to 3 channels", zh: "最多 3 个渠道" },
-        { en: "Basic reports", zh: "基础报表" },
-        { en: "Tuning through the first month", zh: "上线后第一个月持续优化" },
+        { en: "One-to-one expert setup", zh: "专家一对一辅助搭建" },
+        { en: "Testing and fine-tuning", zh: "调试与优化" },
+        { en: "Team training", zh: "团队培训" },
       ],
     },
     {
-      key: "custom",
-      name: { en: "Custom", zh: "定制版" },
-      pitch: { en: "Built around your process", zh: "按你的流程定制" },
-      levels: 4,
+      key: "enterprise",
+      name: { en: "Enterprise", zh: "企业定制版" },
+      pitch: { en: "Built around your organisation", zh: "按你的企业定制" },
       price: null,
-      fit: { en: "For companies with their own systems, sales process or reporting needs.", zh: "适合有自己系统、销售流程或报表需求的企业。" },
+      period: null,
+      fit: { en: "For companies with several departments and their own systems.", zh: "适合多部门、有自己系统的企业。" },
       items: [
-        { en: "Everything in Guided launch, plus the AI sales manager", zh: "包含指导启动版，加上 AI 销售经理" },
-        { en: "Fully set up around your sales process", zh: "按你的销售流程全程定制" },
-        { en: "Unlimited channels", zh: "渠道不限" },
-        { en: "Full pipeline and conversion reports", zh: "完整销售进度与转化报表" },
-        { en: "CRM and calendar integration (after we verify the API)", zh: "对接 CRM、日历（确认接口后）" },
-        { en: "A dedicated contact person", zh: "专属对接人" },
+        { en: "Multi-department collaboration", zh: "多部门协同" },
+        { en: "Complex workflows", zh: "复杂工作流" },
+        { en: "Deep CRM integration", zh: "深度 CRM 整合" },
       ],
     },
   ],
-  quote: { en: "Contact us for a quote", zh: "联系我们报价" },
+  quote: { en: "Custom quote", zh: "按需报价" },
+};
+
+/* ------------------------------------------------------------------ faq */
+
+export const faq = {
+  title: { en: "Questions businesses ask us", zh: "客户常问的问题" },
+  items: [
+    {
+      id: "replace",
+      q: { en: "Will AI replace my sales team?", zh: "AI 会取代我的销售团队吗？" },
+      a: {
+        en: "No. The AI handles the tedious first screening, follow-up and questions, so your sales team can focus on high-intent customers and complex negotiations.",
+        zh: "不会。AI 负责处理繁琐的初筛、跟进和答疑，让您的销售团队专注于转化高意向客户和复杂谈判。",
+      },
+    },
+    {
+      id: "robotic",
+      q: { en: "Will customers feel they’re talking to a cold machine?", zh: "客户会不会觉得在跟冷冰冰的机器聊天？" },
+      a: {
+        en: "Our AI is trained on sales conversations, so its tone is natural and warm. It sends short messages one at a time like a real person and responds to context.",
+        zh: "我们的 AI 经过专门的话术训练，语气自然亲切，能像真人一样分段发消息，并结合上下文互动。",
+      },
+    },
+    {
+      id: "whatsapp",
+      q: { en: "Can it connect to our existing WhatsApp?", zh: "可以对接我们现有的 WhatsApp 吗？" },
+      a: {
+        en: "Yes. It connects to the WhatsApp Business API and other major social platforms.",
+        zh: "完全可以，无缝对接 WhatsApp Business API 以及其他主流社交平台。",
+      },
+    },
+    {
+      id: "material",
+      q: { en: "What do you need from us to set it up?", zh: "设置需要我们提供什么资料？" },
+      a: {
+        en: "Real past sales chats (to learn your best salespeople’s wording), product PDFs, your website, and your refund and after-sales SOP.",
+        zh: "历史真实销售聊天记录（用来提取销冠话术）、产品 PDF 介绍手册、公司官方网站链接，以及退款与售后 SOP。",
+      },
+    },
+  ],
 };
 
 /* --------------------------------------------------------------- finale */
@@ -294,8 +322,8 @@ export const pricing = {
 export const finale = {
   title: { en: "Start your AI lead-capture system today", zh: "今天就开启​你的智能获客系统" },
   sub: {
-    en: "We’ll show it live, using the questions your customers actually ask.",
-    zh: "用你的顾客真正会问的问题，现场试给你看。",
+    en: "Book a short Zoom demo and see how the AI would handle your customers.",
+    zh: "预约一个简短的 Zoom 演示，看看 AI 怎么帮到你的生意。",
   },
-  footer: { en: "AI sales teams for businesses, from Malaysia", zh: "为中小企业打造的 AI 销售团队，来自马来西亚" },
+  footer: { en: "AI sales systems for businesses, from Malaysia", zh: "为企业打造的 AI 销售系统，来自马来西亚" },
 };

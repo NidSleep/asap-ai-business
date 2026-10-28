@@ -6,17 +6,17 @@ import {
   BarChart3,
   Check,
   Clock3,
-  Layers,
-  MessageSquareReply,
-  PhoneCall,
-  Repeat,
-  ShieldCheck,
-  Sparkles,
-  UserMinus,
   Hourglass,
+  Layers,
+  Lightbulb,
+  MessageSquareReply,
+  Repeat,
+  UserMinus,
+  X,
 } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { useState, type ReactNode } from "react";
+import { BouncyAccordion } from "@/components/motion/bouncy-accordion";
 import { ButtonLink } from "@/components/motion/button";
 import { NumberTicker } from "@/components/motion/number-ticker";
 import { Tabs, TabsList, TabsTrigger } from "@/components/motion/tabs";
@@ -26,6 +26,7 @@ import { WaveMark } from "@/components/site/mark";
 import {
   DEMO_URL,
   demo,
+  faq,
   features,
   finale,
   hero,
@@ -63,15 +64,6 @@ function DemoButton({ size = "lg", className }: { size?: "md" | "lg"; className?
       {t(demo)}
       <ArrowUpRight className="size-4" />
     </ButtonLink>
-  );
-}
-
-/** Amber tag for anything the client still has to supply. */
-function Pending({ children }: { children: ReactNode }) {
-  return (
-    <span className="inline-flex items-center gap-1 rounded-full border border-dashed border-amber-400 bg-amber-50 px-2.5 py-0.5 text-[11.5px] font-medium text-amber-700">
-      {children}
-    </span>
   );
 }
 
@@ -156,17 +148,34 @@ function MockFrame({ children }: { children: ReactNode }) {
   );
 }
 
+function Bubble({ from, children, muted = false }: { from: "customer" | "bot"; children: ReactNode; muted?: boolean }) {
+  return (
+    <p
+      className={cn(
+        "max-w-[82%] rounded-2xl px-4 py-2.5 text-[15px]",
+        from === "customer" ? "ml-auto rounded-br-md bg-white text-navy" : "rounded-bl-md bg-white/10",
+        muted && "text-white/60",
+      )}
+    >
+      {children}
+    </p>
+  );
+}
+
 function LevelVisual({ level }: { level: string }) {
   const { t } = useLang();
   if (level === "l1") {
     return (
       <MockFrame>
         <div className="mt-4 flex flex-col gap-3">
-          <p className="ml-auto max-w-[80%] rounded-2xl rounded-br-md bg-white px-4 py-2.5 text-[15px] text-navy">{t(how.l1.q)}</p>
-          <p className="max-w-[80%] rounded-2xl rounded-bl-md bg-white/10 px-4 py-2.5 text-[15px]">{t(how.l1.a)}</p>
-          <p className="flex items-center gap-1.5 text-[12px] text-green">
-            <Clock3 className="size-3.5" /> 0:28
-          </p>
+          <Bubble from="bot" muted>{t(how.l1.menu)}</Bubble>
+          <Bubble from="customer">{t(how.l1.q)}</Bubble>
+          <Bubble from="bot" muted>
+            <span className="inline-flex items-start gap-2">
+              <X className="mt-1 size-4 shrink-0 text-red-400" />
+              {t(how.l1.a)}
+            </span>
+          </Bubble>
         </div>
       </MockFrame>
     );
@@ -174,30 +183,24 @@ function LevelVisual({ level }: { level: string }) {
   if (level === "l2") {
     return (
       <MockFrame>
-        <dl className="mt-4 divide-y divide-white/10">
-          {how.l2.fields.map((f) => (
-            <div key={f.k.en} className="flex justify-between gap-4 py-3 text-[15px]">
-              <dt className="text-white/55">{t(f.k)}</dt>
-              <dd className="text-right font-medium">{t(f.v)}</dd>
-            </div>
-          ))}
-        </dl>
-        <span className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-green px-3 py-1 text-[13px] font-semibold text-navy">
-          <Sparkles className="size-3.5" />
-          {t(how.l2.intent)}
-        </span>
+        <div className="mt-4 flex flex-col gap-3">
+          <Bubble from="customer">{t(how.l2.q)}</Bubble>
+          <Bubble from="bot">{t(how.l2.a)}</Bubble>
+          <p className="mt-2 text-center text-[13px] italic text-white/45">{t(how.l2.end)}</p>
+        </div>
       </MockFrame>
     );
   }
   if (level === "l3") {
+    const last = how.l3.steps.length - 1;
     return (
       <MockFrame>
         <ol className="mt-4 grid gap-0">
           {how.l3.steps.map((st, i) => (
-            <li key={st.day.en} className="relative flex gap-4 pb-6 last:pb-0">
-              {i < how.l3.steps.length - 1 ? <span className="absolute left-[11px] top-7 h-[calc(100%-20px)] w-px bg-white/15" /> : null}
-              <span className={cn("grid size-6 shrink-0 place-items-center rounded-full", i === 2 ? "bg-green text-navy" : "bg-white/15")}>
-                {i === 2 ? <Check className="size-3.5" strokeWidth={3} /> : <span className="size-1.5 rounded-full bg-white" />}
+            <li key={st.day.en} className="relative flex gap-4 pb-5 last:pb-0">
+              {i < last ? <span className="absolute left-[11px] top-7 h-[calc(100%-20px)] w-px bg-white/15" /> : null}
+              <span className={cn("grid size-6 shrink-0 place-items-center rounded-full", i === last ? "bg-green text-navy" : "bg-white/15")}>
+                {i === last ? <Check className="size-3.5" strokeWidth={3} /> : <span className="size-1.5 rounded-full bg-white" />}
               </span>
               <div>
                 <p className="text-[12px] text-white/50">{t(st.day)}</p>
@@ -211,26 +214,23 @@ function LevelVisual({ level }: { level: string }) {
   }
   return (
     <MockFrame>
-      <div className="mt-4 grid grid-cols-3 gap-2">
-        {how.l4.columns.map((col) => (
-          <div key={col.label.en} className="rounded-2xl bg-white/[0.07] p-3">
-            <p className="text-[12px] text-white/55">{t(col.label)}</p>
-            <p className="mt-1 font-display text-[28px] font-bold tabular-nums">{col.count}</p>
-          </div>
-        ))}
-      </div>
-      <p className="mt-5 text-[12px] text-white/55">{t(how.l4.today)}</p>
-      <ul className="mt-2 grid gap-2">
-        {how.l4.leads.map((lead) => (
-          <li key={lead.en} className="flex items-center gap-3 rounded-xl bg-white/[0.07] px-3 py-2.5 text-[14px]">
-            <PhoneCall className="size-4 text-green" />
-            {t(lead)}
+      <p className="mt-4 text-[13px] text-white/55">{t(how.l4.reportTitle)}</p>
+      <ul className="mt-4 grid gap-4">
+        {how.l4.reasons.map((r) => (
+          <li key={r.label.en}>
+            <p className="flex justify-between text-[14px]">
+              <span>{t(r.label)}</span>
+              <span className="tabular-nums text-white/60">{Math.round(r.share * 100)}%</span>
+            </p>
+            <span className="mt-1.5 block h-2 rounded-full bg-white/10">
+              <span className="block h-full rounded-full bg-green" style={{ width: `${r.share * 100}%` }} />
+            </span>
           </li>
         ))}
       </ul>
-      <p className="mt-5 flex items-center gap-2 text-[13px] text-green">
-        <ShieldCheck className="size-4" />
-        {t(how.l4.owned)}
+      <p className="mt-6 flex items-center gap-2 rounded-xl bg-white/[0.07] px-3 py-2.5 text-[14px] text-green">
+        <Lightbulb className="size-4 shrink-0" />
+        {t(how.l4.action)}
       </p>
     </MockFrame>
   );
@@ -297,21 +297,6 @@ export function Levels() {
                   <span className={cn("size-2 rounded-full", index < 2 ? "bg-muted-foreground/40" : "bg-navy")} />
                   {index < 2 ? t(how.service) : t(how.manager)}
                 </p>
-                {/* Which plans unlock this level, so the ladder and the pricing tell one story. */}
-                <div className="mt-4 flex flex-wrap items-center gap-2 text-[13px]">
-                  <span className="text-muted-foreground">{t(how.includedIn)}</span>
-                  {pricing.tiers
-                    .filter((tier) => tier.levels > index)
-                    .map((tier) => (
-                      <a
-                        key={tier.key}
-                        href="#pricing"
-                        className="rounded-full border border-border bg-white px-3 py-1 font-medium text-navy transition-colors hover:border-green"
-                      >
-                        {t(tier.name)}
-                      </a>
-                    ))}
-                </div>
               </div>
               <LevelVisual level={level} />
             </motion.div>
@@ -364,10 +349,7 @@ export function Proof() {
   return (
     <section id="proof" className="py-24 sm:py-28">
       <Shell>
-        <div className="flex flex-wrap items-end justify-between gap-4">
-          <H2>{t(proof.title)}</H2>
-          <Pending>{t(proof.placeholder)}</Pending>
-        </div>
+        <H2>{t(proof.title)}</H2>
         <div className="mt-12 grid gap-px overflow-hidden rounded-3xl bg-border ring-1 ring-border sm:grid-cols-3">
           {proof.stats.map((stat) => (
             <div key={stat.label.en} className="bg-white p-8">
@@ -378,9 +360,10 @@ export function Proof() {
             </div>
           ))}
         </div>
-        <div className="mt-5 rounded-3xl border-2 border-dashed border-amber-300 bg-amber-50/50 p-7">
-          <p className="text-[16px] font-semibold text-amber-800">{t(proof.caseSlot.title)}</p>
-          <p className="mt-1.5 text-[15px] text-amber-700/90">{t(proof.caseSlot.body)}</p>
+        {/* Placeholder until the client sends the clinic case and the dashboard screenshot. */}
+        <div className="mt-5 rounded-3xl border-2 border-dashed border-border p-7">
+          <p className="text-[16px] font-semibold text-navy">{t(proof.caseSlot.title)}</p>
+          <p className="mt-1.5 text-[15px] text-muted-foreground">{t(proof.caseSlot.body)}</p>
         </div>
       </Shell>
     </section>
@@ -396,7 +379,7 @@ export function Pricing() {
       <Shell>
         <div className="flex flex-wrap items-end justify-between gap-4">
           <H2>{t(pricing.title)}</H2>
-          <Pending>{t(pricing.draft)}</Pending>
+          <p className="text-[14px] text-muted-foreground">{t(pricing.note)}</p>
         </div>
         <div className="mt-14 grid gap-5 lg:grid-cols-3">
           {pricing.tiers.map((tier) => {
@@ -417,33 +400,16 @@ export function Pricing() {
                 <h3 className={cn("text-[22px] font-bold", featured ? "text-white" : "text-navy")}>{t(tier.name)}</h3>
                 <p className={cn("mt-1 text-[15px]", featured ? "text-white/70" : "text-muted-foreground")}>{t(tier.pitch)}</p>
                 <p className="mt-7 flex min-h-12 items-baseline gap-1.5">
-                  {tier.price ? (
+                  {tier.price && tier.period ? (
                     <>
                       <span className={cn("font-display text-[40px] font-bold tracking-tight", featured ? "text-white" : "text-navy")}>{tier.price}</span>
-                      <span className={featured ? "text-white/60" : "text-muted-foreground"}>{t(pricing.perMonth)}</span>
+                      <span className={featured ? "text-white/60" : "text-muted-foreground"}>{t(tier.period)}</span>
                     </>
                   ) : (
-                    <span className="font-display text-[28px] font-bold leading-[1.4] tracking-tight text-navy">{t(pricing.quote)}</span>
+                    <span className="font-display text-[34px] font-bold leading-[1.4] tracking-tight text-navy">{t(pricing.quote)}</span>
                   )}
                 </p>
-                <div className="mt-6">
-                  <p className={cn("flex justify-between text-[12.5px] font-medium", featured ? "text-white/70" : "text-muted-foreground")}>
-                    <span>{t(pricing.levelsLabel)}</span>
-                    <span className={featured ? "text-green" : "text-green-ink"}>Level 1–{tier.levels}</span>
-                  </p>
-                  <div className="mt-2 grid grid-cols-4 gap-1" aria-hidden="true">
-                    {how.levels.map((l, i) => (
-                      <span
-                        key={l.key}
-                        className={cn(
-                          "h-1.5 rounded-full",
-                          i < tier.levels ? "bg-green" : featured ? "bg-white/15" : "bg-border",
-                        )}
-                      />
-                    ))}
-                  </div>
-                </div>
-                <p className={cn("mt-5 text-[14.5px] leading-relaxed", featured ? "text-white/70" : "text-muted-foreground")}>{t(tier.fit)}</p>
+                <p className={cn("mt-4 text-[14.5px] leading-relaxed", featured ? "text-white/70" : "text-muted-foreground")}>{t(tier.fit)}</p>
                 <ul className="mt-7 grid gap-3">
                   {tier.items.map((item) => (
                     <li key={item.en} className="flex items-start gap-3 text-[15px]">
@@ -468,6 +434,23 @@ export function Pricing() {
             );
           })}
         </div>
+      </Shell>
+    </section>
+  );
+}
+
+/* ------------------------------------------------------------------- faq */
+
+export function Faq() {
+  const { t } = useLang();
+  return (
+    <section id="faq" className="py-24 sm:py-28">
+      <Shell className="grid gap-12 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] lg:gap-20">
+        <H2>{t(faq.title)}</H2>
+        <BouncyAccordion
+          defaultValue={faq.items[0].id}
+          items={faq.items.map((item) => ({ id: item.id, title: t(item.q), description: t(item.a) }))}
+        />
       </Shell>
     </section>
   );

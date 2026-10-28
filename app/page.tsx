@@ -1,5 +1,6 @@
 import { Header } from "@/components/site/header";
 import {
+  Faq,
   Features,
   Finale,
   Hero,
@@ -20,6 +21,7 @@ export default function Home() {
         <Features />
         <Proof />
         <Pricing />
+        <Faq />
       </main>
       <Finale />
     </>

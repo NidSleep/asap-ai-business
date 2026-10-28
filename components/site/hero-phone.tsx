@@ -1,6 +1,6 @@
 "use client";
 
-import { CalendarCheck, Repeat, Timer } from "lucide-react";
+import { CalendarCheck, CalendarDays, Target, Timer } from "lucide-react";
 import { AnimatePresence, motion, useInView, useReducedMotion } from "motion/react";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { BookedRow, ChatHeader, CustomerLine, WaveLine, WaveTyping } from "@/components/site/chat";
@@ -9,9 +9,10 @@ import { heroChat } from "@/lib/content";
 import { useLang } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
-// How long each step holds before the next. The last entry is the pause
-// before the loop starts again.
-const STEP_MS = [600, 700, 1100, 1500, 900, 900, 1300, 900, 4500];
+// How long each step holds before the next. Wave AI's lines arrive one short
+// message at a time, like the client's script asks. The last entry is the
+// pause before the loop starts again.
+const STEP_MS = [600, 700, 1000, 1100, 1300, 1100, 1200, 1100, 1200, 1300, 1000, 4500];
 const LAST = STEP_MS.length - 1;
 
 function useLoop() {
@@ -51,6 +52,18 @@ function Callout({ show, icon, children, className }: { show: boolean; icon: Rea
   );
 }
 
+function PickTime() {
+  const { t } = useLang();
+  return (
+    <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} className="flex">
+      <span className="inline-flex items-center gap-1.5 rounded-full bg-white px-3.5 py-1.5 text-[12px] font-semibold text-[#111113]">
+        <CalendarDays className="size-3.5" />
+        {t(heroChat.pick)}
+      </span>
+    </motion.div>
+  );
+}
+
 export function HeroPhone() {
   const { t } = useLang();
   const { ref, step } = useLoop();
@@ -59,37 +72,31 @@ export function HeroPhone() {
 
   return (
     <div ref={ref} className="relative mx-auto w-fit">
-      <Callout show={s(3)} icon={<Timer className="size-4" />} className="-left-44 top-36">
+      <Callout show={s(3)} icon={<Timer className="size-4" />} className="-left-44 top-[200px]">
         {t(c.replied)}
       </Callout>
-      <Callout show={s(6)} icon={<Repeat className="size-4" />} className="-left-40 top-[300px]">
-        {t({ en: "Auto follow-up", zh: "自动跟进" })}
+      <Callout show={s(4)} icon={<Target className="size-4" />} className="-left-40 top-[330px]">
+        {t(c.diagnosed)}
       </Callout>
-      <Callout show={s(8)} icon={<CalendarCheck className="size-4" />} className="-left-48 bottom-16">
-        {t({ en: "Booked, no staff needed", zh: "无需人手，已预约" })}
+      <Callout show={s(10)} icon={<CalendarCheck className="size-4" />} className="-left-48 bottom-16">
+        {t(c.booked)}
       </Callout>
 
-      <Phone time="11:04">
+      <Phone time="21:04">
         <ChatHeader compact business={c.business} channel={c.channel} />
-        <div className="flex min-h-0 flex-1 flex-col justify-end gap-2.5 overflow-hidden px-3 pb-6 pt-3">
+        <div className="flex min-h-0 flex-1 flex-col justify-end gap-2 overflow-hidden px-3 pb-6 pt-3">
           <AnimatePresence initial={false} mode="popLayout">
-            {s(1) ? <CustomerLine key="a" line={c.ask} /> : null}
-            {s(2) && !s(3) ? <WaveTyping key="t" /> : null}
-            {s(3) ? <WaveLine key="b" line={c.answer} source={c.source} /> : null}
-            {s(4) ? <CustomerLine key="c" line={c.later} /> : null}
-            {s(5) ? (
-              <motion.p
-                key="d"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="py-1 text-center text-[11px] font-medium text-muted-foreground"
-              >
-                {t(c.nextDay)}
-              </motion.p>
-            ) : null}
-            {s(6) ? <WaveLine key="e" line={c.followUp} /> : null}
-            {s(7) ? <CustomerLine key="f" line={c.yes} /> : null}
-            {s(8) ? <BookedRow key="g" text={c.booked} /> : null}
+            {s(1) ? <CustomerLine key="hello" line={c.hello} /> : null}
+            {s(2) && !s(3) ? <WaveTyping key="t1" /> : null}
+            {s(3) ? <WaveLine key="greet" line={c.greet} /> : null}
+            {s(4) ? <WaveLine key="diagnose" line={c.diagnose} /> : null}
+            {s(5) ? <CustomerLine key="pain" line={c.pain} /> : null}
+            {s(6) ? <WaveLine key="solve" line={c.solve} /> : null}
+            {s(7) ? <CustomerLine key="objection" line={c.objection} /> : null}
+            {s(8) ? <WaveLine key="reassure" line={c.reassure} /> : null}
+            {s(9) ? <WaveLine key="book" line={c.book} /> : null}
+            {s(9) ? <PickTime key="pick" /> : null}
+            {s(10) ? <BookedRow key="booked" text={c.booked} /> : null}
           </AnimatePresence>
         </div>
       </Phone>
