@@ -1,6 +1,6 @@
-# Wave AI — AI Sales Agents That Move Leads Forward
+# Wave Mind — AI Sales Agents That Move Leads Forward
 
-A mobile-first bilingual website for Wave AI (formerly ASEP). The site helps businesses identify where leads get stuck, shows how an AI sales agent advances the conversation, and hands the selected context safely to the Wave AI Telegram Agent.
+A mobile-first bilingual website for Wave Mind (formerly Wave AI and ASEP). The site helps businesses identify where leads get stuck, shows how an AI sales agent advances the conversation, and hands the selected context safely to the Wave Mind Telegram Agent.
 
 ## Live website
 
@@ -32,7 +32,7 @@ Open http://localhost:3000. `npm run build` writes the static site to `out/`, wh
 
 ## Structure
 
-- `app/` — layout, fonts and global theme (dark Wave AI palette in `globals.css`)
+- `app/` — layout, fonts and global theme (dark Wave Mind palette in `globals.css`)
 - `components/site/` — the page: header, hero phone showcase, sections, chat pieces
 - `components/motion/`, `components/agents/` — beUI components (Dynamic Island, Notification Stack, Swipeable List, Tabs, Bouncy Accordion, Message / Message Bubble, Button)
 - `lib/content.ts` — all English and Chinese copy, Telegram link and allowlisted `/start` keys
@@ -41,7 +41,7 @@ Open http://localhost:3000. `npm run build` writes the static site to `out/`, wh
 
 Add another beUI component with `npx shadcn@latest add @beui/<name>`.
 
-Internal identifiers from the earlier brand are intentionally unchanged so existing visitors, links and the bot keep working: the `asap-language` localStorage key, the deployment URL and the Telegram bot username. Only user-visible copy uses the Wave AI name.
+Internal identifiers from the earlier brand are intentionally unchanged so existing visitors, links and the bot keep working: the `asap-language` localStorage key, the deployment URL and the Telegram bot username. Only user-visible copy uses the Wave Mind name.
 
 ## Security
 
@@ -49,4 +49,4 @@ This repository contains no Telegram bot token, API key, customer database, OAut
 
 ## Brand
 
-Wave AI is the public product name (formerly ASEP). All website copy and design in this repository are original to Wave AI.
+Wave Mind is the public product name (formerly Wave AI and ASEP). All website copy and design in this repository are original to Wave Mind.

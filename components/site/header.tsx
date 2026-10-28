@@ -27,13 +27,13 @@ export function Brand({ inverted = false }: { inverted?: boolean }) {
   return (
     <a
       href="#top"
-      aria-label="Wave AI"
+      aria-label="Wave Mind"
       className={`inline-flex items-center gap-2.5 font-display text-[20px] font-extrabold tracking-tight ${inverted ? "text-white" : "text-navy"}`}
     >
       <span className={`grid size-8 place-items-center rounded-[10px] ${inverted ? "bg-white text-navy" : "bg-navy text-white"}`}>
         <WaveMark className="h-3.5 w-[18px]" />
       </span>
-      Wave AI
+      Wave Mind
     </a>
   );
 }

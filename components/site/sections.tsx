@@ -445,7 +445,7 @@ export function Faq() {
   const { t } = useLang();
   return (
     <section id="faq" className="py-24 sm:py-28">
-      <Shell className="grid gap-12 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] lg:gap-20">
+      <Shell className="grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] lg:gap-20">
         <H2>{t(faq.title)}</H2>
         <BouncyAccordion
           defaultValue={faq.items[0].id}
@@ -483,7 +483,7 @@ export function Finale() {
         <Shell className="flex flex-col gap-4 py-10 text-[14px] text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
           <Brand />
           <p>{t(finale.footer)}</p>
-          <p>© {new Date().getFullYear()} Wave AI</p>
+          <p>© {new Date().getFullYear()} Wave Mind</p>
         </Shell>
       </footer>
     </>

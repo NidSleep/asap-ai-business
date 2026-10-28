@@ -9,7 +9,7 @@ import { heroChat } from "@/lib/content";
 import { useLang } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
-// How long each step holds before the next. Wave AI's lines arrive one short
+// How long each step holds before the next. Wave Mind's lines arrive one short
 // message at a time, like the client's script asks. The last entry is the
 // pause before the loop starts again.
 const STEP_MS = [600, 700, 1000, 1100, 1300, 1100, 1200, 1100, 1200, 1300, 1000, 4500];

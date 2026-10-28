@@ -98,8 +98,8 @@
 }
 
 .dark {
-  /* Wave AI on dark: near-black surfaces, white as the action colour, and the
-     brand violet reserved for Wave AI speaking or acting. */
+  /* Wave Mind on dark: near-black surfaces, white as the action colour, and the
+     brand violet reserved for Wave Mind speaking or acting. */
   --background: #111113;
   --foreground: #f3f3f5;
   --card: #1a1a1e;

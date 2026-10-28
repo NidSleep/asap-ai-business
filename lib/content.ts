@@ -40,7 +40,7 @@ const zh = (text: string, gloss: string): Line => ({ text, lang: "zh", gloss });
 
 /** The client's own sales script: short, split messages with a little emoji. */
 export const heroChat = {
-  business: { en: "Wave AI", zh: "Wave AI" },
+  business: { en: "Wave Mind", zh: "Wave Mind" },
   channel: "WhatsApp",
   hello: zh("你好，我想了解你们的 AI 系统。", "Hi, I’d like to know about your AI system."),
   greet: zh("您好！👋 欢迎了解我们的 AI 销售系统。", "Hi! 👋 Welcome to our AI sales system."),
@@ -57,7 +57,7 @@ export const heroChat = {
 };
 
 export const chatUi = {
-  answeredBy: { en: "Answered by Wave AI", zh: "由 Wave AI 回复" },
+  answeredBy: { en: "Answered by Wave Mind", zh: "由 Wave Mind 回复" },
 };
 
 /* ----------------------------------------------------------------- pain */
@@ -94,12 +94,12 @@ export const pain = {
 export const how = {
   title: { en: "From AI customer service to AI sales manager", zh: "从 AI 客服，到 AI 销售经理" },
   lede: {
-    en: "Most chatbots stop at level 1 or 2: they answer when asked. Wave AI works at levels 3 and 4, selling on its own and reviewing the results.",
-    zh: "大部分聊天机器人停在第 1、2 层：有人问才回答。Wave AI 做到第 3、4 层：主动销售，并复盘结果。",
+    en: "Most chatbots stop at level 1 or 2: they answer when asked. Wave Mind works at levels 3 and 4, selling on its own and reviewing the results.",
+    zh: "大部分聊天机器人停在第 1、2 层：有人问才回答。Wave Mind 做到第 3、4 层：主动销售，并复盘结果。",
   },
   service: { en: "Typical chatbots", zh: "一般聊天机器人" },
   serviceSub: { en: "answer when asked", zh: "被动回答" },
-  manager: { en: "Wave AI", zh: "Wave AI" },
+  manager: { en: "Wave Mind", zh: "Wave Mind" },
   managerSub: { en: "sells on its own", zh: "主动销售" },
   difference: {
     en: "AI customer service answers when someone asks. An AI sales team keeps pushing until the deal closes.",
