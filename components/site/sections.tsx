@@ -249,6 +249,7 @@ export function Levels() {
         <div className="max-w-[720px]">
           <H2>{t(how.title)}</H2>
           <p className="mt-5 text-[17px] leading-relaxed text-muted-foreground">{t(how.lede)}</p>
+          <p className="mt-5 border-l-2 border-green pl-4 text-[16px] font-medium text-navy">{t(how.difference)}</p>
         </div>
 
         <div className="mt-14">
@@ -296,6 +297,21 @@ export function Levels() {
                   <span className={cn("size-2 rounded-full", index < 2 ? "bg-muted-foreground/40" : "bg-navy")} />
                   {index < 2 ? t(how.service) : t(how.manager)}
                 </p>
+                {/* Which plans unlock this level, so the ladder and the pricing tell one story. */}
+                <div className="mt-4 flex flex-wrap items-center gap-2 text-[13px]">
+                  <span className="text-muted-foreground">{t(how.includedIn)}</span>
+                  {pricing.tiers
+                    .filter((tier) => tier.levels > index)
+                    .map((tier) => (
+                      <a
+                        key={tier.key}
+                        href="#pricing"
+                        className="rounded-full border border-border bg-white px-3 py-1 font-medium text-navy transition-colors hover:border-green"
+                      >
+                        {t(tier.name)}
+                      </a>
+                    ))}
+                </div>
               </div>
               <LevelVisual level={level} />
             </motion.div>
@@ -400,7 +416,7 @@ export function Pricing() {
                 ) : null}
                 <h3 className={cn("text-[22px] font-bold", featured ? "text-white" : "text-navy")}>{t(tier.name)}</h3>
                 <p className={cn("mt-1 text-[15px]", featured ? "text-white/70" : "text-muted-foreground")}>{t(tier.pitch)}</p>
-                <p className="mt-7 flex items-baseline gap-1.5">
+                <p className="mt-7 flex min-h-12 items-baseline gap-1.5">
                   {tier.price ? (
                     <>
                       <span className={cn("font-display text-[40px] font-bold tracking-tight", featured ? "text-white" : "text-navy")}>{tier.price}</span>
@@ -410,7 +426,24 @@ export function Pricing() {
                     <span className="font-display text-[28px] font-bold leading-[1.4] tracking-tight text-navy">{t(pricing.quote)}</span>
                   )}
                 </p>
-                <p className={cn("mt-3 text-[14.5px] leading-relaxed", featured ? "text-white/70" : "text-muted-foreground")}>{t(tier.fit)}</p>
+                <div className="mt-6">
+                  <p className={cn("flex justify-between text-[12.5px] font-medium", featured ? "text-white/70" : "text-muted-foreground")}>
+                    <span>{t(pricing.levelsLabel)}</span>
+                    <span className={featured ? "text-green" : "text-green-ink"}>Level 1–{tier.levels}</span>
+                  </p>
+                  <div className="mt-2 grid grid-cols-4 gap-1" aria-hidden="true">
+                    {how.levels.map((l, i) => (
+                      <span
+                        key={l.key}
+                        className={cn(
+                          "h-1.5 rounded-full",
+                          i < tier.levels ? "bg-green" : featured ? "bg-white/15" : "bg-border",
+                        )}
+                      />
+                    ))}
+                  </div>
+                </div>
+                <p className={cn("mt-5 text-[14.5px] leading-relaxed", featured ? "text-white/70" : "text-muted-foreground")}>{t(tier.fit)}</p>
                 <ul className="mt-7 grid gap-3">
                   {tier.items.map((item) => (
                     <li key={item.en} className="flex items-start gap-3 text-[15px]">
