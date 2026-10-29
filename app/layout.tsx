@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Bricolage_Grotesque, Instrument_Sans } from "next/font/google";
+import { Bricolage_Grotesque, Instrument_Sans, Noto_Sans_SC } from "next/font/google";
 import { LangProvider } from "@/lib/i18n";
 import "./globals.css";
 
@@ -12,6 +12,15 @@ const display = Bricolage_Grotesque({
 const text = Instrument_Sans({
   variable: "--font-instrument",
   subsets: ["latin"],
+});
+
+// Chinese glyphs, so 中文 matches the brand type on every device instead of
+// falling back to YaHei / PingFang. Google slices it by unicode-range, so a
+// visitor only downloads the characters on the page; nothing is preloaded.
+const chinese = Noto_Sans_SC({
+  variable: "--font-noto-sc",
+  weight: ["400", "500", "700", "800"],
+  preload: false,
 });
 
 export const metadata: Metadata = {
@@ -36,7 +45,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${display.variable} ${text.variable} antialiased`}
+      className={`${display.variable} ${text.variable} ${chinese.variable} antialiased`}
     >
       <body className="min-h-dvh">
         <LangProvider>{children}</LangProvider>
