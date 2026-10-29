@@ -15,14 +15,14 @@ const text = Instrument_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Wave Mind — Your 24/7 AI Sales Team",
+  title: "Wave AI — Your 24/7 AI Sales Team",
   description:
-    "Stop losing customers to slow replies. Wave Mind replies within 30 seconds on WhatsApp, Messenger and Instagram, follows up on days 1, 3, 5 and 7, and reports why leads were lost.",
+    "Stop losing customers to slow replies. Wave AI replies within 30 seconds on WhatsApp, Messenger and Instagram, follows up on days 1, 3, 5 and 7, and reports why leads were lost.",
   openGraph: {
-    title: "Wave Mind — Stop losing customers to slow replies",
+    title: "Wave AI — Stop losing customers to slow replies",
     description:
       "Your 24/7 AI sales team: 30-second replies, automatic follow-up, every channel in one inbox, and daily reports.",
-    siteName: "Wave Mind",
+    siteName: "Wave AI",
     type: "website",
   },
 };

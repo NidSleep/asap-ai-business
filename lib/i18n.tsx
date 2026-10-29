@@ -43,8 +43,8 @@ export function LangProvider({ children }: { children: ReactNode }) {
     document.documentElement.lang = lang === "zh" ? "zh-Hans" : "en";
     document.title =
       lang === "zh"
-        ? "Wave Mind — 你的全天候 AI 销售团队"
-        : "Wave Mind — Your 24/7 AI Sales Team";
+        ? "Wave AI — 你的全天候 AI 销售团队"
+        : "Wave AI — Your 24/7 AI Sales Team";
   }, [lang]);
 
   const setLang = useCallback((next: Lang) => {

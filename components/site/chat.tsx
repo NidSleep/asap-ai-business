@@ -120,7 +120,7 @@ export function WaveTyping() {
       <MessageContent>
         <MessageBubble variant="soft">
           <MessageBubbleContent className="px-3.5 py-2 text-muted-foreground">
-            <MessageTyping label="Wave Mind is replying" />
+            <MessageTyping label="Wave AI is replying" />
           </MessageBubbleContent>
         </MessageBubble>
       </MessageContent>

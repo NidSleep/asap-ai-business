@@ -15,11 +15,10 @@ import {
   X,
 } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { useState, type ReactNode } from "react";
+import { useState, type KeyboardEvent, type ReactNode } from "react";
 import { BouncyAccordion } from "@/components/motion/bouncy-accordion";
 import { ButtonLink } from "@/components/motion/button";
 import { NumberTicker } from "@/components/motion/number-ticker";
-import { Tabs, TabsList, TabsTrigger } from "@/components/motion/tabs";
 import { Brand } from "@/components/site/header";
 import { HeroPhone } from "@/components/site/hero-phone";
 import { WaveMark } from "@/components/site/mark";
@@ -236,6 +235,93 @@ function LevelVisual({ level }: { level: string }) {
   );
 }
 
+/**
+ * Levels 1–2 sit in a grey box ("typical chatbots") and 3–4 in a navy box
+ * ("Wave AI"), so the reader sees at a glance which half is the product.
+ * One indicator glides across both boxes; arrow keys move between all four.
+ */
+function LevelPicker({ value, onChange }: { value: string; onChange: (key: string) => void }) {
+  const { t } = useLang();
+  const reduce = useReducedMotion();
+  const keys = how.levels.map((l) => l.key);
+
+  const onKeyDown = (e: KeyboardEvent) => {
+    const i = keys.indexOf(value);
+    const next = e.key === "ArrowRight" || e.key === "ArrowDown" ? i + 1 : e.key === "ArrowLeft" || e.key === "ArrowUp" ? i - 1 : null;
+    if (next === null || next < 0 || next >= keys.length) return;
+    e.preventDefault();
+    onChange(keys[next]);
+    document.getElementById(`level-tab-${keys[next]}`)?.focus();
+  };
+
+  const groups = [
+    { ours: false, title: how.service, sub: how.serviceSub, levels: how.levels.slice(0, 2), offset: 0 },
+    { ours: true, title: how.manager, sub: how.managerSub, levels: how.levels.slice(2), offset: 2 },
+  ];
+
+  return (
+    <div role="tablist" aria-label={t(how.title)} onKeyDown={onKeyDown} className="grid gap-3 md:grid-cols-2">
+      {groups.map((g) => (
+        <div key={String(g.ours)} className={cn("rounded-3xl p-2", g.ours ? "bg-navy" : "bg-secondary")}>
+          <p className={cn("flex items-center justify-center gap-2 px-3 pb-2 pt-1.5 text-[13px] font-semibold", g.ours ? "text-white" : "text-muted-foreground")}>
+            {g.ours ? (
+              <span className="grid size-5 place-items-center rounded-md bg-green text-navy">
+                <WaveMark className="h-2 w-3" />
+              </span>
+            ) : null}
+            {t(g.title)}
+            <span className={cn("font-normal", g.ours ? "text-white/60" : "")}>· {t(g.sub)}</span>
+          </p>
+          <div className="grid grid-cols-2 gap-1.5">
+            {g.levels.map((l, j) => {
+              const n = g.offset + j + 1;
+              const selected = value === l.key;
+              return (
+                <button
+                  key={l.key}
+                  id={`level-tab-${l.key}`}
+                  type="button"
+                  role="tab"
+                  aria-selected={selected}
+                  tabIndex={selected ? 0 : -1}
+                  onClick={() => onChange(l.key)}
+                  className="relative rounded-2xl px-2 py-3 text-center outline-none focus-visible:ring-2 focus-visible:ring-green"
+                >
+                  {selected ? (
+                    <motion.span
+                      layoutId="level-indicator"
+                      transition={reduce ? { duration: 0 } : { type: "spring", stiffness: 420, damping: 34 }}
+                      className={cn("absolute inset-0 rounded-2xl", g.ours ? "bg-green" : "bg-white shadow-sm")}
+                    />
+                  ) : null}
+                  <span className="relative flex flex-col items-center gap-0.5">
+                    <span
+                      className={cn(
+                        "text-[11px] font-semibold uppercase tracking-wide",
+                        g.ours ? (selected ? "text-navy/70" : "text-green") : "text-muted-foreground",
+                      )}
+                    >
+                      Level {n}
+                    </span>
+                    <span
+                      className={cn(
+                        "text-[14px] font-semibold leading-tight sm:text-[15px]",
+                        g.ours ? (selected ? "text-navy" : "text-white") : "text-navy",
+                      )}
+                    >
+                      {t(l.name)}
+                    </span>
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export function Levels() {
   const { t } = useLang();
   const reduce = useReducedMotion();
@@ -253,32 +339,7 @@ export function Levels() {
         </div>
 
         <div className="mt-14">
-          {/* Which levels count as customer service and which as sales manager. */}
-          <div className="grid grid-cols-4 gap-2 text-[12px] font-semibold sm:text-[13px]">
-            <p className="col-span-2 rounded-full bg-secondary px-4 py-2 text-center text-muted-foreground">
-              {t(how.service)} · <span className="font-normal">{t(how.serviceSub)}</span>
-            </p>
-            <p className="col-span-2 rounded-full bg-navy px-4 py-2 text-center text-white">
-              {t(how.manager)} · <span className="font-normal text-white/70">{t(how.managerSub)}</span>
-            </p>
-          </div>
-          <Tabs value={level} onValueChange={setLevel} variant="segment" className="mt-3 w-full">
-            <TabsList className="grid w-full grid-cols-4 rounded-2xl bg-secondary p-1" wrapperClassName="w-full">
-              {how.levels.map((l, i) => (
-                <TabsTrigger
-                  key={l.key}
-                  value={l.key}
-                  className="h-auto w-full rounded-xl px-2 py-3 sm:px-4"
-                  indicatorClassName="rounded-xl bg-white shadow-sm"
-                >
-                  <span className="flex flex-col items-center gap-0.5 text-center">
-                    <span className="text-[11px] font-semibold uppercase tracking-wide text-green-ink">Level {i + 1}</span>
-                    <span className="text-[13px] font-semibold text-navy sm:text-[15px]">{t(l.name)}</span>
-                  </span>
-                </TabsTrigger>
-              ))}
-            </TabsList>
-          </Tabs>
+          <LevelPicker value={level} onChange={setLevel} />
 
           <AnimatePresence mode="wait" initial={false}>
             <motion.div
@@ -483,7 +544,7 @@ export function Finale() {
         <Shell className="flex flex-col gap-4 py-10 text-[14px] text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
           <Brand />
           <p>{t(finale.footer)}</p>
-          <p>© {new Date().getFullYear()} Wave Mind</p>
+          <p>© {new Date().getFullYear()} Wave AI</p>
         </Shell>
       </footer>
     </>
