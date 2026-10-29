@@ -4,25 +4,42 @@ import { ArrowUpRight, Languages } from "lucide-react";
 import { ButtonLink } from "@/components/motion/button";
 import { WaveMark } from "@/components/site/mark";
 import { DEMO_URL, demo, nav } from "@/lib/content";
-import { useLang } from "@/lib/i18n";
+import { useLang, type Lang } from "@/lib/i18n";
+
+const LANGS: { code: Lang; label: string; html: string }[] = [
+  { code: "en", label: "English", html: "en" },
+  { code: "zh", label: "中文", html: "zh-Hans" },
+];
 
 /**
- * A quiet text button that names the language you'd switch to. Language is a
- * one-time preference, so it stays out of the way of "Book a demo".
+ * Footer language picker, the way Stripe, Notion and Intercom do it: small,
+ * at the bottom, out of the way of "Book a demo". Most visitors never need it
+ * because the page already follows their browser language.
  */
 export function LangSwitch() {
   const { lang, setLang } = useLang();
-  const next = lang === "zh" ? "en" : "zh";
   return (
-    <button
-      type="button"
-      onClick={() => setLang(next)}
-      aria-label={lang === "zh" ? "Switch to English" : "切换到中文"}
-      className="inline-flex h-9 items-center gap-1.5 rounded-full px-2.5 text-[13px] font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-navy"
-    >
-      <Languages className="size-4" />
-      <span lang={next === "zh" ? "zh-Hans" : "en"}>{next === "zh" ? "中文" : "EN"}</span>
-    </button>
+    <div role="group" aria-label="Language / 语言" className="inline-flex items-center gap-1.5 text-[14px]">
+      <Languages className="size-4 text-muted-foreground" aria-hidden="true" />
+      {LANGS.map((l, i) => (
+        <span key={l.code} className="inline-flex items-center gap-1.5">
+          {i > 0 ? <span className="text-muted-foreground/50" aria-hidden="true">·</span> : null}
+          <button
+            type="button"
+            lang={l.html}
+            onClick={() => setLang(l.code)}
+            aria-pressed={lang === l.code}
+            className={
+              lang === l.code
+                ? "font-semibold text-navy"
+                : "text-muted-foreground underline-offset-4 transition-colors hover:text-navy hover:underline"
+            }
+          >
+            {l.label}
+          </button>
+        </span>
+      ))}
+    </div>
   );
 }
 
@@ -54,8 +71,7 @@ export function Header() {
             </a>
           ))}
         </nav>
-        <div className="ml-auto flex items-center gap-1.5 sm:gap-3">
-          <LangSwitch />
+        <div className="ml-auto flex items-center">
           {/* The one action that matters, on every screen size. */}
           <ButtonLink href={DEMO_URL} target="_blank" rel="noopener" size="sm" className="h-9 px-3.5 text-[13px] font-semibold sm:px-4">
             {t(demo)}

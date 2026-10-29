@@ -19,7 +19,7 @@ import { useState, type KeyboardEvent, type ReactNode } from "react";
 import { BouncyAccordion } from "@/components/motion/bouncy-accordion";
 import { ButtonLink } from "@/components/motion/button";
 import { NumberTicker } from "@/components/motion/number-ticker";
-import { Brand } from "@/components/site/header";
+import { Brand, LangSwitch } from "@/components/site/header";
 import { HeroPhone } from "@/components/site/hero-phone";
 import { WaveMark } from "@/components/site/mark";
 import {
@@ -543,10 +543,15 @@ export function Finale() {
         </Shell>
       </section>
       <footer className="border-t border-border">
-        <Shell className="flex flex-col gap-4 py-10 text-[14px] text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
-          <Brand />
-          <p>{t(finale.footer)}</p>
-          <p>© {new Date().getFullYear()} Wave AI</p>
+        <Shell className="flex flex-col gap-6 py-10 text-[14px] text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-col gap-3">
+            <Brand />
+            <p>{t(finale.footer)}</p>
+          </div>
+          <div className="flex flex-col gap-3 sm:items-end">
+            <LangSwitch />
+            <p>© {new Date().getFullYear()} Wave AI</p>
+          </div>
         </Shell>
       </footer>
     </>
