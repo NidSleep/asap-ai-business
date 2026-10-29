@@ -1,25 +1,28 @@
 "use client";
 
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Languages } from "lucide-react";
 import { ButtonLink } from "@/components/motion/button";
-import { Tabs, TabsList, TabsTrigger } from "@/components/motion/tabs";
 import { WaveMark } from "@/components/site/mark";
 import { DEMO_URL, demo, nav } from "@/lib/content";
-import { useLang, type Lang } from "@/lib/i18n";
+import { useLang } from "@/lib/i18n";
 
+/**
+ * A quiet text button that names the language you'd switch to. Language is a
+ * one-time preference, so it stays out of the way of "Book a demo".
+ */
 export function LangSwitch() {
   const { lang, setLang } = useLang();
+  const next = lang === "zh" ? "en" : "zh";
   return (
-    <Tabs value={lang} onValueChange={(v) => setLang(v as Lang)} variant="segment">
-      <TabsList aria-label={lang === "zh" ? "语言" : "Language"} className="rounded-full bg-secondary p-1">
-        <TabsTrigger value="en" className="rounded-full px-3 text-xs" indicatorClassName="rounded-full bg-green">
-          EN
-        </TabsTrigger>
-        <TabsTrigger value="zh" className="rounded-full px-3 text-xs" indicatorClassName="rounded-full bg-green">
-          中文
-        </TabsTrigger>
-      </TabsList>
-    </Tabs>
+    <button
+      type="button"
+      onClick={() => setLang(next)}
+      aria-label={lang === "zh" ? "Switch to English" : "切换到中文"}
+      className="inline-flex h-9 items-center gap-1.5 rounded-full px-2.5 text-[13px] font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-navy"
+    >
+      <Languages className="size-4" />
+      <span lang={next === "zh" ? "zh-Hans" : "en"}>{next === "zh" ? "中文" : "EN"}</span>
+    </button>
   );
 }
 
@@ -51,9 +54,10 @@ export function Header() {
             </a>
           ))}
         </nav>
-        <div className="ml-auto flex items-center gap-3">
+        <div className="ml-auto flex items-center gap-1.5 sm:gap-3">
           <LangSwitch />
-          <ButtonLink href={DEMO_URL} target="_blank" rel="noopener" size="sm" className="hidden h-9 px-4 text-[13px] font-semibold sm:inline-flex">
+          {/* The one action that matters, on every screen size. */}
+          <ButtonLink href={DEMO_URL} target="_blank" rel="noopener" size="sm" className="h-9 px-3.5 text-[13px] font-semibold sm:px-4">
             {t(demo)}
             <ArrowUpRight className="size-3.5" />
           </ButtonLink>

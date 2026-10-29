@@ -63,7 +63,7 @@ export const chatUi = {
 /* ----------------------------------------------------------------- pain */
 
 export const pain = {
-  title: { en: "Where most businesses quietly lose sales", zh: "这些问题，正在悄悄让你流失生意" },
+  title: { en: "Where most businesses quietly lose sales", zh: "这些问题，​正在悄悄​让你流失生意" },
   items: [
     {
       title: { en: "Replies are too slow", zh: "回复太慢" },
@@ -172,7 +172,7 @@ export const how = {
 /* ------------------------------------------------------------- features */
 
 export const features = {
-  title: { en: "Four features, aimed at where sales leak", zh: "四个功能，对准生意流失的地方" },
+  title: { en: "Four features, aimed at where sales leak", zh: "四个功能，​对准生意​流失的地方" },
   items: [
     {
       key: "reply",

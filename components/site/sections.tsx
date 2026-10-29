@@ -46,7 +46,7 @@ function H2({ children, className }: { children: ReactNode; className?: string }
   return (
     <h2
       className={cn(
-        lang === "zh" && "break-keep",
+        lang === "zh" && "break-keep [overflow-wrap:anywhere]",
         "font-display text-[clamp(30px,4vw,48px)] font-bold leading-[1.08] tracking-[-0.03em] text-balance text-navy",
         className,
       )}
@@ -80,7 +80,7 @@ export function Hero() {
             {t(hero.eyebrow)}
           </p>
           {/* Chinese breaks only at the phrase marks in the copy, never mid-word. */}
-          <h1 className={cn("mt-5 font-display text-[clamp(34px,4.5vw,56px)] font-bold leading-[1.08] tracking-[-0.04em] text-navy", lang === "zh" && "break-keep")}>
+          <h1 className={cn("mt-5 font-display text-[clamp(34px,4.5vw,56px)] font-bold leading-[1.08] tracking-[-0.04em] text-navy", lang === "zh" && "break-keep [overflow-wrap:anywhere]")}>
             <span className="block text-balance">{t(hero.title)}</span>
             <span className="mt-1 block text-balance text-navy/45">{t(hero.titleAccent)}</span>
           </h1>
@@ -510,6 +510,8 @@ export function Faq() {
         <H2>{t(faq.title)}</H2>
         <BouncyAccordion
           defaultValue={faq.items[0].id}
+          // Long questions wrap instead of being cut off with an ellipsis on phones.
+          classNames={{ title: "whitespace-normal overflow-visible py-3 leading-snug" }}
           items={faq.items.map((item) => ({ id: item.id, title: t(item.q), description: t(item.a) }))}
         />
       </Shell>
@@ -531,7 +533,7 @@ export function Finale() {
               <span className="grid size-14 place-items-center rounded-2xl bg-green text-navy">
                 <WaveMark className="h-5 w-7" />
               </span>
-              <h2 className="mt-8 max-w-[720px] break-keep font-display text-[clamp(30px,4.4vw,54px)] font-bold leading-[1.06] tracking-[-0.03em] text-balance text-white">
+              <h2 className="mt-8 max-w-[720px] break-keep [overflow-wrap:anywhere] font-display text-[clamp(30px,4.4vw,54px)] font-bold leading-[1.06] tracking-[-0.03em] text-balance text-white">
                 {t(finale.title)}
               </h2>
               <p className="mt-5 max-w-[480px] text-[17px] text-white/70">{t(finale.sub)}</p>
