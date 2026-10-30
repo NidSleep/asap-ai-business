@@ -15,14 +15,15 @@ import {
   X,
 } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { useState, type KeyboardEvent, type ReactNode } from "react";
+import { useEffect, useState, type KeyboardEvent, type ReactNode } from "react";
 import { BouncyAccordion } from "@/components/motion/bouncy-accordion";
 import { ButtonLink } from "@/components/motion/button";
+import { DemoHint, DemoLink } from "@/components/site/demo-link";
 import { Brand, LangSwitch } from "@/components/site/header";
 import { HeroPhone } from "@/components/site/hero-phone";
 import { WaveMark } from "@/components/site/mark";
 import {
-  DEMO_URL,
+  CONTACT,
   demo,
   faq,
   features,
@@ -58,10 +59,10 @@ function H2({ children, className }: { children: ReactNode; className?: string }
 function DemoButton({ size = "lg", className }: { size?: "md" | "lg"; className?: string }) {
   const { t } = useLang();
   return (
-    <ButtonLink href={DEMO_URL} target="_blank" rel="noopener" size={size} className={cn("font-semibold", className)}>
+    <DemoLink size={size} className={cn("font-semibold", className)}>
       {t(demo)}
       <ArrowUpRight className="size-4" />
-    </ButtonLink>
+    </DemoLink>
   );
 }
 
@@ -100,6 +101,7 @@ export function Hero() {
               <ArrowRight className="size-4" />
             </ButtonLink>
           </div>
+          <DemoHint className="mt-3" />
           <ul className="mt-10 flex flex-wrap gap-x-6 gap-y-2 text-[14px] text-muted-foreground">
             {hero.trust.map((item) => (
               <li key={item.en} className="flex items-center gap-2">
@@ -491,16 +493,13 @@ export function Pricing() {
                   ))}
                 </ul>
                 <div className="mt-auto pt-9">
-                  <ButtonLink
-                    href={DEMO_URL}
-                    target="_blank"
-                    rel="noopener"
+                  <DemoLink
                     size="lg"
                     variant={featured ? "primary" : "outline"}
                     className={cn("w-full font-semibold", !featured && "border-navy/15 text-navy")}
                   >
                     {t(tier.cta)}
-                  </ButtonLink>
+                  </DemoLink>
                 </div>
               </article>
             );
@@ -530,6 +529,21 @@ export function Faq() {
   );
 }
 
+/**
+ * The static export bakes the build year into the HTML. Render that first so
+ * server and client agree, then switch to the visitor's year after load.
+ */
+const BUILD_YEAR = new Date().getFullYear();
+
+function CurrentYear() {
+  const [year, setYear] = useState(BUILD_YEAR);
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setYear(new Date().getFullYear());
+  }, []);
+  return <>{year}</>;
+}
+
 /* ---------------------------------------------------------------- finale */
 
 export function Finale() {
@@ -549,6 +563,7 @@ export function Finale() {
               </h2>
               <p className="mt-5 max-w-[480px] text-[17px] text-white/70">{t(finale.sub)}</p>
               <DemoButton className="mt-10 text-[15px]" />
+              <DemoHint className="mt-3 text-white/70" />
             </div>
           </div>
         </Shell>
@@ -558,10 +573,31 @@ export function Finale() {
           <div className="flex flex-col gap-3">
             <Brand />
             <p>{t(finale.footer)}</p>
+            {/* Shown only once the client supplies real details (lib/content.ts CONTACT). */}
+            {CONTACT.whatsapp || CONTACT.email || CONTACT.company ? (
+              <address className="flex flex-col gap-1 not-italic">
+                {CONTACT.whatsapp ? (
+                  <a
+                    className="underline-offset-4 hover:text-navy hover:underline"
+                    href={`https://wa.me/${CONTACT.whatsapp.replace(/\D/g, "")}`}
+                  >
+                    WhatsApp {CONTACT.whatsapp}
+                  </a>
+                ) : null}
+                {CONTACT.email ? (
+                  <a className="underline-offset-4 hover:text-navy hover:underline" href={`mailto:${CONTACT.email}`}>
+                    {CONTACT.email}
+                  </a>
+                ) : null}
+                {CONTACT.company ? <span>{CONTACT.company}</span> : null}
+              </address>
+            ) : null}
           </div>
           <div className="flex flex-col gap-3 sm:items-end">
             <LangSwitch />
-            <p>© {new Date().getFullYear()} Wave AI</p>
+            <p>
+              © <CurrentYear /> Wave AI
+            </p>
           </div>
         </Shell>
       </footer>

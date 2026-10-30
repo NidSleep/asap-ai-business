@@ -19,7 +19,9 @@ const text = Instrument_Sans({
 // visitor only downloads the characters on the page; nothing is preloaded.
 const chinese = Noto_Sans_SC({
   variable: "--font-noto-sc",
-  weight: ["400", "500", "700", "800"],
+  // Only the weights Chinese text uses: body 400, headings and labels 700
+  // (600 rounds up). Each weight adds ~100 unicode-range rules to the CSS.
+  weight: ["400", "700"],
   preload: false,
 });
 

@@ -1,10 +1,43 @@
 import type { Copy } from "@/lib/i18n";
 
 /**
- * "Book a demo" should open the client's Calendly page, which books a Zoom
- * demo. Until that link exists it falls back to the Telegram Agent.
+ * Where every "Book a demo" button goes. The client's plan is a Calendly page
+ * that books a Zoom demo; until that link exists it is the Telegram Agent.
+ * Change `via` with the URL and every button's hint and screen-reader text
+ * follows, so the page never promises one place and opens another.
  */
-export const DEMO_URL = "https://t.me/presale_copyabc_bot";
+type DemoChannel = "telegram" | "calendly" | "whatsapp";
+export const DEMO: { url: string; via: DemoChannel } = {
+  url: "https://t.me/presale_copyabc_bot",
+  via: "telegram",
+};
+export const DEMO_URL = DEMO.url;
+
+/** Short, visible note under the main buttons, and the new-tab warning for screen readers. */
+export const demoVia: Record<DemoChannel, { hint: Copy; sr: Copy }> = {
+  telegram: {
+    hint: { en: "Opens a chat with our team on Telegram", zh: "将在 Telegram 打开，与我们的团队对话" },
+    sr: { en: "(opens Telegram in a new tab)", zh: "（在新分页打开 Telegram）" },
+  },
+  calendly: {
+    hint: { en: "Pick a time for a short Zoom demo", zh: "选择时间，预约简短的 Zoom 演示" },
+    sr: { en: "(opens the booking page in a new tab)", zh: "（在新分页打开预约页面）" },
+  },
+  whatsapp: {
+    hint: { en: "Opens a chat with our team on WhatsApp", zh: "将在 WhatsApp 打开，与我们的团队对话" },
+    sr: { en: "(opens WhatsApp in a new tab)", zh: "（在新分页打开 WhatsApp）" },
+  },
+};
+
+/**
+ * Company contact details for the footer. Only real details supplied by the
+ * client go here; anything left null is simply not shown.
+ */
+export const CONTACT: { whatsapp: string | null; email: string | null; company: string | null } = {
+  whatsapp: null, // e.g. "+60 12-345 6789"
+  email: null,
+  company: null, // registered name and SSM number
+};
 
 export const nav: { href: string; label: Copy }[] = [
   { href: "#pain", label: { en: "Why", zh: "痛点" } },

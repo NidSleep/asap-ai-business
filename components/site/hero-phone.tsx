@@ -1,6 +1,6 @@
 "use client";
 
-import { CalendarCheck, CalendarDays, Target, Timer } from "lucide-react";
+import { CalendarCheck, CalendarDays, Pause, Play, Target, Timer } from "lucide-react";
 import { AnimatePresence, motion, useInView, useReducedMotion } from "motion/react";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { BookedRow, ChatHeader, CustomerLine, WaveLine, WaveTyping } from "@/components/site/chat";
@@ -20,6 +20,9 @@ function useLoop() {
   const inView = useInView(ref, { amount: 0.3 });
   const reduce = useReducedMotion();
   const [step, setStep] = useState(0);
+  // The loop runs for more than five seconds, so visitors must be able to stop
+  // it (WCAG 2.2.2). Paused, it holds whatever message is on screen.
+  const [paused, setPaused] = useState(false);
 
   useEffect(() => {
     if (reduce) {
@@ -27,13 +30,18 @@ function useLoop() {
       setStep(LAST);
       return;
     }
-    if (!inView) return;
+    if (!inView || paused) return;
     const id = window.setTimeout(() => setStep((s) => (s >= LAST ? 0 : s + 1)), STEP_MS[step]);
     return () => window.clearTimeout(id);
-  }, [inView, reduce, step]);
+  }, [inView, reduce, paused, step]);
 
-  return { ref, step };
+  return { ref, step, paused, setPaused, animated: !reduce };
 }
+
+const loopCopy = {
+  pause: { en: "Pause animation", zh: "暂停动画" },
+  play: { en: "Play animation", zh: "播放动画" },
+};
 
 function Callout({ show, icon, children, className }: { show: boolean; icon: ReactNode; children: ReactNode; className?: string }) {
   return (
@@ -66,7 +74,7 @@ function PickTime() {
 
 export function HeroPhone() {
   const { t } = useLang();
-  const { ref, step } = useLoop();
+  const { ref, step, paused, setPaused, animated } = useLoop();
   const s = (n: number) => step >= n;
   const c = heroChat;
 
@@ -100,6 +108,19 @@ export function HeroPhone() {
           </AnimatePresence>
         </div>
       </Phone>
+      {animated ? (
+        <div className="mt-3 flex justify-center">
+          <button
+            type="button"
+            onClick={() => setPaused(!paused)}
+            aria-pressed={paused}
+            className="inline-flex min-h-11 items-center gap-1.5 rounded-full px-4 text-[13px] font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-navy"
+          >
+            {paused ? <Play className="size-3.5" /> : <Pause className="size-3.5" />}
+            {t(paused ? loopCopy.play : loopCopy.pause)}
+          </button>
+        </div>
+      ) : null}
     </div>
   );
 }

@@ -1,9 +1,9 @@
 "use client";
 
 import { ArrowUpRight, Languages } from "lucide-react";
-import { ButtonLink } from "@/components/motion/button";
 import { WaveMark } from "@/components/site/mark";
-import { DEMO_URL, demo, nav } from "@/lib/content";
+import { DemoLink } from "@/components/site/demo-link";
+import { demo, nav } from "@/lib/content";
 import { useLang, type Lang } from "@/lib/i18n";
 
 const LANGS: { code: Lang; label: string; html: string }[] = [
@@ -73,10 +73,10 @@ export function Header() {
         </nav>
         <div className="ml-auto flex items-center">
           {/* The one action that matters, on every screen size. */}
-          <ButtonLink href={DEMO_URL} target="_blank" rel="noopener" size="sm" className="h-9 px-3.5 text-[13px] font-semibold sm:px-4">
+          <DemoLink size="sm" className="h-9 px-3.5 text-[13px] font-semibold sm:px-4">
             {t(demo)}
             <ArrowUpRight className="size-3.5" />
-          </ButtonLink>
+          </DemoLink>
         </div>
       </div>
     </header>

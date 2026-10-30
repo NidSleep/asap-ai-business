@@ -56,3 +56,7 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 .shots/
+
+# Impeccable live-mode scratch files
+.impeccable/live/
+.impeccable/config.local.json
