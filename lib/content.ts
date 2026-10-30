@@ -22,15 +22,28 @@ export const hero = {
   eyebrow: { en: "AI sales system for WhatsApp, Messenger and Instagram", zh: "WhatsApp · Messenger · Instagram 的 AI 销售系统" },
   title: { en: "Stop losing customers to slow replies.", zh: "别再因为回复慢​而流失客户。" },
   titleAccent: { en: "Your 24/7 AI sales team is ready.", zh: "你的全天候 AI 销售团队​已就绪。" },
-  lede: {
-    en: "An AI front-line salesperson replies within 30 seconds, works out what the customer needs, handles objections and follows up on days 1, 3, 5 and 7. An AI back-office manager reviews every chat, finds why leads were lost and reports back.",
-    zh: "AI 前线员工 30 秒内回复，识别客户需求、处理异议，并在第 1、3、5、7 天自动跟进；AI 后台经理分析每一段聊天记录，找出流失原因并生成报表。",
-  },
+  // Two roles, one line each, so a first-time reader can tell them apart.
+  roles: [
+    {
+      name: { en: "AI front-line salesperson", zh: "AI 前线员工" },
+      does: {
+        en: "replies within 30 seconds, finds out what the customer needs, handles objections and follows up on days 1, 3, 5 and 7.",
+        zh: "30 秒内回复，识别客户需求、处理异议，并在第 1、3、5、7 天自动跟进。",
+      },
+    },
+    {
+      name: { en: "AI back-office manager", zh: "AI 后台经理" },
+      does: {
+        en: "reads every chat and reports why leads were lost.",
+        zh: "分析每一段聊天，告诉你客户为什么流失。",
+      },
+    },
+  ],
   secondary: { en: "See how it works", zh: "看看怎么运作" },
   trust: [
     { en: "Replies in 30 seconds, 24/7", zh: "24/7 · 30 秒内回复" },
     { en: "Not just a chatbot: an AI that sells", zh: "不只是客服，是会主动销售的 AI" },
-    { en: "Books the Zoom demo for you", zh: "自动预约 Zoom 演示" },
+    { en: "Books appointments for your customers", zh: "帮你的客户预约时间" },
   ],
 };
 
@@ -54,6 +67,8 @@ export const heroChat = {
   replied: { en: "Replied in 30 s", zh: "30 秒内回复" },
   diagnosed: { en: "Need identified", zh: "识别需求" },
   booked: { en: "Zoom demo booked", zh: "Zoom 演示已预约" },
+  // Callout beside the phone; says something the in-chat row does not.
+  noScheduling: { en: "No manual scheduling", zh: "无需人工排期" },
 };
 
 export const chatUi = {
@@ -145,8 +160,8 @@ export const how = {
     a: { en: "Sorry, I don’t understand. Please reply 1, 2 or 3.", zh: "抱歉，我不明白。请回复 1、2 或 3。" },
   },
   l2: {
-    q: { en: "How much is the package?", zh: "配套多少钱？" },
-    a: { en: "The package is RM 500 a month. Anything else?", zh: "配套是每月 RM 500。还有其他问题吗？" },
+    q: { en: "How much is the facial treatment?", zh: "护肤疗程多少钱？" },
+    a: { en: "The hydrating facial is RM 168. Anything else?", zh: "补水护理是 RM 168。还有其他问题吗？" },
     end: { en: "…and the conversation ends there.", zh: "……然后对话就停在这里。" },
   },
   l3: {
@@ -211,20 +226,20 @@ export const features = {
 
 /* ---------------------------------------------------------------- proof */
 
+// These are the client's targets, not measured customer results (see
+// PRODUCT.md, Evidence on Hand). Keep the "targets" framing until the client
+// supplies data and a case study.
 export const proof = {
-  title: { en: "Results from our customers", zh: "客户的真实成果" },
-  stats: [
-    { value: 85, suffix: { en: "%", zh: "%" }, label: { en: "lead diagnosis accuracy", zh: "线索精准诊断" } },
-    { value: 80, suffix: { en: "%", zh: "%" }, label: { en: "less manual work", zh: "节省工作量" } },
-    { value: 2, suffix: { en: "×", zh: "×" }, label: { en: "more bookings for an aesthetics clinic", zh: "某医美诊所预约量提升" } },
-  ],
-  caseSlot: {
-    title: { en: "Customer story and dashboard screenshot", zh: "客户案例与后台截图" },
-    body: {
-      en: "Space for the aesthetics clinic case and a screenshot of the AI manager’s dashboard.",
-      zh: "这里放医美诊所的案例，以及 AI 经理后台报表的截图。",
-    },
+  title: { en: "What Wave AI is built to deliver", zh: "Wave AI 的目标效果" },
+  note: {
+    en: "These are targets set by the Wave AI team. Customer case studies are being prepared.",
+    zh: "下面是 Wave AI 团队设定的目标，客户案例整理中。",
   },
+  stats: [
+    { value: "85%", label: { en: "of leads diagnosed correctly", zh: "线索精准诊断" } },
+    { value: "80%", label: { en: "less manual reply and follow-up work", zh: "减少人工回复与跟进工作" } },
+    { value: "2×", label: { en: "the bookings", zh: "预约量翻倍" } },
+  ],
 };
 
 /* -------------------------------------------------------------- pricing */
@@ -240,12 +255,13 @@ export const pricing = {
       pitch: { en: "Set it up yourself", zh: "自己动手设置" },
       price: "RM 500",
       period: { en: "/ month", zh: "/ 月" },
+      equivalent: null,
       fit: { en: "For teams who want to start quickly on their own.", zh: "适合想自己快速开始的团队。" },
       items: [
         { en: "Basic AI salesperson", zh: "基础 AI 员工" },
-        { en: "A monthly allowance of credits", zh: "包含一定额度的积分" },
-        { en: "Self-service setup", zh: "自助设置" },
+        { en: "Monthly usage credits (amount confirmed in your quote)", zh: "每月使用积分（额度以报价为准）" },
       ],
+      cta: { en: "Ask about DIY", zh: "咨询自助版" },
     },
     {
       key: "guided",
@@ -253,12 +269,15 @@ export const pricing = {
       pitch: { en: "Our experts launch it with you", zh: "专家陪你一起上线" },
       price: "RM 6,000",
       period: { en: "/ year", zh: "/ 年" },
+      // Same unit as DIY so the two can be compared at a glance.
+      equivalent: { en: "about RM 500 / month, billed yearly", zh: "约每月 RM 500，按年付" },
       fit: { en: "For businesses that want it set up properly from day one.", zh: "适合希望一开始就设置到位的生意。" },
       items: [
         { en: "One-to-one expert setup", zh: "专家一对一辅助搭建" },
         { en: "Testing and fine-tuning", zh: "调试与优化" },
         { en: "Team training", zh: "团队培训" },
       ],
+      cta: { en: "Book a demo", zh: "预约演示" },
     },
     {
       key: "enterprise",
@@ -266,12 +285,14 @@ export const pricing = {
       pitch: { en: "Built around your organisation", zh: "按你的企业定制" },
       price: null,
       period: null,
+      equivalent: null,
       fit: { en: "For companies with several departments and their own systems.", zh: "适合多部门、有自己系统的企业。" },
       items: [
         { en: "Multi-department collaboration", zh: "多部门协同" },
         { en: "Complex workflows", zh: "复杂工作流" },
         { en: "Deep CRM integration", zh: "深度 CRM 整合" },
       ],
+      cta: { en: "Request a quote", zh: "索取报价" },
     },
   ],
   quote: { en: "Custom quote", zh: "按需报价" },

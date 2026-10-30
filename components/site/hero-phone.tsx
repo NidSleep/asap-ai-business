@@ -79,7 +79,7 @@ export function HeroPhone() {
         {t(c.diagnosed)}
       </Callout>
       <Callout show={s(10)} icon={<CalendarCheck className="size-4" />} className="-left-48 bottom-16">
-        {t(c.booked)}
+        {t(c.noScheduling)}
       </Callout>
 
       <Phone time="21:04">

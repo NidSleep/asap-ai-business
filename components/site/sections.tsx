@@ -18,7 +18,6 @@ import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { useState, type KeyboardEvent, type ReactNode } from "react";
 import { BouncyAccordion } from "@/components/motion/bouncy-accordion";
 import { ButtonLink } from "@/components/motion/button";
-import { NumberTicker } from "@/components/motion/number-ticker";
 import { Brand, LangSwitch } from "@/components/site/header";
 import { HeroPhone } from "@/components/site/hero-phone";
 import { WaveMark } from "@/components/site/mark";
@@ -84,7 +83,16 @@ export function Hero() {
             <span className="block text-balance">{t(hero.title)}</span>
             <span className="mt-1 block text-balance text-navy/45">{t(hero.titleAccent)}</span>
           </h1>
-          <p className="mt-6 max-w-[540px] text-[17px] leading-[1.65] text-muted-foreground sm:text-[18px]">{t(hero.lede)}</p>
+          {/* Two roles, one line each, so the split between them is obvious. */}
+          <ul className="mt-6 grid max-w-[560px] gap-2.5 text-[17px] leading-[1.6] text-muted-foreground sm:text-[18px]">
+            {hero.roles.map((role) => (
+              <li key={role.name.en}>
+                <strong className="font-semibold text-navy">{t(role.name)}</strong>
+                {lang === "zh" ? "：" : ": "}
+                {t(role.does)}
+              </li>
+            ))}
+          </ul>
           <div className="mt-9 flex flex-wrap items-center gap-3">
             <DemoButton className="text-[15px]" />
             <ButtonLink href="#how" variant="ghost" size="lg" className="text-[15px] text-navy hover:text-navy">
@@ -411,21 +419,21 @@ export function Proof() {
     <section id="proof" className="py-24 sm:py-28">
       <Shell>
         <H2>{t(proof.title)}</H2>
-        <div className="mt-12 grid gap-px overflow-hidden rounded-3xl bg-border ring-1 ring-border sm:grid-cols-3">
+        <p className="mt-4 max-w-[560px] text-[15px] leading-relaxed text-muted-foreground">{t(proof.note)}</p>
+        {/* Targets, not results: static figures at a modest size, no counting animation. */}
+        <dl className="mt-10 grid gap-x-10 gap-y-6 sm:grid-cols-3">
           {proof.stats.map((stat) => (
-            <div key={stat.label.en} className="bg-white p-8">
-              <p className="font-display text-[56px] font-bold leading-none tracking-tight text-navy">
-                <NumberTicker value={stat.value} startOnView suffix={t(stat.suffix)} />
-              </p>
-              <p className="mt-3 text-[16px] text-muted-foreground">{t(stat.label)}</p>
+            <div key={stat.label.en} className="border-t border-border pt-5">
+              <dt className="sr-only">{t(stat.label)}</dt>
+              <dd className="flex items-baseline gap-3">
+                <span className="font-display text-[32px] font-bold leading-none tracking-tight text-navy">{stat.value}</span>
+                <span className="text-[15px] leading-snug text-muted-foreground" aria-hidden="true">
+                  {t(stat.label)}
+                </span>
+              </dd>
             </div>
           ))}
-        </div>
-        {/* Placeholder until the client sends the clinic case and the dashboard screenshot. */}
-        <div className="mt-5 rounded-3xl border-2 border-dashed border-border p-7">
-          <p className="text-[16px] font-semibold text-navy">{t(proof.caseSlot.title)}</p>
-          <p className="mt-1.5 text-[15px] text-muted-foreground">{t(proof.caseSlot.body)}</p>
-        </div>
+        </dl>
       </Shell>
     </section>
   );
@@ -470,6 +478,9 @@ export function Pricing() {
                     <span className="font-display text-[34px] font-bold leading-[1.4] tracking-tight text-navy">{t(pricing.quote)}</span>
                   )}
                 </p>
+                {tier.equivalent ? (
+                  <p className={cn("mt-1 text-[14px] font-medium", featured ? "text-green" : "text-green-ink")}>{t(tier.equivalent)}</p>
+                ) : null}
                 <p className={cn("mt-4 text-[14.5px] leading-relaxed", featured ? "text-white/70" : "text-muted-foreground")}>{t(tier.fit)}</p>
                 <ul className="mt-7 grid gap-3">
                   {tier.items.map((item) => (
@@ -488,7 +499,7 @@ export function Pricing() {
                     variant={featured ? "primary" : "outline"}
                     className={cn("w-full font-semibold", !featured && "border-navy/15 text-navy")}
                   >
-                    {t(demo)}
+                    {t(tier.cta)}
                   </ButtonLink>
                 </div>
               </article>
