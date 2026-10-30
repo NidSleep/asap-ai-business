@@ -134,6 +134,32 @@ export const pain = {
       },
     },
   ],
+  // One short illustrative chat per pain point, so each is shown, not described.
+  scenes: {
+    slow: {
+      ask: { en: "Hi, any slot this Saturday?", zh: "你好，这个星期六还有位吗？" },
+      askTime: "23:40",
+      seen: { en: "Seen · no reply", zh: "已读 · 没有回复" },
+      late: { en: "Morning! Just saw this 🙏", zh: "早安！刚看到讯息 🙏" },
+      lateTime: "09:15",
+      lost: { en: "Already booked elsewhere, thanks.", zh: "已经订了别家，谢谢。" },
+    },
+    followUp: {
+      think: { en: "Let me think about it.", zh: "我考虑一下。" },
+      thinkTime: { en: "Mon 14:02", zh: "周一 14:02" },
+      ok: { en: "Sure, take your time!", zh: "好的，不急～" },
+      gap: { en: "7 days later", zh: "7 天后" },
+      silence: { en: "No one asked again.", zh: "没有人再问一次。" },
+    },
+    leaver: {
+      who: { en: "Jason · left the company", zh: "Jason · 已离职" },
+      blurred: [
+        { en: "Can you send the quotation?", zh: "可以发报价给我吗？" },
+        { en: "Sending it tonight 👍", zh: "今晚发给你 👍" },
+      ],
+      locked: { en: "This chat history is on Jason’s phone.", zh: "这段聊天记录在 Jason 的手机里。" },
+    },
+  },
 };
 
 /* -------------------------------------------------------------- levels */

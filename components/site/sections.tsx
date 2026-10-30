@@ -5,6 +5,8 @@ import {
   ArrowUpRight,
   Check,
   Lightbulb,
+  Lock,
+  UserX,
   X,
 } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
@@ -108,17 +110,92 @@ export function Hero() {
 
 /* ------------------------------------------------------------------ pain */
 
+/** Small centred timestamp or divider inside a chat mock. */
+function ChatMeta({ children, align = "center" }: { children: ReactNode; align?: "center" | "end" }) {
+  return (
+    <p className={cn("text-[12px] text-white/55", align === "center" ? "text-center" : "text-right")}>{children}</p>
+  );
+}
+
+/**
+ * Each pain point as the chat it happens in, drawn with the same mock and
+ * bubbles as the Level section, so the problem is seen before it is named.
+ */
+function PainScene({ which }: { which: number }) {
+  const { t } = useLang();
+  const s = pain.scenes;
+
+  if (which === 0) {
+    return (
+      <MockFrame className="flex min-h-[300px] flex-col justify-end gap-2.5">
+        <ChatMeta>{s.slow.askTime}</ChatMeta>
+        <Bubble from="customer">{t(s.slow.ask)}</Bubble>
+        <ChatMeta align="end">{t(s.slow.seen)}</ChatMeta>
+        <div className="mt-2">
+          <ChatMeta>{s.slow.lateTime}</ChatMeta>
+        </div>
+        <Bubble from="bot">{t(s.slow.late)}</Bubble>
+        <Bubble from="customer">{t(s.slow.lost)}</Bubble>
+      </MockFrame>
+    );
+  }
+
+  if (which === 1) {
+    return (
+      <MockFrame className="flex min-h-[300px] flex-col justify-end gap-2.5">
+        <ChatMeta>{t(s.followUp.thinkTime)}</ChatMeta>
+        <Bubble from="customer">{t(s.followUp.think)}</Bubble>
+        <Bubble from="bot">{t(s.followUp.ok)}</Bubble>
+        <div className="my-2 flex items-center gap-3 text-[12px] text-white/55" role="separator">
+          <span className="h-px flex-1 bg-white/15" />
+          {t(s.followUp.gap)}
+          <span className="h-px flex-1 bg-white/15" />
+        </div>
+        <p className="max-w-[82%] rounded-2xl rounded-bl-md border border-dashed border-white/30 px-4 py-2.5 text-[15px] italic text-white/60">
+          {t(s.followUp.silence)}
+        </p>
+      </MockFrame>
+    );
+  }
+
+  return (
+    <MockFrame className="flex min-h-[300px] flex-col justify-end gap-2.5">
+      <div className="mb-auto flex items-center gap-2.5 border-b border-white/10 pb-3 pt-4">
+        <span className="grid size-8 place-items-center rounded-full bg-white/10 text-white/60">
+          <UserX className="size-4" />
+        </span>
+        <span className="text-[14px] font-medium text-white/80">{t(s.leaver.who)}</span>
+      </div>
+      {/* The conversation is there but out of reach: blurred and hidden from screen readers. */}
+      <div aria-hidden="true" className="flex select-none flex-col gap-2.5 opacity-60 blur-[3px]">
+        <Bubble from="customer">{t(s.leaver.blurred[0])}</Bubble>
+        <Bubble from="bot">{t(s.leaver.blurred[1])}</Bubble>
+      </div>
+      <p className="mt-1 flex items-center gap-2 text-[14px] text-white/80">
+        <Lock className="size-4 shrink-0 text-green" />
+        {t(s.leaver.locked)}
+      </p>
+    </MockFrame>
+  );
+}
+
 export function Pain() {
   const { t } = useLang();
   return (
     <section id="pain" className="bg-secondary/60 py-24 sm:py-28">
       <Shell>
         <H2 className="max-w-[640px]">{t(pain.title)}</H2>
-        <div className="mt-12 grid gap-x-10 gap-y-9 md:grid-cols-3">
-          {pain.items.map((item) => (
-            <article key={item.title.en} className="border-t border-navy/15 pt-6">
-              <h3 className="text-[20px] font-semibold text-navy">{t(item.title)}</h3>
-              <p className="mt-3 text-[16px] leading-relaxed text-muted-foreground">{t(item.body)}</p>
+        {/* On wide screens the three cards share row heights (subgrid), so scenes,
+            titles and text line up whatever the copy length or language. */}
+        <div className="mt-12 grid gap-x-6 gap-y-12 lg:grid-cols-3 lg:gap-y-0">
+          {pain.items.map((item, i) => (
+            <article
+              key={item.title.en}
+              className="mx-auto w-full max-w-[460px] lg:row-span-3 lg:grid lg:max-w-none lg:grid-rows-subgrid"
+            >
+              <PainScene which={i} />
+              <h3 className="mt-6 text-[20px] font-semibold text-navy">{t(item.title)}</h3>
+              <p className="mt-2.5 text-[16px] leading-relaxed text-muted-foreground">{t(item.body)}</p>
             </article>
           ))}
         </div>
@@ -129,10 +206,10 @@ export function Pain() {
 
 /* ---------------------------------------------------------------- levels */
 
-function MockFrame({ children }: { children: ReactNode }) {
+function MockFrame({ children, className }: { children: ReactNode; className?: string }) {
   const { t } = useLang();
   return (
-    <div className="relative rounded-3xl bg-navy p-6 text-white sm:p-8">
+    <div className={cn("relative rounded-3xl bg-navy p-6 text-white sm:p-8", className)}>
       <span className="absolute right-5 top-4 text-[12px] text-white/70">{t(how.mock)}</span>
       {children}
     </div>
