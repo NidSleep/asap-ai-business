@@ -75,7 +75,6 @@ export const hero = {
   trust: [
     { en: "WhatsApp, Messenger and Instagram", zh: "WhatsApp · Messenger · Instagram" },
     { en: "Replies in 30 seconds, 24/7", zh: "24/7 · 30 秒内回复" },
-    { en: "Not just a chatbot: an AI that sells", zh: "不只是客服，是会主动销售的 AI" },
     { en: "Books appointments for your customers", zh: "帮你的客户预约时间" },
   ],
 };
@@ -226,32 +225,32 @@ export const features = {
       key: "reply",
       title: { en: "30-second replies", zh: "30 秒回复" },
       body: {
-        en: "Every enquiry is answered within 30 seconds, 24/7, so no customer waits for a human to come online.",
-        zh: "每一条询问都在 30 秒内回复，24/7 全天候，消除人工回复的延迟。",
+        en: "Customers never wait, so you stop losing deals to whoever answered first.",
+        zh: "顾客不用等，你也不再输给先回复的那一家。",
       },
     },
     {
       key: "follow",
       title: { en: "Automatic follow-up", zh: "自动跟进" },
       body: {
-        en: "Follows up on days 1, 3, 5 and 7 and handles scheduling, so “let me think about it” no longer means a lost lead.",
-        zh: "第 1、3、5、7 天自动跟进，自动处理排期，“我考虑一下”不再等于失去这个客户。",
+        en: "Customers who said “let me think about it” no longer quietly disappear.",
+        zh: "说“我考虑一下”的顾客，不再就此消失。",
       },
     },
     {
       key: "channels",
       title: { en: "Every channel connected", zh: "多渠道打通" },
       body: {
-        en: "WhatsApp, Messenger and Instagram, including the WhatsApp Business API, all answered by the same AI.",
-        zh: "WhatsApp、Messenger、Instagram，包括 WhatsApp Business API，全部由同一个 AI 回复。",
+        en: "WhatsApp, Messenger and Instagram answered by one AI, telling one consistent story.",
+        zh: "WhatsApp、Messenger、Instagram 由同一个 AI 回复，说法一致。",
       },
     },
     {
       key: "reports",
       title: { en: "Reports and analytics", zh: "数据报表分析" },
       body: {
-        en: "The AI manager analyses chat history, shows why customers dropped off and reports what to fix.",
-        zh: "AI 经理分析聊天记录，找出客户流失的原因，并生成报表告诉你该改什么。",
+        en: "See where deals slip, so you know what to fix first.",
+        zh: "看清生意在哪一步流失，就知道先改哪里。",
       },
     },
   ],

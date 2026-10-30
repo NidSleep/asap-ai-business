@@ -3,15 +3,8 @@
 import {
   ArrowRight,
   ArrowUpRight,
-  BarChart3,
   Check,
-  Clock3,
-  Hourglass,
-  Layers,
   Lightbulb,
-  MessageSquareReply,
-  Repeat,
-  UserMinus,
   X,
 } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
@@ -117,24 +110,17 @@ export function Hero() {
 
 export function Pain() {
   const { t } = useLang();
-  const icons = [Hourglass, Clock3, UserMinus];
   return (
     <section id="pain" className="bg-secondary/60 py-24 sm:py-28">
       <Shell>
         <H2 className="max-w-[640px]">{t(pain.title)}</H2>
-        <div className="mt-14 grid gap-5 md:grid-cols-3">
-          {pain.items.map((item, i) => {
-            const Icon = icons[i];
-            return (
-              <article key={item.title.en} className="rounded-3xl bg-white p-7 ring-1 ring-border">
-                <span className="grid size-11 place-items-center rounded-2xl bg-red-50 text-red-500">
-                  <Icon className="size-5" />
-                </span>
-                <h3 className="mt-6 text-[20px] font-semibold text-navy">{t(item.title)}</h3>
-                <p className="mt-3 text-[15.5px] leading-relaxed text-muted-foreground">{t(item.body)}</p>
-              </article>
-            );
-          })}
+        <div className="mt-12 grid gap-x-10 gap-y-9 md:grid-cols-3">
+          {pain.items.map((item) => (
+            <article key={item.title.en} className="border-t border-navy/15 pt-6">
+              <h3 className="text-[20px] font-semibold text-navy">{t(item.title)}</h3>
+              <p className="mt-3 text-[16px] leading-relaxed text-muted-foreground">{t(item.body)}</p>
+            </article>
+          ))}
         </div>
       </Shell>
     </section>
@@ -375,10 +361,6 @@ export function Levels() {
               <div>
                 <h3 className="font-display text-[30px] font-bold tracking-tight text-navy">{t(current.name)}</h3>
                 <p className="mt-4 max-w-[460px] text-[17px] leading-relaxed text-muted-foreground">{t(current.body)}</p>
-                <p className="mt-6 inline-flex items-center gap-2 text-[14px] font-medium text-navy">
-                  <span className={cn("size-2 rounded-full", index < 2 ? "bg-muted-foreground/40" : "bg-navy")} />
-                  {index < 2 ? t(how.service) : t(how.manager)}
-                </p>
               </div>
               <LevelVisual level={level} />
             </motion.div>
@@ -394,32 +376,20 @@ export function Levels() {
 
 export function Features() {
   const { t } = useLang();
-  const icons: Record<string, typeof MessageSquareReply> = {
-    reply: MessageSquareReply,
-    follow: Repeat,
-    channels: Layers,
-    reports: BarChart3,
-  };
+  // The client asked for this section by name; Levels already explains how
+  // each feature works, so here each one says only what it does for the owner.
   return (
     <section id="features" className="bg-secondary/60 py-24 sm:py-28">
       <Shell>
         <H2 className="max-w-[640px]">{t(features.title)}</H2>
-        <div className="mt-14 grid gap-5 sm:grid-cols-2">
-          {features.items.map((item) => {
-            const Icon = icons[item.key];
-            return (
-              <article key={item.key} className="flex gap-5 rounded-3xl bg-white p-7 ring-1 ring-border">
-                <span className="grid size-12 shrink-0 place-items-center rounded-2xl bg-green/15 text-green-ink">
-                  <Icon className="size-5" />
-                </span>
-                <div>
-                  <h3 className="text-[20px] font-semibold text-navy">{t(item.title)}</h3>
-                  <p className="mt-2 text-[15.5px] leading-relaxed text-muted-foreground">{t(item.body)}</p>
-                </div>
-              </article>
-            );
-          })}
-        </div>
+        <dl className="mt-12 grid gap-x-10 gap-y-9 sm:grid-cols-2 lg:grid-cols-4">
+          {features.items.map((item) => (
+            <div key={item.key} className="border-t border-navy/15 pt-6">
+              <dt className="text-[18px] font-semibold text-navy">{t(item.title)}</dt>
+              <dd className="mt-2.5 text-[16px] leading-relaxed text-muted-foreground">{t(item.body)}</dd>
+            </div>
+          ))}
+        </dl>
       </Shell>
     </section>
   );
@@ -569,12 +539,8 @@ export function Finale() {
       <section className="py-24 sm:py-28">
         <Shell>
           <div className="relative overflow-hidden rounded-[36px] bg-navy px-6 py-20 text-center sm:px-16">
-            <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[radial-gradient(50%_80%_at_50%_120%,rgb(31_209_106/0.35),transparent_70%)]" />
             <div className="relative flex flex-col items-center">
-              <span className="grid size-14 place-items-center rounded-2xl bg-green text-navy">
-                <WaveMark className="h-5 w-7" />
-              </span>
-              <h2 className="mt-8 max-w-[720px] break-keep [overflow-wrap:anywhere] font-display text-[clamp(30px,4.4vw,54px)] font-bold leading-[1.06] tracking-[-0.03em] text-balance text-white">
+              <h2 className="max-w-[720px] break-keep [overflow-wrap:anywhere] font-display text-[clamp(30px,4.4vw,54px)] font-bold leading-[1.06] tracking-[-0.03em] text-balance text-white">
                 {t(finale.title)}
               </h2>
               <p className="mt-5 max-w-[480px] text-[17px] text-white/70">{t(finale.sub)}</p>
