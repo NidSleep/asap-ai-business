@@ -52,7 +52,6 @@ export const demo: Copy = { en: "Book a demo", zh: "预约演示" };
 /* ------------------------------------------------------------------ hero */
 
 export const hero = {
-  eyebrow: { en: "AI sales system for WhatsApp, Messenger and Instagram", zh: "WhatsApp · Messenger · Instagram 的 AI 销售系统" },
   title: { en: "Stop losing customers to slow replies.", zh: "别再因为回复慢​而流失客户。" },
   titleAccent: { en: "Your 24/7 AI sales team is ready.", zh: "你的全天候 AI 销售团队​已就绪。" },
   // Two roles, one line each, so a first-time reader can tell them apart.
@@ -74,6 +73,7 @@ export const hero = {
   ],
   secondary: { en: "See how it works", zh: "看看怎么运作" },
   trust: [
+    { en: "WhatsApp, Messenger and Instagram", zh: "WhatsApp · Messenger · Instagram" },
     { en: "Replies in 30 seconds, 24/7", zh: "24/7 · 30 秒内回复" },
     { en: "Not just a chatbot: an AI that sells", zh: "不只是客服，是会主动销售的 AI" },
     { en: "Books appointments for your customers", zh: "帮你的客户预约时间" },

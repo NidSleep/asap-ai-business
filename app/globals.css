@@ -137,13 +137,34 @@
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border;
   }
   body {
     @apply bg-background text-foreground;
   }
   html {
     @apply font-sans;
+  }
+
+  /* One keyboard focus style for the whole page: a solid 2px ring with a gap,
+     navy on light surfaces and brand green on navy ones, so it is visible on
+     every background, including the green buttons. */
+  :root {
+    --focus-ring: var(--navy);
+  }
+  .bg-navy,
+  .dark {
+    --focus-ring: var(--green);
+  }
+  :focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 3px;
+  }
+
+  /* Text selection in the brand palette instead of the browser default. */
+  ::selection {
+    background: rgb(31 209 106 / 0.28);
+    color: var(--navy);
   }
 }
 html {

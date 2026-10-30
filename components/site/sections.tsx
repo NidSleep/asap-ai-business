@@ -75,14 +75,10 @@ export function Hero() {
       <div aria-hidden="true" className="ridge pointer-events-none absolute inset-0" />
       <Shell className="relative grid items-center gap-14 pb-20 pt-14 sm:pt-20 lg:grid-cols-[minmax(0,1fr)_auto] lg:gap-24 lg:pb-28">
         <div className="max-w-[740px]">
-          <p className="inline-flex items-center gap-2 text-[14px] font-medium text-green-ink">
-            <span className="size-2 rounded-full bg-green" />
-            {t(hero.eyebrow)}
-          </p>
           {/* Chinese breaks only at the phrase marks in the copy, never mid-word. */}
-          <h1 className={cn("mt-5 font-display text-[clamp(34px,4.5vw,56px)] font-bold leading-[1.08] tracking-[-0.04em] text-navy", lang === "zh" && "break-keep [overflow-wrap:anywhere]")}>
+          <h1 className={cn("font-display text-[clamp(34px,4.5vw,56px)] font-bold leading-[1.08] tracking-[-0.04em] text-navy", lang === "zh" && "break-keep [overflow-wrap:anywhere]")}>
             <span className="block text-balance">{t(hero.title)}</span>
-            <span className="mt-1 block text-balance text-navy/45">{t(hero.titleAccent)}</span>
+            <span className="mt-1 block text-balance text-green-ink">{t(hero.titleAccent)}</span>
           </h1>
           {/* Two roles, one line each, so the split between them is obvious. */}
           <ul className="mt-6 grid max-w-[560px] gap-2.5 text-[17px] leading-[1.6] text-muted-foreground sm:text-[18px]">
@@ -151,7 +147,7 @@ function MockFrame({ children }: { children: ReactNode }) {
   const { t } = useLang();
   return (
     <div className="relative rounded-3xl bg-navy p-6 text-white sm:p-8">
-      <span className="absolute right-5 top-4 text-[11px] text-white/40">{t(how.mock)}</span>
+      <span className="absolute right-5 top-4 text-[12px] text-white/70">{t(how.mock)}</span>
       {children}
     </div>
   );
@@ -295,7 +291,7 @@ function LevelPicker({ value, onChange }: { value: string; onChange: (key: strin
                   aria-selected={selected}
                   tabIndex={selected ? 0 : -1}
                   onClick={() => onChange(l.key)}
-                  className="relative rounded-2xl px-2 py-3 text-center outline-none focus-visible:ring-2 focus-visible:ring-green"
+                  className="relative rounded-2xl px-2 py-3 text-center"
                 >
                   {selected ? (
                     <motion.span
@@ -307,7 +303,7 @@ function LevelPicker({ value, onChange }: { value: string; onChange: (key: strin
                   <span className="relative flex flex-col items-center gap-0.5">
                     <span
                       className={cn(
-                        "text-[11px] font-semibold uppercase tracking-wide",
+                        "text-[12px] font-semibold uppercase tracking-wide",
                         g.ours ? (selected ? "text-navy/70" : "text-green") : "text-muted-foreground",
                       )}
                     >
@@ -345,7 +341,7 @@ export function Levels() {
         <div className="max-w-[720px]">
           <H2>{t(how.title)}</H2>
           <p className="mt-5 text-[17px] leading-relaxed text-muted-foreground">{t(how.lede)}</p>
-          <p className="mt-5 border-l-2 border-green pl-4 text-[16px] font-medium text-navy">{t(how.difference)}</p>
+          <p className="mt-5 text-[18px] font-semibold leading-snug text-navy">{t(how.difference)}</p>
         </div>
 
         <div className="mt-14">
@@ -361,8 +357,7 @@ export function Levels() {
               className="mt-10 grid items-center gap-10 lg:grid-cols-2 lg:gap-16"
             >
               <div>
-                <p className="font-display text-[64px] font-bold leading-none text-navy/10">0{index + 1}</p>
-                <h3 className="mt-2 font-display text-[30px] font-bold tracking-tight text-navy">{t(current.name)}</h3>
+                <h3 className="font-display text-[30px] font-bold tracking-tight text-navy">{t(current.name)}</h3>
                 <p className="mt-4 max-w-[460px] text-[17px] leading-relaxed text-muted-foreground">{t(current.body)}</p>
                 <p className="mt-6 inline-flex items-center gap-2 text-[14px] font-medium text-navy">
                   <span className={cn("size-2 rounded-full", index < 2 ? "bg-muted-foreground/40" : "bg-navy")} />
@@ -521,7 +516,11 @@ export function Faq() {
         <BouncyAccordion
           defaultValue={faq.items[0].id}
           // Long questions wrap instead of being cut off with an ellipsis on phones.
-          classNames={{ title: "whitespace-normal overflow-visible py-3 leading-snug" }}
+          classNames={{
+            title: "whitespace-normal overflow-visible py-3 leading-snug",
+            // The item card clips overflow, so the focus ring is drawn inside it.
+            trigger: "focus-visible:outline-2 focus-visible:outline-solid focus-visible:outline-[var(--focus-ring)] focus-visible:-outline-offset-4",
+          }}
           items={faq.items.map((item) => ({ id: item.id, title: t(item.q), description: t(item.a) }))}
         />
       </Shell>

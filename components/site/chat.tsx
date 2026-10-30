@@ -167,7 +167,7 @@ function StatusRow({ tone, icon, children }: { tone: "done" | "team"; icon: Reac
         "flex items-center gap-2 rounded-2xl border px-3 py-2 text-[12px] font-medium",
         tone === "done"
           ? "border-emerald-400/25 bg-emerald-400/10 text-emerald-300"
-          : "border-wave/30 bg-wave-soft text-[#b9b5ff]",
+          : "border-wave/30 bg-wave-soft text-white/85",
       )}
     >
       <span
