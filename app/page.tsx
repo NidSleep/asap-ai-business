@@ -14,7 +14,7 @@ export default function Home() {
   return (
     <>
       <Header />
-      <main>
+      <main id="main" tabIndex={-1} className="outline-none">
         <Hero />
         <Pain />
         <Levels />

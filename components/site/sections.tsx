@@ -15,7 +15,7 @@ import {
   X,
 } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { useEffect, useState, type KeyboardEvent, type ReactNode } from "react";
+import { useEffect, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
 import { BouncyAccordion } from "@/components/motion/bouncy-accordion";
 import { ButtonLink } from "@/components/motion/button";
 import { DemoHint, DemoLink } from "@/components/site/demo-link";
@@ -38,7 +38,7 @@ import { useLang } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 function Shell({ children, className }: { children: ReactNode; className?: string }) {
-  return <div className={cn("mx-auto w-full max-w-[1200px] px-5 sm:px-8", className)}>{children}</div>;
+  return <div className={cn("px-safe mx-auto w-full max-w-[1200px]", className)}>{children}</div>;
 }
 
 function H2({ children, className }: { children: ReactNode; className?: string }) {
@@ -246,7 +246,7 @@ function LevelVisual({ level }: { level: string }) {
  * ("Wave AI"), so the reader sees at a glance which half is the product.
  * One indicator glides across both boxes; arrow keys move between all four.
  */
-function LevelPicker({ value, onChange }: { value: string; onChange: (key: string) => void }) {
+function LevelPicker({ value, onChange }: { value: string; onChange: (key: string, tapped?: boolean) => void }) {
   const { t } = useLang();
   const reduce = useReducedMotion();
   const keys = how.levels.map((l) => l.key);
@@ -290,7 +290,7 @@ function LevelPicker({ value, onChange }: { value: string; onChange: (key: strin
                   role="tab"
                   aria-selected={selected}
                   tabIndex={selected ? 0 : -1}
-                  onClick={() => onChange(l.key)}
+                  onClick={() => onChange(l.key, true)}
                   className="relative rounded-2xl px-2 py-3 text-center"
                 >
                   {selected ? (
@@ -334,6 +334,21 @@ export function Levels() {
   const [level, setLevel] = useState("l1");
   const index = how.levels.findIndex((l) => l.key === level);
   const current = how.levels[index];
+  const detailRef = useRef<HTMLDivElement>(null);
+
+  // On a phone the stacked picker pushes the level's content far below the
+  // tabs, so a tap would change something off screen. After a tap (not arrow
+  // keys, which must keep focus on the tabs), bring the content into view.
+  const pick = (key: string, tapped?: boolean) => {
+    setLevel(key);
+    if (!tapped || !window.matchMedia("(max-width: 1023px)").matches) return;
+    window.setTimeout(() => {
+      const el = detailRef.current;
+      if (el && el.getBoundingClientRect().top > window.innerHeight * 0.55) {
+        el.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+      }
+    }, 280);
+  };
 
   return (
     <section id="how" className="py-24 sm:py-32">
@@ -345,8 +360,9 @@ export function Levels() {
         </div>
 
         <div className="mt-14">
-          <LevelPicker value={level} onChange={setLevel} />
+          <LevelPicker value={level} onChange={pick} />
 
+          <div ref={detailRef} className="scroll-mt-24">
           <AnimatePresence mode="wait" initial={false}>
             <motion.div
               key={level}
@@ -367,6 +383,7 @@ export function Levels() {
               <LevelVisual level={level} />
             </motion.div>
           </AnimatePresence>
+          </div>
         </div>
       </Shell>
     </section>

@@ -203,3 +203,16 @@ html[lang="zh-Hans"] .font-display {
   line-height: 1.18 !important;
 }
 
+
+/* Side padding that also clears a phone's notch in landscape
+   (viewport-fit=cover is set in the layout). */
+.px-safe {
+  padding-left: max(1.25rem, env(safe-area-inset-left));
+  padding-right: max(1.25rem, env(safe-area-inset-right));
+}
+@media (width >= 40rem) {
+  .px-safe {
+    padding-left: max(2rem, env(safe-area-inset-left));
+    padding-right: max(2rem, env(safe-area-inset-right));
+  }
+}
