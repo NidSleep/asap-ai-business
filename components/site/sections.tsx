@@ -42,7 +42,7 @@ function H2({ children, className }: { children: ReactNode; className?: string }
     <h2
       className={cn(
         lang === "zh" && "break-keep [overflow-wrap:anywhere]",
-        "font-display text-[clamp(30px,4vw,48px)] font-bold leading-[1.08] tracking-[-0.03em] text-balance text-navy",
+        "font-display text-[clamp(30px,4vw,48px)] font-bold leading-[1.08] tracking-[-0.03em] text-balance text-ink",
         className,
       )}
     >
@@ -71,15 +71,15 @@ export function Hero() {
       <Shell className="relative grid items-center gap-14 pb-20 pt-14 sm:pt-20 lg:grid-cols-[minmax(0,1fr)_auto] lg:gap-24 lg:pb-28">
         <div className="max-w-[740px]">
           {/* Chinese breaks only at the phrase marks in the copy, never mid-word. */}
-          <h1 className={cn("font-display text-[clamp(34px,4.5vw,56px)] font-bold leading-[1.08] tracking-[-0.04em] text-navy", lang === "zh" && "break-keep [overflow-wrap:anywhere]")}>
+          <h1 className={cn("font-display text-[clamp(34px,4.5vw,56px)] font-bold leading-[1.08] tracking-[-0.04em] text-ink", lang === "zh" && "break-keep [overflow-wrap:anywhere]")}>
             <span className="block text-balance">{t(hero.title)}</span>
-            <span className="mt-1 block text-balance text-green-ink">{t(hero.titleAccent)}</span>
+            <span className="mt-1 block text-balance text-brand-strong">{t(hero.titleAccent)}</span>
           </h1>
           {/* Two roles, one line each, so the split between them is obvious. */}
           <ul className="mt-6 grid max-w-[560px] gap-2.5 text-[17px] leading-[1.6] text-muted-foreground sm:text-[18px]">
             {hero.roles.map((role) => (
               <li key={role.name.en}>
-                <strong className="font-semibold text-navy">{t(role.name)}</strong>
+                <strong className="font-semibold text-ink">{t(role.name)}</strong>
                 {lang === "zh" ? "：" : ": "}
                 {t(role.does)}
               </li>
@@ -87,7 +87,7 @@ export function Hero() {
           </ul>
           <div className="mt-9 flex flex-wrap items-center gap-3">
             <DemoButton className="text-[15px]" />
-            <ButtonLink href="#how" variant="ghost" size="lg" className="text-[15px] text-navy hover:text-navy">
+            <ButtonLink href="#how" variant="ghost" size="lg" className="text-[15px] text-ink hover:text-ink">
               {t(hero.secondary)}
               <ArrowRight className="size-4" />
             </ButtonLink>
@@ -96,7 +96,7 @@ export function Hero() {
           <ul className="mt-10 flex flex-wrap gap-x-6 gap-y-2 text-[14px] text-muted-foreground">
             {hero.trust.map((item) => (
               <li key={item.en} className="flex items-center gap-2">
-                <Check className="size-4 text-green-ink" strokeWidth={3} />
+                <Check className="size-4 text-brand-strong" strokeWidth={3} />
                 {t(item)}
               </li>
             ))}
@@ -172,7 +172,7 @@ function PainScene({ which }: { which: number }) {
         <Bubble from="bot">{t(s.leaver.blurred[1])}</Bubble>
       </div>
       <p className="mt-1 flex items-center gap-2 text-[14px] text-white/80">
-        <Lock className="size-4 shrink-0 text-green" />
+        <Lock className="size-4 shrink-0 text-brand-light" />
         {t(s.leaver.locked)}
       </p>
     </MockFrame>
@@ -194,7 +194,7 @@ export function Pain() {
               className="mx-auto w-full max-w-[460px] lg:row-span-3 lg:grid lg:max-w-none lg:grid-rows-subgrid"
             >
               <PainScene which={i} />
-              <h3 className="mt-6 text-[20px] font-semibold text-navy">{t(item.title)}</h3>
+              <h3 className="mt-6 text-[20px] font-semibold text-ink">{t(item.title)}</h3>
               <p className="mt-2.5 text-[16px] leading-relaxed text-muted-foreground">{t(item.body)}</p>
             </article>
           ))}
@@ -209,7 +209,7 @@ export function Pain() {
 function MockFrame({ children, className }: { children: ReactNode; className?: string }) {
   const { t } = useLang();
   return (
-    <div className={cn("relative rounded-3xl bg-navy p-6 text-white sm:p-8", className)}>
+    <div className={cn("relative rounded-3xl bg-ink p-6 text-white sm:p-8", className)}>
       <span className="absolute right-5 top-4 text-[12px] text-white/70">{t(how.mock)}</span>
       {children}
     </div>
@@ -221,7 +221,7 @@ function Bubble({ from, children, muted = false }: { from: "customer" | "bot"; c
     <p
       className={cn(
         "max-w-[82%] rounded-2xl px-4 py-2.5 text-[15px]",
-        from === "customer" ? "ml-auto rounded-br-md bg-white text-navy" : "rounded-bl-md bg-white/10",
+        from === "customer" ? "ml-auto rounded-br-md bg-white text-ink" : "rounded-bl-md bg-white/10",
         muted && "text-white/60",
       )}
     >
@@ -254,7 +254,7 @@ function LevelVisual({ level }: { level: string }) {
         <div className="mt-4 flex flex-col gap-3">
           <Bubble from="customer">{t(how.l2.q)}</Bubble>
           <Bubble from="bot">{t(how.l2.a)}</Bubble>
-          <p className="mt-2 text-center text-[13px] italic text-white/45">{t(how.l2.end)}</p>
+          <p className="mt-2 text-center text-[13px] italic text-white/65">{t(how.l2.end)}</p>
         </div>
       </MockFrame>
     );
@@ -267,7 +267,7 @@ function LevelVisual({ level }: { level: string }) {
           {how.l3.steps.map((st, i) => (
             <li key={st.day.en} className="relative flex gap-4 pb-5 last:pb-0">
               {i < last ? <span className="absolute left-[11px] top-7 h-[calc(100%-20px)] w-px bg-white/15" /> : null}
-              <span className={cn("grid size-6 shrink-0 place-items-center rounded-full", i === last ? "bg-green text-navy" : "bg-white/15")}>
+              <span className={cn("grid size-6 shrink-0 place-items-center rounded-full", i === last ? "bg-brand text-white" : "bg-white/15")}>
                 {i === last ? <Check className="size-3.5" strokeWidth={3} /> : <span className="size-1.5 rounded-full bg-white" />}
               </span>
               <div>
@@ -291,12 +291,12 @@ function LevelVisual({ level }: { level: string }) {
               <span className="tabular-nums text-white/60">{Math.round(r.share * 100)}%</span>
             </p>
             <span className="mt-1.5 block h-2 rounded-full bg-white/10">
-              <span className="block h-full rounded-full bg-green" style={{ width: `${r.share * 100}%` }} />
+              <span className="block h-full rounded-full bg-brand-light" style={{ width: `${r.share * 100}%` }} />
             </span>
           </li>
         ))}
       </ul>
-      <p className="mt-6 flex items-center gap-2 rounded-xl bg-white/[0.07] px-3 py-2.5 text-[14px] text-green">
+      <p className="mt-6 flex items-center gap-2 rounded-xl bg-white/[0.07] px-3 py-2.5 text-[14px] text-brand-light">
         <Lightbulb className="size-4 shrink-0" />
         {t(how.l4.action)}
       </p>
@@ -305,12 +305,12 @@ function LevelVisual({ level }: { level: string }) {
 }
 
 /**
- * Levels 1–2 sit in a grey box ("typical chatbots") and 3–4 in a navy box
+ * Levels 1–2 sit in a grey box ("typical chatbots") and 3–4 in a ink box
  * ("Wave AI"), so the reader sees at a glance which half is the product.
  * One indicator glides across both boxes; arrow keys move between all four.
  */
 function LevelPicker({ value, onChange }: { value: string; onChange: (key: string, tapped?: boolean) => void }) {
-  const { t } = useLang();
+  const { t, lang } = useLang();
   const reduce = useReducedMotion();
   const keys = how.levels.map((l) => l.key);
 
@@ -331,11 +331,11 @@ function LevelPicker({ value, onChange }: { value: string; onChange: (key: strin
   return (
     <div role="tablist" aria-label={t(how.title)} onKeyDown={onKeyDown} className="grid gap-3 md:grid-cols-2">
       {groups.map((g) => (
-        <div key={String(g.ours)} className={cn("rounded-3xl p-2", g.ours ? "bg-navy" : "bg-secondary")}>
+        <div key={String(g.ours)} className={cn("rounded-3xl p-2", g.ours ? "bg-ink" : "bg-secondary")}>
           <p className={cn("flex items-center justify-center gap-2 px-3 pb-2 pt-1.5 text-[13px] font-semibold", g.ours ? "text-white" : "text-muted-foreground")}>
             {g.ours ? (
-              <span className="grid size-5 place-items-center rounded-md bg-green text-navy">
-                <WaveMark className="h-2 w-3" />
+              <span className="grid size-6 place-items-center rounded-full bg-white">
+                <WaveMark className="h-[7px]" />
               </span>
             ) : null}
             {t(g.title)}
@@ -351,6 +351,7 @@ function LevelPicker({ value, onChange }: { value: string; onChange: (key: strin
                   id={`level-tab-${l.key}`}
                   type="button"
                   role="tab"
+                  aria-controls="level-panel"
                   aria-selected={selected}
                   tabIndex={selected ? 0 : -1}
                   onClick={() => onChange(l.key, true)}
@@ -360,22 +361,22 @@ function LevelPicker({ value, onChange }: { value: string; onChange: (key: strin
                     <motion.span
                       layoutId="level-indicator"
                       transition={reduce ? { duration: 0 } : { type: "spring", stiffness: 420, damping: 34 }}
-                      className={cn("absolute inset-0 rounded-2xl", g.ours ? "bg-green" : "bg-white shadow-sm")}
+                      className={cn("absolute inset-0 rounded-2xl", g.ours ? "bg-brand-light" : "bg-white shadow-sm")}
                     />
                   ) : null}
                   <span className="relative flex flex-col items-center gap-0.5">
                     <span
                       className={cn(
                         "text-[12px] font-semibold uppercase tracking-wide",
-                        g.ours ? (selected ? "text-navy/70" : "text-green") : "text-muted-foreground",
+                        g.ours ? (selected ? "text-ink" : "text-brand-light") : "text-muted-foreground",
                       )}
                     >
-                      Level {n}
+                      {lang === "zh" ? `第 ${n} 层` : `Level ${n}`}
                     </span>
                     <span
                       className={cn(
                         "text-[14px] font-semibold leading-tight sm:text-[15px]",
-                        g.ours ? (selected ? "text-navy" : "text-white") : "text-navy",
+                        g.ours ? (selected ? "text-ink" : "text-white") : "text-ink",
                       )}
                     >
                       {t(l.name)}
@@ -419,13 +420,20 @@ export function Levels() {
         <div className="max-w-[720px]">
           <H2>{t(how.title)}</H2>
           <p className="mt-5 text-[17px] leading-relaxed text-muted-foreground">{t(how.lede)}</p>
-          <p className="mt-5 text-[18px] font-semibold leading-snug text-navy">{t(how.difference)}</p>
+          <p className="mt-5 text-[18px] font-semibold leading-snug text-ink">{t(how.difference)}</p>
         </div>
 
         <div className="mt-14">
           <LevelPicker value={level} onChange={pick} />
 
-          <div ref={detailRef} className="scroll-mt-24">
+          <div
+            ref={detailRef}
+            id="level-panel"
+            role="tabpanel"
+            aria-labelledby={`level-tab-${level}`}
+            tabIndex={0}
+            className="scroll-mt-24 rounded-3xl"
+          >
           <AnimatePresence mode="wait" initial={false}>
             <motion.div
               key={level}
@@ -436,7 +444,7 @@ export function Levels() {
               className="mt-10 grid items-center gap-10 lg:grid-cols-2 lg:gap-16"
             >
               <div>
-                <h3 className="font-display text-[30px] font-bold tracking-tight text-navy">{t(current.name)}</h3>
+                <h3 className="font-display text-[30px] font-bold tracking-tight text-ink">{t(current.name)}</h3>
                 <p className="mt-4 max-w-[460px] text-[17px] leading-relaxed text-muted-foreground">{t(current.body)}</p>
               </div>
               <LevelVisual level={level} />
@@ -461,8 +469,8 @@ export function Features() {
         <H2 className="max-w-[640px]">{t(features.title)}</H2>
         <dl className="mt-12 grid gap-x-10 gap-y-9 sm:grid-cols-2 lg:grid-cols-4">
           {features.items.map((item) => (
-            <div key={item.key} className="border-t border-navy/15 pt-6">
-              <dt className="text-[18px] font-semibold text-navy">{t(item.title)}</dt>
+            <div key={item.key} className="border-t border-ink/15 pt-6">
+              <dt className="text-[18px] font-semibold text-ink">{t(item.title)}</dt>
               <dd className="mt-2.5 text-[16px] leading-relaxed text-muted-foreground">{t(item.body)}</dd>
             </div>
           ))}
@@ -487,7 +495,7 @@ export function Proof() {
             <div key={stat.label.en} className="border-t border-border pt-5">
               <dt className="sr-only">{t(stat.label)}</dt>
               <dd className="flex items-baseline gap-3">
-                <span className="font-display text-[32px] font-bold leading-none tracking-tight text-navy">{stat.value}</span>
+                <span className="font-display text-[32px] font-bold leading-none tracking-tight text-ink">{stat.value}</span>
                 <span className="text-[15px] leading-snug text-muted-foreground" aria-hidden="true">
                   {t(stat.label)}
                 </span>
@@ -519,34 +527,34 @@ export function Pricing() {
                 key={tier.key}
                 className={cn(
                   "relative flex flex-col rounded-3xl p-8",
-                  featured ? "bg-navy text-white shadow-[0_30px_60px_-25px_rgb(11_27_63/0.6)] lg:-my-4 lg:py-12" : "bg-white ring-1 ring-border",
+                  featured ? "bg-ink text-white shadow-[0_30px_60px_-25px_rgb(11_27_63/0.6)] lg:-my-4 lg:py-12" : "bg-white ring-1 ring-border",
                 )}
               >
                 {featured ? (
-                  <span className="absolute right-6 top-6 rounded-full bg-green px-3 py-1 text-[12px] font-semibold text-navy">
+                  <span className="absolute right-6 top-6 rounded-full bg-brand-light px-3 py-1 text-[12px] font-semibold text-ink">
                     {t(pricing.recommended)}
                   </span>
                 ) : null}
-                <h3 className={cn("text-[22px] font-bold", featured ? "text-white" : "text-navy")}>{t(tier.name)}</h3>
+                <h3 className={cn("text-[22px] font-bold", featured ? "text-white" : "text-ink")}>{t(tier.name)}</h3>
                 <p className={cn("mt-1 text-[15px]", featured ? "text-white/70" : "text-muted-foreground")}>{t(tier.pitch)}</p>
                 <p className="mt-7 flex min-h-12 items-baseline gap-1.5">
                   {tier.price && tier.period ? (
                     <>
-                      <span className={cn("font-display text-[40px] font-bold tracking-tight", featured ? "text-white" : "text-navy")}>{tier.price}</span>
+                      <span className={cn("font-display text-[40px] font-bold tracking-tight", featured ? "text-white" : "text-ink")}>{tier.price}</span>
                       <span className={featured ? "text-white/60" : "text-muted-foreground"}>{t(tier.period)}</span>
                     </>
                   ) : (
-                    <span className="font-display text-[34px] font-bold leading-[1.4] tracking-tight text-navy">{t(pricing.quote)}</span>
+                    <span className="font-display text-[34px] font-bold leading-[1.4] tracking-tight text-ink">{t(pricing.quote)}</span>
                   )}
                 </p>
                 {tier.equivalent ? (
-                  <p className={cn("mt-1 text-[14px] font-medium", featured ? "text-green" : "text-green-ink")}>{t(tier.equivalent)}</p>
+                  <p className={cn("mt-1 text-[14px] font-medium", featured ? "text-brand-light" : "text-brand-strong")}>{t(tier.equivalent)}</p>
                 ) : null}
                 <p className={cn("mt-4 text-[14.5px] leading-relaxed", featured ? "text-white/70" : "text-muted-foreground")}>{t(tier.fit)}</p>
                 <ul className="mt-7 grid gap-3">
                   {tier.items.map((item) => (
                     <li key={item.en} className="flex items-start gap-3 text-[15px]">
-                      <Check className={cn("mt-0.5 size-4 shrink-0", featured ? "text-green" : "text-green-ink")} strokeWidth={3} />
+                      <Check className={cn("mt-0.5 size-4 shrink-0", featured ? "text-brand-light" : "text-brand-strong")} strokeWidth={3} />
                       {t(item)}
                     </li>
                   ))}
@@ -555,7 +563,7 @@ export function Pricing() {
                   <DemoLink
                     size="lg"
                     variant={featured ? "primary" : "outline"}
-                    className={cn("w-full font-semibold", !featured && "border-navy/15 text-navy")}
+                    className={cn("w-full font-semibold", !featured && "border-ink/15 text-ink")}
                   >
                     {t(tier.cta)}
                   </DemoLink>
@@ -615,7 +623,7 @@ export function Finale() {
     <>
       <section className="py-24 sm:py-28">
         <Shell>
-          <div className="relative overflow-hidden rounded-[36px] bg-navy px-6 py-20 text-center sm:px-16">
+          <div className="relative overflow-hidden rounded-[36px] bg-ink px-6 py-20 text-center sm:px-16">
             <div className="relative flex flex-col items-center">
               <h2 className="max-w-[720px] break-keep [overflow-wrap:anywhere] font-display text-[clamp(30px,4.4vw,54px)] font-bold leading-[1.06] tracking-[-0.03em] text-balance text-white">
                 {t(finale.title)}
@@ -637,14 +645,14 @@ export function Finale() {
               <address className="flex flex-col gap-1 not-italic">
                 {CONTACT.whatsapp ? (
                   <a
-                    className="underline-offset-4 hover:text-navy hover:underline"
+                    className="underline-offset-4 hover:text-ink hover:underline"
                     href={`https://wa.me/${CONTACT.whatsapp.replace(/\D/g, "")}`}
                   >
                     WhatsApp {CONTACT.whatsapp}
                   </a>
                 ) : null}
                 {CONTACT.email ? (
-                  <a className="underline-offset-4 hover:text-navy hover:underline" href={`mailto:${CONTACT.email}`}>
+                  <a className="underline-offset-4 hover:text-ink hover:underline" href={`mailto:${CONTACT.email}`}>
                     {CONTACT.email}
                   </a>
                 ) : null}

@@ -74,7 +74,6 @@ export const hero = {
   secondary: { en: "See how it works", zh: "看看怎么运作" },
   trust: [
     { en: "WhatsApp, Messenger and Instagram", zh: "WhatsApp · Messenger · Instagram" },
-    { en: "Replies in 30 seconds, 24/7", zh: "24/7 · 30 秒内回复" },
     { en: "Books appointments for your customers", zh: "帮你的客户预约时间" },
   ],
 };
@@ -84,23 +83,31 @@ export type Line = { text: string; lang: "en" | "zh"; gloss: string };
 const zh = (text: string, gloss: string): Line => ({ text, lang: "zh", gloss });
 
 /** The client's own sales script: short, split messages with a little emoji. */
+/**
+ * The hero demo: an aesthetics clinic (the vertical of the client’s planned
+ * case study) whose AI answers a customer at night. Same flow as the client’s
+ * sales script (greet, find the need, handle the objection, book) and its
+ * style rules (short split messages, light emoji). Clinic and prices are
+ * illustrative.
+ */
 export const heroChat = {
-  business: { en: "Wave AI", zh: "Wave AI" },
+  business: { en: "Your aesthetics clinic", zh: "你的医美诊所" },
   channel: "WhatsApp",
-  hello: zh("你好，我想了解你们的 AI 系统。", "Hi, I’d like to know about your AI system."),
-  greet: zh("您好！👋 欢迎了解我们的 AI 销售系统。", "Hi! 👋 Welcome to our AI sales system."),
-  diagnose: zh("请问您主要在哪个平台获客？主要是回复慢，还是转化低？", "Which platform do you mainly get customers from? Is the problem slow replies or low conversion?"),
-  pain: zh("WhatsApp，总是来不及回复。", "WhatsApp. We can never reply in time."),
-  solve: zh("非常理解！我们的系统能在 30 秒内自动回复客户，并且自动跟进。🚀", "Totally understand! Our system replies to customers within 30 seconds and follows up automatically. 🚀"),
-  objection: zh("设置会很难吗？", "Is it hard to set up?"),
-  reassure: zh("完全不会哦！专家会帮您配置好知识库和流程，您只需要把资料发给我们。", "Not at all! Our experts set up the knowledge base and flows for you. Just send us your material."),
-  book: zh("建议安排一个简短的 Zoom 演示，请选择方便的时间 👇", "Let’s set up a short Zoom demo. Pick a time that suits you 👇"),
-  pick: { en: "Choose a time", zh: "选择时间" },
-  replied: { en: "Replied in 30 s", zh: "30 秒内回复" },
+  time: "23:41",
+  hello: zh("你好，想问皮秒祛斑多少钱？", "Hi, how much is pico laser for pigmentation?"),
+  greet: zh("你好！👋 皮秒祛斑单次 RM 680，首次体验 RM 480。", "Hi! 👋 Pico laser is RM 680 a session, or RM 480 for your first."),
+  diagnose: zh("请问主要是雀斑还是晒斑？之前做过激光吗？", "Is it mainly freckles or sun spots? Have you had laser before?"),
+  pain: zh("Freckles 比较多，没做过。", "Mostly freckles, never done it."),
+  solve: zh("明白～医生会先帮你面诊，看适合做几次 😊", "Got it! The doctor will assess you first and suggest how many sessions you need 😊"),
+  objection: zh("有点贵 leh…", "It’s a bit pricey…"),
+  reassure: zh("理解！可以先用 RM 480 试一次，看效果再决定。", "Totally fair! Try one session at RM 480 first and decide after."),
+  book: zh("这个星期六还有 11:00 和 3:30，帮你预留吗？👇", "This Saturday has 11:00 or 3:30 open. Shall I hold one? 👇"),
+  pick: { en: "Sat 11:00", zh: "周六 11:00" },
+  // Short labels shown under the message they describe.
+  replied: { en: "Replied in 28 s", zh: "28 秒内回复" },
   diagnosed: { en: "Need identified", zh: "识别需求" },
-  booked: { en: "Zoom demo booked", zh: "Zoom 演示已预约" },
-  // Callout beside the phone; says something the in-chat row does not.
-  noScheduling: { en: "No manual scheduling", zh: "无需人工排期" },
+  objectionHandled: { en: "Objection handled", zh: "处理异议" },
+  booked: { en: "Consultation booked · Sat 11:00", zh: "面诊已预约 · 周六 11:00" },
 };
 
 export const chatUi = {

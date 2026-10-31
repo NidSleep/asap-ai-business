@@ -11,10 +11,11 @@
   --font-display: var(--font-bricolage), var(--font-noto-sc), "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
   --color-wave: var(--wave);
   --color-wave-soft: var(--wave-soft);
-  --color-navy: var(--navy);
-  --color-navy-soft: var(--navy-soft);
-  --color-green: var(--green);
-  --color-green-ink: var(--green-ink);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-brand: var(--brand);
+  --color-brand-strong: var(--brand-strong);
+  --color-brand-light: var(--brand-light);
   --font-mono: var(--font-geist-mono);
   --font-heading: var(--font-display);
   --color-sidebar-ring: var(--sidebar-ring);
@@ -56,50 +57,54 @@
 }
 
 :root {
-  /* Client palette: deep navy for trust, bright green only for actions. */
-  --navy: #0b1b3f;
-  --navy-soft: #13285a;
-  --green: #1fd16a;
-  --green-ink: #0a7a3a;
+  /* Palette taken from the client logo (WM mark): near-black ink and the
+     violet of its arrow. Contrast-checked pairs:
+       white on brand 5.9:1 (buttons), brand-strong on white 7.6:1 (text),
+       brand-light on ink 7.8:1 (accents on dark panels), muted on white 6.5:1. */
+  --ink: #111114;
+  --ink-soft: #1e1e26;
+  --brand: #7a2ff7;
+  --brand-strong: #6324d6;
+  --brand-light: #b794ff;
   --background: #ffffff;
-  --foreground: #0b1b3f;
+  --foreground: #111114;
   --card: #ffffff;
-  --card-foreground: #0b1b3f;
+  --card-foreground: #111114;
   --popover: #ffffff;
-  --popover-foreground: #0b1b3f;
-  --primary: #1fd16a;
-  --primary-foreground: #0b1b3f;
-  --secondary: #f3f5f9;
-  --secondary-foreground: #0b1b3f;
-  --muted: #f3f5f9;
-  --muted-foreground: #5a6378;
-  --accent: #f3f5f9;
-  --accent-foreground: #0b1b3f;
+  --popover-foreground: #111114;
+  --primary: #7a2ff7;
+  --primary-foreground: #ffffff;
+  --secondary: #f4f4f6;
+  --secondary-foreground: #111114;
+  --muted: #f4f4f6;
+  --muted-foreground: #5d5d6b;
+  --accent: #f4f4f6;
+  --accent-foreground: #111114;
   --destructive: #dc3545;
-  --border: #e4e8f0;
-  --input: #d7dce6;
-  --ring: #1fd16a;
-  --wave: #1fd16a;
-  --wave-soft: rgb(31 209 106 / 0.12);
-  --chart-1: #1fd16a;
-  --chart-2: #0b1b3f;
-  --chart-3: #5a6378;
-  --chart-4: #b7bfcf;
-  --chart-5: #e4e8f0;
+  --border: #e6e6eb;
+  --input: #d9d9e0;
+  --ring: #7a2ff7;
+  --wave: #7a2ff7;
+  --wave-soft: rgb(122 47 247 / 0.12);
+  --chart-1: #7a2ff7;
+  --chart-2: #111114;
+  --chart-3: #5d5d6b;
+  --chart-4: #b9b9c4;
+  --chart-5: #e6e6eb;
   --radius: 0.75rem;
   --sidebar: #ffffff;
-  --sidebar-foreground: #0b1b3f;
-  --sidebar-primary: #1fd16a;
-  --sidebar-primary-foreground: #0b1b3f;
-  --sidebar-accent: #f3f5f9;
-  --sidebar-accent-foreground: #0b1b3f;
-  --sidebar-border: #e4e8f0;
-  --sidebar-ring: #1fd16a;
+  --sidebar-foreground: #111114;
+  --sidebar-primary: #7a2ff7;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #f4f4f6;
+  --sidebar-accent-foreground: #111114;
+  --sidebar-border: #e6e6eb;
+  --sidebar-ring: #7a2ff7;
 }
 
 .dark {
-  /* Wave AI on dark: near-black surfaces, white as the action colour, and the
-     brand violet reserved for Wave AI speaking or acting. */
+  /* Used only inside the dark phone mock-ups: near-black surfaces, with the
+     logo violet for Wave AI speaking or acting. */
   --background: #111113;
   --foreground: #f3f3f5;
   --card: #1a1a1e;
@@ -117,22 +122,22 @@
   --destructive: #ff6b6b;
   --border: rgb(255 255 255 / 0.09);
   --input: rgb(255 255 255 / 0.14);
-  --ring: #8b85ff;
-  --wave: #1fd16a;
-  --wave-soft: rgb(31 209 106 / 0.14);
-  --chart-1: #7a73ff;
+  --ring: #b794ff;
+  --wave: #7a2ff7;
+  --wave-soft: rgb(183 148 255 / 0.16);
+  --chart-1: #b794ff;
   --chart-2: #a2a2ad;
   --chart-3: #6b6b75;
   --chart-4: #45454d;
   --chart-5: #2a2a30;
   --sidebar: #1a1a1e;
   --sidebar-foreground: #f3f3f5;
-  --sidebar-primary: #7a73ff;
+  --sidebar-primary: #7a2ff7;
   --sidebar-primary-foreground: #f3f3f5;
   --sidebar-accent: #26262c;
   --sidebar-accent-foreground: #f3f3f5;
   --sidebar-border: rgb(255 255 255 / 0.09);
-  --sidebar-ring: #8b85ff;
+  --sidebar-ring: #b794ff;
 }
 
 @layer base {
@@ -147,24 +152,31 @@
   }
 
   /* One keyboard focus style for the whole page: a solid 2px ring with a gap,
-     navy on light surfaces and brand green on navy ones, so it is visible on
-     every background, including the green buttons. */
+     ink on light surfaces and light violet on dark ones, so it is visible on
+     every background, including the purple buttons. */
   :root {
-    --focus-ring: var(--navy);
+    --focus-ring: var(--ink);
   }
-  .bg-navy,
+  .bg-ink,
   .dark {
-    --focus-ring: var(--green);
+    --focus-ring: var(--brand-light);
   }
   :focus-visible {
     outline: 2px solid var(--focus-ring);
     outline-offset: 3px;
   }
 
+  /* Running text avoids a lone word on its last line. */
+  p,
+  li,
+  dd {
+    text-wrap: pretty;
+  }
+
   /* Text selection in the brand palette instead of the browser default. */
   ::selection {
-    background: rgb(31 209 106 / 0.28);
-    color: var(--navy);
+    background: rgb(122 47 247 / 0.22);
+    color: var(--ink);
   }
 }
 html {
@@ -179,11 +191,11 @@ html {
 }
 
 
-/* Faint navy wash behind the hero. */
+/* Faint violet wash behind the hero. */
 .ridge {
   background:
-    radial-gradient(60% 60% at 70% 30%, rgb(31 209 106 / 0.10), transparent 70%),
-    radial-gradient(50% 50% at 15% 10%, rgb(11 27 63 / 0.06), transparent 70%);
+    radial-gradient(60% 60% at 70% 30%, rgb(122 47 247 / 0.08), transparent 70%),
+    radial-gradient(50% 50% at 15% 10%, rgb(17 17 20 / 0.05), transparent 70%);
 }
 
 .fade-bottom {

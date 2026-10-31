@@ -36,8 +36,8 @@ export function LangSwitch({ className }: { className?: string }) {
             className={cn(
               "inline-flex min-h-11 min-w-11 items-center justify-center px-1.5",
               lang === l.code
-                ? "font-semibold text-navy"
-                : "text-muted-foreground underline-offset-4 transition-colors hover:text-navy hover:underline",
+                ? "font-semibold text-ink"
+                : "text-muted-foreground underline-offset-4 transition-colors hover:text-ink hover:underline",
             )}
           >
             {l.label}
@@ -55,12 +55,10 @@ export function Brand({ inverted = false }: { inverted?: boolean }) {
       aria-label="Wave AI"
       className={cn(
         "inline-flex min-h-11 shrink-0 items-center gap-2.5 font-display text-[20px] font-extrabold tracking-tight",
-        inverted ? "text-white" : "text-navy",
+        inverted ? "text-white" : "text-ink",
       )}
     >
-      <span className={cn("grid size-8 place-items-center rounded-[10px]", inverted ? "bg-white text-navy" : "bg-navy text-white")}>
-        <WaveMark className="h-3.5 w-[18px]" />
-      </span>
+      <WaveMark tone={inverted ? "dark" : "light"} className="h-[17px]" />
       Wave AI
     </a>
   );
@@ -109,7 +107,7 @@ function MobileMenu() {
         aria-expanded={open}
         aria-controls="mobile-menu"
         aria-label={t(open ? menuCopy.close : menuCopy.open)}
-        className="grid size-11 place-items-center rounded-full text-navy transition-colors hover:bg-secondary"
+        className="grid size-11 place-items-center rounded-full text-ink transition-colors hover:bg-secondary"
       >
         {open ? <X className="size-5" /> : <Menu className="size-5" />}
       </button>
@@ -131,7 +129,7 @@ function MobileMenu() {
                     <a
                       href={item.href}
                       onClick={() => setOpen(false)}
-                      className="flex min-h-12 items-center border-b border-border/70 text-[17px] font-medium text-navy"
+                      className="flex min-h-12 items-center border-b border-border/70 text-[17px] font-medium text-ink"
                     >
                       {t(item.label)}
                     </a>
@@ -153,7 +151,7 @@ export function Header() {
     <header className="sticky top-0 z-50 border-b border-border/70 bg-white/80 backdrop-blur-xl">
       <a
         href="#main"
-        className="absolute left-4 top-2 z-[60] -translate-y-20 rounded-full bg-navy px-4 py-2.5 text-[14px] font-semibold text-white focus-visible:translate-y-0"
+        className="absolute left-4 top-2 z-[60] -translate-y-20 rounded-full bg-ink px-4 py-2.5 text-[14px] font-semibold text-white focus-visible:translate-y-0"
       >
         {t({ en: "Skip to main content", zh: "跳到主要内容" })}
       </a>
@@ -161,7 +159,7 @@ export function Header() {
         <Brand />
         <nav aria-label="Primary" className="hidden items-center gap-1 md:flex lg:gap-3">
           {nav.map((item) => (
-            <a key={item.href} href={item.href} className="inline-flex min-h-11 min-w-11 items-center justify-center px-2.5 text-[15px] text-muted-foreground transition-colors hover:text-navy">
+            <a key={item.href} href={item.href} className="inline-flex min-h-11 min-w-11 items-center justify-center px-2.5 text-[15px] text-muted-foreground transition-colors hover:text-ink">
               {t(item.label)}
             </a>
           ))}

@@ -35,8 +35,8 @@ export function ChatHeader({
         compact ? "px-4 pb-3 pt-1" : "px-5 py-4",
       )}
     >
-      <span className="grid size-8 shrink-0 place-items-center rounded-full bg-wave text-white">
-        <WaveMark className="h-3 w-4" />
+      <span className="grid size-8 shrink-0 place-items-center rounded-full bg-white">
+        <WaveMark className="h-[9px]" />
       </span>
       <div className="min-w-0 leading-tight">
         <p className="truncate text-[13px] font-semibold text-white">
