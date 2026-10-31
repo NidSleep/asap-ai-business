@@ -59,65 +59,67 @@
 :root {
   /* Palette taken from the client logo (WM mark): near-black ink and the
      violet of its arrow. Contrast-checked pairs:
-       white on brand 5.9:1 (buttons), brand-strong on white 7.6:1 (text),
-       brand-light on ink 7.8:1 (accents on dark panels), muted on white 6.5:1. */
-  --ink: #111114;
-  --ink-soft: #1e1e26;
+       white on brand 5.9:1 (buttons and the one violet in the hero headline),
+       brand-light on ink 7.6:1 (small accents on dark panels only), muted on white 6.6:1.
+     Ink and greys carry a faint violet tint so they sit with the brand
+     instead of reading as cold grey next to it. */
+  --ink: #16131f;
+  --ink-soft: #221d2e;
   --brand: #7a2ff7;
   --brand-strong: #6324d6;
   --brand-light: #b794ff;
   --background: #ffffff;
-  --foreground: #111114;
+  --foreground: #16131f;
   --card: #ffffff;
-  --card-foreground: #111114;
+  --card-foreground: #16131f;
   --popover: #ffffff;
-  --popover-foreground: #111114;
+  --popover-foreground: #16131f;
   --primary: #7a2ff7;
   --primary-foreground: #ffffff;
-  --secondary: #f4f4f6;
-  --secondary-foreground: #111114;
-  --muted: #f4f4f6;
-  --muted-foreground: #5d5d6b;
-  --accent: #f4f4f6;
-  --accent-foreground: #111114;
+  --secondary: #f5f4f9;
+  --secondary-foreground: #16131f;
+  --muted: #f5f4f9;
+  --muted-foreground: #5e5a6e;
+  --accent: #f5f4f9;
+  --accent-foreground: #16131f;
   --destructive: #dc3545;
-  --border: #e6e6eb;
-  --input: #d9d9e0;
+  --border: #e8e6ef;
+  --input: #dcd9e4;
   --ring: #7a2ff7;
   --wave: #7a2ff7;
   --wave-soft: rgb(122 47 247 / 0.12);
   --chart-1: #7a2ff7;
-  --chart-2: #111114;
-  --chart-3: #5d5d6b;
+  --chart-2: #16131f;
+  --chart-3: #5e5a6e;
   --chart-4: #b9b9c4;
-  --chart-5: #e6e6eb;
+  --chart-5: #e8e6ef;
   --radius: 0.75rem;
   --sidebar: #ffffff;
-  --sidebar-foreground: #111114;
+  --sidebar-foreground: #16131f;
   --sidebar-primary: #7a2ff7;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #f4f4f6;
-  --sidebar-accent-foreground: #111114;
-  --sidebar-border: #e6e6eb;
+  --sidebar-accent: #f5f4f9;
+  --sidebar-accent-foreground: #16131f;
+  --sidebar-border: #e8e6ef;
   --sidebar-ring: #7a2ff7;
 }
 
 .dark {
   /* Used only inside the dark phone mock-ups: near-black surfaces, with the
      logo violet for Wave AI speaking or acting. */
-  --background: #111113;
+  --background: #14111c;
   --foreground: #f3f3f5;
-  --card: #1a1a1e;
+  --card: #1c1826;
   --card-foreground: #f3f3f5;
-  --popover: #1d1d21;
+  --popover: #1f1a2a;
   --popover-foreground: #f3f3f5;
   --primary: #f3f3f5;
-  --primary-foreground: #111113;
-  --secondary: #232328;
+  --primary-foreground: #14111c;
+  --secondary: #252032;
   --secondary-foreground: #f3f3f5;
-  --muted: #26262c;
-  --muted-foreground: #a2a2ad;
-  --accent: #26262c;
+  --muted: #282236;
+  --muted-foreground: #a9a3b8;
+  --accent: #282236;
   --accent-foreground: #f3f3f5;
   --destructive: #ff6b6b;
   --border: rgb(255 255 255 / 0.09);
@@ -126,15 +128,15 @@
   --wave: #7a2ff7;
   --wave-soft: rgb(183 148 255 / 0.16);
   --chart-1: #b794ff;
-  --chart-2: #a2a2ad;
+  --chart-2: #a9a3b8;
   --chart-3: #6b6b75;
   --chart-4: #45454d;
   --chart-5: #2a2a30;
-  --sidebar: #1a1a1e;
+  --sidebar: #1c1826;
   --sidebar-foreground: #f3f3f5;
   --sidebar-primary: #7a2ff7;
   --sidebar-primary-foreground: #f3f3f5;
-  --sidebar-accent: #26262c;
+  --sidebar-accent: #282236;
   --sidebar-accent-foreground: #f3f3f5;
   --sidebar-border: rgb(255 255 255 / 0.09);
   --sidebar-ring: #b794ff;
@@ -195,7 +197,7 @@ html {
 .ridge {
   background:
     radial-gradient(60% 60% at 70% 30%, rgb(122 47 247 / 0.08), transparent 70%),
-    radial-gradient(50% 50% at 15% 10%, rgb(17 17 20 / 0.05), transparent 70%);
+    radial-gradient(50% 50% at 15% 10%, rgb(22 19 31 / 0.05), transparent 70%);
 }
 
 .fade-bottom {

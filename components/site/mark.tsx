@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils";
  */
 export function WaveMark({ className, tone = "light" }: { className?: string; tone?: "light" | "dark" }) {
   const id = useId().replace(/:/g, "");
-  const ink = tone === "dark" ? "#ffffff" : "#111114";
+  const ink = tone === "dark" ? "#ffffff" : "#16131f";
   return (
     <svg
       viewBox="0 0 483 195"

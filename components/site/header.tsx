@@ -120,7 +120,7 @@ function MobileMenu() {
             animate={{ opacity: 1, y: 0 }}
             exit={reduce ? { opacity: 0 } : { opacity: 0, y: -8 }}
             transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
-            className="px-safe absolute inset-x-0 top-full border-b border-border bg-white pb-4 pt-2 shadow-[0_18px_30px_-20px_rgb(11_27_63/0.35)]"
+            className="px-safe absolute inset-x-0 top-full border-b border-border bg-white pb-4 pt-2 shadow-[0_18px_30px_-20px_rgb(22_19_31/0.35)]"
           >
             <nav aria-label="Sections">
               <ul>

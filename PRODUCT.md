@@ -59,7 +59,7 @@ Most chatbots stop at level 1 or 2; Wave AI works at levels 3 and 4. The core li
 - Name: **Wave AI** (confirmed). It was briefly renamed "Wave Mind" and reverted; do not rename again without the client's say-so. The new logo's letters are "WM" but the name stays Wave AI (confirmed 2026-11-01).
 - This is a client project. The developer builds the site; the client owns product facts, claims, pricing and final copy.
 - Logo: the client's "WM" mark (two black strokes and a violet-gradient rising arrow), supplied only as a screenshot and redrawn as SVG in `components/site/mark.tsx`, `app/icon.svg` and `brand/`. If the client sends the source file, it replaces the redraw.
-- Colours follow the new logo (2026-11-01): near-black ink `#111114` and violet `#7a2ff7` (with `#6324d6` for text on white and `#b794ff` on dark). This replaces the client's original navy-plus-green brief; green remains only as the success colour (e.g. "booked").
+- Colours follow the new logo (2026-11-01): violet-tinted near-black ink `#16131f` and one violet `#7a2ff7` for buttons, selected states and the headline accent; `#b794ff` only for small accents on dark panels; the final CTA uses the logo-arrow gradient (`#8b2cff` → `#3f17cc`). Neutrals carry a faint violet tint. This replaces the client's original navy-plus-green brief; no green remains (the "booked" state is white on dark).
 - Visual brief from the client that still binds: minimalist, generous whitespace, clear typography; the first screen states the pain and the solution directly. References named by the client: ABC Sales AI, Intercom, ManyChat.
 - Page structure requested by the client: hero, pain points, how it works (Level 1–4), features & benefits, social proof, pricing, final CTA.
 

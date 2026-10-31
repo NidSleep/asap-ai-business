@@ -166,14 +166,14 @@ function StatusRow({ tone, icon, children }: { tone: "done" | "team"; icon: Reac
       className={cn(
         "flex items-center gap-2 rounded-2xl border px-3 py-2 text-[12px] font-medium",
         tone === "done"
-          ? "border-emerald-400/25 bg-emerald-400/10 text-emerald-300"
+          ? "border-white/15 bg-white/[0.07] text-white"
           : "border-wave/30 bg-wave-soft text-white/85",
       )}
     >
       <span
         className={cn(
-          "grid size-5 shrink-0 place-items-center rounded-full text-[#0c0c0e]",
-          tone === "done" ? "bg-emerald-400" : "bg-wave text-white",
+          "grid size-5 shrink-0 place-items-center rounded-full text-ink",
+          tone === "done" ? "bg-white" : "bg-wave text-white",
         )}
       >
         {icon}

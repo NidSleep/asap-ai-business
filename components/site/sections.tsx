@@ -73,7 +73,7 @@ export function Hero() {
           {/* Chinese breaks only at the phrase marks in the copy, never mid-word. */}
           <h1 className={cn("font-display text-[clamp(34px,4.5vw,56px)] font-bold leading-[1.08] tracking-[-0.04em] text-ink", lang === "zh" && "break-keep [overflow-wrap:anywhere]")}>
             <span className="block text-balance">{t(hero.title)}</span>
-            <span className="mt-1 block text-balance text-brand-strong">{t(hero.titleAccent)}</span>
+            <span className="mt-1 block text-balance text-brand">{t(hero.titleAccent)}</span>
           </h1>
           {/* Two roles, one line each, so the split between them is obvious. */}
           <ul className="mt-6 grid max-w-[560px] gap-2.5 text-[17px] leading-[1.6] text-muted-foreground sm:text-[18px]">
@@ -96,7 +96,7 @@ export function Hero() {
           <ul className="mt-10 flex flex-wrap gap-x-6 gap-y-2 text-[14px] text-muted-foreground">
             {hero.trust.map((item) => (
               <li key={item.en} className="flex items-center gap-2">
-                <Check className="size-4 text-brand-strong" strokeWidth={3} />
+                <Check className="size-4 text-brand" strokeWidth={3} />
                 {t(item)}
               </li>
             ))}
@@ -113,7 +113,7 @@ export function Hero() {
 /** Small centred timestamp or divider inside a chat mock. */
 function ChatMeta({ children, align = "center" }: { children: ReactNode; align?: "center" | "end" }) {
   return (
-    <p className={cn("text-[12px] text-white/55", align === "center" ? "text-center" : "text-right")}>{children}</p>
+    <p className={cn("text-[12px] text-muted-foreground", align === "center" ? "text-center" : "text-right")}>{children}</p>
   );
 }
 
@@ -146,12 +146,12 @@ function PainScene({ which }: { which: number }) {
         <ChatMeta>{t(s.followUp.thinkTime)}</ChatMeta>
         <Bubble from="customer">{t(s.followUp.think)}</Bubble>
         <Bubble from="bot">{t(s.followUp.ok)}</Bubble>
-        <div className="my-2 flex items-center gap-3 text-[12px] text-white/55" role="separator">
-          <span className="h-px flex-1 bg-white/15" />
+        <div className="my-2 flex items-center gap-3 text-[12px] text-muted-foreground" role="separator">
+          <span className="h-px flex-1 bg-foreground/15" />
           {t(s.followUp.gap)}
-          <span className="h-px flex-1 bg-white/15" />
+          <span className="h-px flex-1 bg-foreground/15" />
         </div>
-        <p className="max-w-[82%] rounded-2xl rounded-bl-md border border-dashed border-white/30 px-4 py-2.5 text-[15px] italic text-white/60">
+        <p className="max-w-[82%] rounded-2xl rounded-bl-md border border-dashed border-foreground/30 px-4 py-2.5 text-[15px] italic text-muted-foreground">
           {t(s.followUp.silence)}
         </p>
       </MockFrame>
@@ -160,19 +160,19 @@ function PainScene({ which }: { which: number }) {
 
   return (
     <MockFrame className="flex min-h-[300px] flex-col justify-end gap-2.5">
-      <div className="mb-auto flex items-center gap-2.5 border-b border-white/10 pb-3 pt-4">
-        <span className="grid size-8 place-items-center rounded-full bg-white/10 text-white/60">
+      <div className="mb-auto flex items-center gap-2.5 border-b border-foreground/10 pb-3 pt-4">
+        <span className="grid size-8 place-items-center rounded-full bg-foreground/[0.08] text-muted-foreground">
           <UserX className="size-4" />
         </span>
-        <span className="text-[14px] font-medium text-white/80">{t(s.leaver.who)}</span>
+        <span className="text-[14px] font-medium text-foreground/80">{t(s.leaver.who)}</span>
       </div>
       {/* The conversation is there but out of reach: blurred and hidden from screen readers. */}
       <div aria-hidden="true" className="flex select-none flex-col gap-2.5 opacity-60 blur-[3px]">
         <Bubble from="customer">{t(s.leaver.blurred[0])}</Bubble>
         <Bubble from="bot">{t(s.leaver.blurred[1])}</Bubble>
       </div>
-      <p className="mt-1 flex items-center gap-2 text-[14px] text-white/80">
-        <Lock className="size-4 shrink-0 text-brand-light" />
+      <p className="mt-1 flex items-center gap-2 text-[14px] text-foreground/80">
+        <Lock className="size-4 shrink-0 text-brand dark:text-brand-light" />
         {t(s.leaver.locked)}
       </p>
     </MockFrame>
@@ -206,11 +206,22 @@ export function Pain() {
 
 /* ---------------------------------------------------------------- levels */
 
-function MockFrame({ children, className }: { children: ReactNode; className?: string }) {
+/**
+ * The chat mock-up. Dark is reserved for Wave AI at work (levels 3–4, the
+ * hero phone); the problems and ordinary chatbots are drawn light. Contents
+ * use theme tokens, so the `dark` class flips them.
+ */
+function MockFrame({ children, className, tone = "light" }: { children: ReactNode; className?: string; tone?: "light" | "dark" }) {
   const { t } = useLang();
   return (
-    <div className={cn("relative rounded-3xl bg-ink p-6 text-white sm:p-8", className)}>
-      <span className="absolute right-5 top-4 text-[12px] text-white/70">{t(how.mock)}</span>
+    <div
+      className={cn(
+        "relative rounded-3xl p-6 text-foreground sm:p-8",
+        tone === "dark" ? "dark bg-ink" : "bg-card ring-1 ring-border",
+        className,
+      )}
+    >
+      <span className="absolute right-5 top-4 text-[12px] text-muted-foreground">{t(how.mock)}</span>
       {children}
     </div>
   );
@@ -221,8 +232,8 @@ function Bubble({ from, children, muted = false }: { from: "customer" | "bot"; c
     <p
       className={cn(
         "max-w-[82%] rounded-2xl px-4 py-2.5 text-[15px]",
-        from === "customer" ? "ml-auto rounded-br-md bg-white text-ink" : "rounded-bl-md bg-white/10",
-        muted && "text-white/60",
+        from === "customer" ? "ml-auto rounded-br-md bg-foreground text-background" : "rounded-bl-md bg-foreground/[0.08]",
+        muted && "text-muted-foreground",
       )}
     >
       {children}
@@ -240,7 +251,7 @@ function LevelVisual({ level }: { level: string }) {
           <Bubble from="customer">{t(how.l1.q)}</Bubble>
           <Bubble from="bot" muted>
             <span className="inline-flex items-start gap-2">
-              <X className="mt-1 size-4 shrink-0 text-red-400" />
+              <X className="mt-1 size-4 shrink-0 text-red-500 dark:text-red-400" />
               {t(how.l1.a)}
             </span>
           </Bubble>
@@ -254,7 +265,7 @@ function LevelVisual({ level }: { level: string }) {
         <div className="mt-4 flex flex-col gap-3">
           <Bubble from="customer">{t(how.l2.q)}</Bubble>
           <Bubble from="bot">{t(how.l2.a)}</Bubble>
-          <p className="mt-2 text-center text-[13px] italic text-white/65">{t(how.l2.end)}</p>
+          <p className="mt-2 text-center text-[13px] italic text-muted-foreground">{t(how.l2.end)}</p>
         </div>
       </MockFrame>
     );
@@ -262,16 +273,16 @@ function LevelVisual({ level }: { level: string }) {
   if (level === "l3") {
     const last = how.l3.steps.length - 1;
     return (
-      <MockFrame>
+      <MockFrame tone="dark">
         <ol className="mt-4 grid gap-0">
           {how.l3.steps.map((st, i) => (
             <li key={st.day.en} className="relative flex gap-4 pb-5 last:pb-0">
-              {i < last ? <span className="absolute left-[11px] top-7 h-[calc(100%-20px)] w-px bg-white/15" /> : null}
-              <span className={cn("grid size-6 shrink-0 place-items-center rounded-full", i === last ? "bg-brand text-white" : "bg-white/15")}>
-                {i === last ? <Check className="size-3.5" strokeWidth={3} /> : <span className="size-1.5 rounded-full bg-white" />}
+              {i < last ? <span className="absolute left-[11px] top-7 h-[calc(100%-20px)] w-px bg-foreground/15" /> : null}
+              <span className={cn("grid size-6 shrink-0 place-items-center rounded-full", i === last ? "bg-brand text-white" : "bg-foreground/15")}>
+                {i === last ? <Check className="size-3.5" strokeWidth={3} /> : <span className="size-1.5 rounded-full bg-foreground" />}
               </span>
               <div>
-                <p className="text-[12px] text-white/50">{t(st.day)}</p>
+                <p className="text-[12px] text-muted-foreground">{t(st.day)}</p>
                 <p className="text-[16px] font-medium">{t(st.text)}</p>
               </div>
             </li>
@@ -281,22 +292,22 @@ function LevelVisual({ level }: { level: string }) {
     );
   }
   return (
-    <MockFrame>
-      <p className="mt-4 text-[13px] text-white/55">{t(how.l4.reportTitle)}</p>
+    <MockFrame tone="dark">
+      <p className="mt-4 text-[13px] text-muted-foreground">{t(how.l4.reportTitle)}</p>
       <ul className="mt-4 grid gap-4">
         {how.l4.reasons.map((r) => (
           <li key={r.label.en}>
             <p className="flex justify-between text-[14px]">
               <span>{t(r.label)}</span>
-              <span className="tabular-nums text-white/60">{Math.round(r.share * 100)}%</span>
+              <span className="tabular-nums text-muted-foreground">{Math.round(r.share * 100)}%</span>
             </p>
-            <span className="mt-1.5 block h-2 rounded-full bg-white/10">
-              <span className="block h-full rounded-full bg-brand-light" style={{ width: `${r.share * 100}%` }} />
+            <span className="mt-1.5 block h-2 rounded-full bg-foreground/[0.08]">
+              <span className="block h-full rounded-full bg-brand" style={{ width: `${r.share * 100}%` }} />
             </span>
           </li>
         ))}
       </ul>
-      <p className="mt-6 flex items-center gap-2 rounded-xl bg-white/[0.07] px-3 py-2.5 text-[14px] text-brand-light">
+      <p className="mt-6 flex items-center gap-2 rounded-xl bg-foreground/[0.07] px-3 py-2.5 text-[14px] text-brand-light">
         <Lightbulb className="size-4 shrink-0" />
         {t(how.l4.action)}
       </p>
@@ -361,14 +372,14 @@ function LevelPicker({ value, onChange }: { value: string; onChange: (key: strin
                     <motion.span
                       layoutId="level-indicator"
                       transition={reduce ? { duration: 0 } : { type: "spring", stiffness: 420, damping: 34 }}
-                      className={cn("absolute inset-0 rounded-2xl", g.ours ? "bg-brand-light" : "bg-white shadow-sm")}
+                      className={cn("absolute inset-0 rounded-2xl", g.ours ? "bg-brand" : "bg-white shadow-sm")}
                     />
                   ) : null}
                   <span className="relative flex flex-col items-center gap-0.5">
                     <span
                       className={cn(
                         "text-[12px] font-semibold uppercase tracking-wide",
-                        g.ours ? (selected ? "text-ink" : "text-brand-light") : "text-muted-foreground",
+                        g.ours ? (selected ? "text-white/80" : "text-white/55") : "text-muted-foreground",
                       )}
                     >
                       {lang === "zh" ? `第 ${n} 层` : `Level ${n}`}
@@ -376,7 +387,7 @@ function LevelPicker({ value, onChange }: { value: string; onChange: (key: strin
                     <span
                       className={cn(
                         "text-[14px] font-semibold leading-tight sm:text-[15px]",
-                        g.ours ? (selected ? "text-ink" : "text-white") : "text-ink",
+                        g.ours ? "text-white" : "text-ink",
                       )}
                     >
                       {t(l.name)}
@@ -527,11 +538,11 @@ export function Pricing() {
                 key={tier.key}
                 className={cn(
                   "relative flex flex-col rounded-3xl p-8",
-                  featured ? "bg-ink text-white shadow-[0_30px_60px_-25px_rgb(11_27_63/0.6)] lg:-my-4 lg:py-12" : "bg-white ring-1 ring-border",
+                  featured ? "bg-ink text-white shadow-[0_30px_60px_-25px_rgb(22_19_31/0.6)] lg:-my-4 lg:py-12" : "bg-white ring-1 ring-border",
                 )}
               >
                 {featured ? (
-                  <span className="absolute right-6 top-6 rounded-full bg-brand-light px-3 py-1 text-[12px] font-semibold text-ink">
+                  <span className="absolute right-6 top-6 rounded-full bg-brand px-3 py-1 text-[12px] font-semibold text-white">
                     {t(pricing.recommended)}
                   </span>
                 ) : null}
@@ -623,14 +634,14 @@ export function Finale() {
     <>
       <section className="py-24 sm:py-28">
         <Shell>
-          <div className="relative overflow-hidden rounded-[36px] bg-ink px-6 py-20 text-center sm:px-16">
+          <div className="relative overflow-hidden rounded-[36px] bg-[linear-gradient(150deg,#8b2cff_0%,#5a1fe0_55%,#3f17cc_100%)] px-6 [--focus-ring:#fff] py-20 text-center sm:px-16">
             <div className="relative flex flex-col items-center">
               <h2 className="max-w-[720px] break-keep [overflow-wrap:anywhere] font-display text-[clamp(30px,4.4vw,54px)] font-bold leading-[1.06] tracking-[-0.03em] text-balance text-white">
                 {t(finale.title)}
               </h2>
-              <p className="mt-5 max-w-[480px] text-[17px] text-white/70">{t(finale.sub)}</p>
-              <DemoButton className="mt-10 text-[15px]" />
-              <DemoHint className="mt-3 text-white/70" />
+              <p className="mt-5 max-w-[480px] text-[17px] text-white/85">{t(finale.sub)}</p>
+              <DemoButton className="mt-10 bg-white text-[15px] text-ink hover:bg-white/90" />
+              <DemoHint className="mt-3 text-white/85" />
             </div>
           </div>
         </Shell>
