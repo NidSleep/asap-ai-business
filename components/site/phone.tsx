@@ -29,7 +29,7 @@ export function Phone({
     >
       <div
         className={cn(
-          "relative flex h-[568px] flex-col overflow-hidden rounded-[41px] bg-[#0c0c0e] ring-1 ring-white/5",
+          "relative flex h-[568px] flex-col overflow-hidden rounded-[41px] bg-background ring-1 ring-white/5",
           screenClassName,
         )}
       >

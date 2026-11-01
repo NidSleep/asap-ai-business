@@ -130,74 +130,80 @@ const FOLLOW_BEATS = [750, 800, 900, 1300];
 const LEAVER_BEATS = [1350, 1500, 600];
 
 function PainScene({ which }: { which: number }) {
+  if (which === 0) return <SlowReplyScene />;
+  if (which === 1) return <NoFollowUpScene />;
+  return <LeaverScene />;
+}
+
+function SlowReplyScene() {
   const { t } = useLang();
   const s = pain.scenes;
-  const slow = usePlayback(SLOW_BEATS);
-  const follow = usePlayback(FOLLOW_BEATS);
-  const leaver = usePlayback(LEAVER_BEATS);
+  const { ref, at } = usePlayback(SLOW_BEATS);
+  return (
+    <MockFrame frameRef={ref} className="flex min-h-[300px] flex-col justify-end gap-2.5">
+      <Beat on={at(0)} className="flex flex-col gap-2.5">
+        <ChatMeta>{s.slow.askTime}</ChatMeta>
+        <Bubble from="customer">{t(s.slow.ask)}</Bubble>
+      </Beat>
+      <Beat on={at(1)}>
+        <ChatMeta align="end">{t(s.slow.seen)}</ChatMeta>
+      </Beat>
+      <Beat on={at(2)} className="mt-2 flex flex-col gap-2.5">
+        <ChatMeta>{s.slow.lateTime}</ChatMeta>
+        <Bubble from="bot">{t(s.slow.late)}</Bubble>
+      </Beat>
+      <Beat on={at(3)}>
+        <Bubble from="customer">{t(s.slow.lost)}</Bubble>
+      </Beat>
+    </MockFrame>
+  );
+}
+
+function NoFollowUpScene() {
+  const { t } = useLang();
+  const s = pain.scenes;
+  const { ref, at } = usePlayback(FOLLOW_BEATS);
+  return (
+    <MockFrame frameRef={ref} className="flex min-h-[300px] flex-col justify-end gap-2.5">
+      <Beat on={at(0)} className="flex flex-col gap-2.5">
+        <ChatMeta>{t(s.followUp.thinkTime)}</ChatMeta>
+        <Bubble from="customer">{t(s.followUp.think)}</Bubble>
+      </Beat>
+      <Beat on={at(1)}>
+        <Bubble from="bot">{t(s.followUp.ok)}</Bubble>
+      </Beat>
+      {/* The seven days stretch out across the chat. */}
+      <div className="my-2 flex items-center gap-3 text-[12px] text-muted-foreground" role="separator">
+        <motion.span
+          className="h-px flex-1 origin-right bg-foreground/15"
+          initial={false}
+          animate={{ scaleX: at(2) ? 1 : 0 }}
+          transition={{ duration: 0.8, ease: EASE }}
+        />
+        <motion.span initial={false} animate={{ opacity: at(2) ? 1 : 0 }} transition={{ duration: 0.4 }}>
+          {t(s.followUp.gap)}
+        </motion.span>
+        <motion.span
+          className="h-px flex-1 origin-left bg-foreground/15"
+          initial={false}
+          animate={{ scaleX: at(2) ? 1 : 0 }}
+          transition={{ duration: 0.8, ease: EASE }}
+        />
+      </div>
+      <Beat on={at(3)}>
+        <p className="max-w-[82%] rounded-2xl rounded-bl-md border border-dashed border-foreground/30 px-4 py-2.5 text-[15px] italic text-muted-foreground">
+          {t(s.followUp.silence)}
+        </p>
+      </Beat>
+    </MockFrame>
+  );
+}
+
+function LeaverScene() {
+  const { t } = useLang();
+  const s = pain.scenes;
+  const { ref, at } = usePlayback(LEAVER_BEATS);
   const reduce = useReducedMotion();
-
-  if (which === 0) {
-    const { ref, at } = slow;
-    return (
-      <MockFrame frameRef={ref} className="flex min-h-[300px] flex-col justify-end gap-2.5">
-        <Beat on={at(0)} className="flex flex-col gap-2.5">
-          <ChatMeta>{s.slow.askTime}</ChatMeta>
-          <Bubble from="customer">{t(s.slow.ask)}</Bubble>
-        </Beat>
-        <Beat on={at(1)}>
-          <ChatMeta align="end">{t(s.slow.seen)}</ChatMeta>
-        </Beat>
-        <Beat on={at(2)} className="mt-2 flex flex-col gap-2.5">
-          <ChatMeta>{s.slow.lateTime}</ChatMeta>
-          <Bubble from="bot">{t(s.slow.late)}</Bubble>
-        </Beat>
-        <Beat on={at(3)}>
-          <Bubble from="customer">{t(s.slow.lost)}</Bubble>
-        </Beat>
-      </MockFrame>
-    );
-  }
-
-  if (which === 1) {
-    const { ref, at } = follow;
-    return (
-      <MockFrame frameRef={ref} className="flex min-h-[300px] flex-col justify-end gap-2.5">
-        <Beat on={at(0)} className="flex flex-col gap-2.5">
-          <ChatMeta>{t(s.followUp.thinkTime)}</ChatMeta>
-          <Bubble from="customer">{t(s.followUp.think)}</Bubble>
-        </Beat>
-        <Beat on={at(1)}>
-          <Bubble from="bot">{t(s.followUp.ok)}</Bubble>
-        </Beat>
-        {/* The seven days stretch out across the chat. */}
-        <div className="my-2 flex items-center gap-3 text-[12px] text-muted-foreground" role="separator">
-          <motion.span
-            className="h-px flex-1 origin-right bg-foreground/15"
-            initial={false}
-            animate={{ scaleX: at(2) ? 1 : 0 }}
-            transition={{ duration: 0.8, ease: EASE }}
-          />
-          <motion.span initial={false} animate={{ opacity: at(2) ? 1 : 0 }} transition={{ duration: 0.4 }}>
-            {t(s.followUp.gap)}
-          </motion.span>
-          <motion.span
-            className="h-px flex-1 origin-left bg-foreground/15"
-            initial={false}
-            animate={{ scaleX: at(2) ? 1 : 0 }}
-            transition={{ duration: 0.8, ease: EASE }}
-          />
-        </div>
-        <Beat on={at(3)}>
-          <p className="max-w-[82%] rounded-2xl rounded-bl-md border border-dashed border-foreground/30 px-4 py-2.5 text-[15px] italic text-muted-foreground">
-            {t(s.followUp.silence)}
-          </p>
-        </Beat>
-      </MockFrame>
-    );
-  }
-
-  const { ref, at } = leaver;
   return (
     <MockFrame frameRef={ref} className="flex min-h-[300px] flex-col justify-end gap-2.5">
       <div className="mb-auto flex items-center gap-2.5 border-b border-foreground/10 pb-3 pt-4">
@@ -743,14 +749,14 @@ export function Finale() {
     <>
       <section className="py-24 sm:py-28">
         <Shell>
-          <div className="relative overflow-hidden rounded-[36px] bg-[linear-gradient(150deg,#8b2cff_0%,#5a1fe0_55%,#3f17cc_100%)] px-6 [--focus-ring:#fff] py-20 text-center sm:px-16">
+          <div className="relative overflow-hidden rounded-[36px] bg-brand-gradient px-6 py-20 text-center sm:px-16">
             <div className="relative flex flex-col items-center">
               <h2 className="max-w-[720px] break-keep [overflow-wrap:anywhere] font-display text-[clamp(30px,4.4vw,54px)] font-bold leading-[1.06] tracking-[-0.03em] text-balance text-white">
                 {t(finale.title)}
               </h2>
-              <p className="mt-5 max-w-[480px] text-[17px] text-white/85">{t(finale.sub)}</p>
+              <p className="mt-5 max-w-[480px] text-[17px] text-white">{t(finale.sub)}</p>
               <DemoButton className="mt-10 bg-white text-[15px] text-ink hover:bg-white/90" />
-              <DemoHint className="mt-3 text-white/85" />
+              <DemoHint className="mt-3 text-white" />
             </div>
           </div>
         </Shell>

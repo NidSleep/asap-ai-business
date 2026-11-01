@@ -2,7 +2,7 @@
 
 import { CalendarDays, MessageCircleHeart, Pause, Play, Target, Timer } from "lucide-react";
 import { AnimatePresence, motion, useInView, useReducedMotion } from "motion/react";
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
 import { BookedRow, ChatHeader, CustomerLine, WaveLine, WaveTyping } from "@/components/site/chat";
 import { Phone } from "@/components/site/phone";
 import { heroChat } from "@/lib/content";
@@ -14,6 +14,7 @@ import { useLang } from "@/lib/i18n";
 // pause before the loop starts again.
 const STEP_MS = [600, 700, 1000, 1100, 1300, 1100, 1200, 1100, 1200, 1300, 1000, 4500];
 const LAST = STEP_MS.length - 1;
+const noop = () => () => {};
 
 function useLoop() {
   const ref = useRef<HTMLDivElement>(null);
@@ -23,6 +24,9 @@ function useLoop() {
   // The loop runs for more than five seconds, so visitors must be able to stop
   // it (WCAG 2.2.2). Paused, it holds whatever message is on screen.
   const [paused, setPaused] = useState(false);
+  // The server cannot know the visitor's motion setting, so the pause control
+  // is decided after hydration; deciding it during render mismatches the HTML.
+  const mounted = useSyncExternalStore(noop, () => true, () => false);
 
   useEffect(() => {
     if (reduce) {
@@ -35,7 +39,7 @@ function useLoop() {
     return () => window.clearTimeout(id);
   }, [inView, reduce, paused, step]);
 
-  return { ref, step, paused, setPaused, animated: !reduce };
+  return { ref, step, paused, setPaused, animated: !(mounted && reduce) };
 }
 
 const loopCopy = {
@@ -67,7 +71,7 @@ function PickTime() {
   const { t } = useLang();
   return (
     <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} className="flex">
-      <span className="inline-flex items-center gap-1.5 rounded-full bg-white px-3.5 py-1.5 text-[12px] font-semibold text-[#111113]">
+      <span className="inline-flex items-center gap-1.5 rounded-full bg-white px-3.5 py-1.5 text-[12px] font-semibold text-ink">
         <CalendarDays className="size-3.5" />
         {t(heroChat.pick)}
       </span>

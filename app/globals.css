@@ -230,3 +230,17 @@ html[lang="zh-Hans"] .font-display {
     padding-right: max(2rem, env(safe-area-inset-right));
   }
 }
+
+/* The final call to action wears the logo arrow's gradient. White text on
+   its lightest stop is 5.4:1; the focus ring turns white to stay visible. */
+.bg-brand-gradient {
+  --focus-ring: #ffffff;
+  background: linear-gradient(150deg, #8b2cff 0%, #5a1fe0 55%, #3f17cc 100%);
+}
+
+/* Buttons and links fade their colours on hover, but the focus ring must
+   appear at once: an outline that fades in from the text colour is briefly
+   invisible on light surfaces. Unlayered, so it outranks utilities. */
+:focus-visible {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, translate, scale;
+}

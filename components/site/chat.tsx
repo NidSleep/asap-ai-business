@@ -144,7 +144,7 @@ export function Chips({ options, picked }: { options: string[]; picked?: string 
             key={option}
             className={cn(
               "inline-flex items-center gap-1 rounded-full border px-3 py-1.5 text-[12px] font-medium transition-colors duration-300",
-              on ? "border-white bg-white text-[#111113]" : "border-white/15 text-white/80",
+              on ? "border-white bg-white text-ink" : "border-white/15 text-white/80",
             )}
           >
             {on ? <Check className="size-3" strokeWidth={3} /> : null}
