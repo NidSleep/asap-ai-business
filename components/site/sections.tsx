@@ -10,13 +10,14 @@ import {
   X,
 } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { useEffect, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
+import { useEffect, useRef, useState, type KeyboardEvent, type ReactNode, type Ref } from "react";
 import { BouncyAccordion } from "@/components/motion/bouncy-accordion";
 import { ButtonLink } from "@/components/motion/button";
 import { DemoHint, DemoLink } from "@/components/site/demo-link";
 import { Brand, LangSwitch } from "@/components/site/header";
 import { HeroPhone } from "@/components/site/hero-phone";
 import { WaveMark } from "@/components/site/mark";
+import { Beat, EASE, usePlayback } from "@/components/site/playback";
 import {
   CONTACT,
   demo,
@@ -121,60 +122,114 @@ function ChatMeta({ children, align = "center" }: { children: ReactNode; align?:
  * Each pain point as the chat it happens in, drawn with the same mock and
  * bubbles as the Level section, so the problem is seen before it is named.
  */
+// Wait (ms) before each beat. The three scenes start a little apart so they
+// read left to right; the long gaps are the point (a reply that comes too
+// late, a follow-up that never comes).
+const SLOW_BEATS = [150, 700, 1600, 900];
+const FOLLOW_BEATS = [750, 800, 900, 1300];
+const LEAVER_BEATS = [1350, 1500, 600];
+
 function PainScene({ which }: { which: number }) {
   const { t } = useLang();
   const s = pain.scenes;
+  const slow = usePlayback(SLOW_BEATS);
+  const follow = usePlayback(FOLLOW_BEATS);
+  const leaver = usePlayback(LEAVER_BEATS);
+  const reduce = useReducedMotion();
 
   if (which === 0) {
+    const { ref, at } = slow;
     return (
-      <MockFrame className="flex min-h-[300px] flex-col justify-end gap-2.5">
-        <ChatMeta>{s.slow.askTime}</ChatMeta>
-        <Bubble from="customer">{t(s.slow.ask)}</Bubble>
-        <ChatMeta align="end">{t(s.slow.seen)}</ChatMeta>
-        <div className="mt-2">
+      <MockFrame frameRef={ref} className="flex min-h-[300px] flex-col justify-end gap-2.5">
+        <Beat on={at(0)} className="flex flex-col gap-2.5">
+          <ChatMeta>{s.slow.askTime}</ChatMeta>
+          <Bubble from="customer">{t(s.slow.ask)}</Bubble>
+        </Beat>
+        <Beat on={at(1)}>
+          <ChatMeta align="end">{t(s.slow.seen)}</ChatMeta>
+        </Beat>
+        <Beat on={at(2)} className="mt-2 flex flex-col gap-2.5">
           <ChatMeta>{s.slow.lateTime}</ChatMeta>
-        </div>
-        <Bubble from="bot">{t(s.slow.late)}</Bubble>
-        <Bubble from="customer">{t(s.slow.lost)}</Bubble>
+          <Bubble from="bot">{t(s.slow.late)}</Bubble>
+        </Beat>
+        <Beat on={at(3)}>
+          <Bubble from="customer">{t(s.slow.lost)}</Bubble>
+        </Beat>
       </MockFrame>
     );
   }
 
   if (which === 1) {
+    const { ref, at } = follow;
     return (
-      <MockFrame className="flex min-h-[300px] flex-col justify-end gap-2.5">
-        <ChatMeta>{t(s.followUp.thinkTime)}</ChatMeta>
-        <Bubble from="customer">{t(s.followUp.think)}</Bubble>
-        <Bubble from="bot">{t(s.followUp.ok)}</Bubble>
+      <MockFrame frameRef={ref} className="flex min-h-[300px] flex-col justify-end gap-2.5">
+        <Beat on={at(0)} className="flex flex-col gap-2.5">
+          <ChatMeta>{t(s.followUp.thinkTime)}</ChatMeta>
+          <Bubble from="customer">{t(s.followUp.think)}</Bubble>
+        </Beat>
+        <Beat on={at(1)}>
+          <Bubble from="bot">{t(s.followUp.ok)}</Bubble>
+        </Beat>
+        {/* The seven days stretch out across the chat. */}
         <div className="my-2 flex items-center gap-3 text-[12px] text-muted-foreground" role="separator">
-          <span className="h-px flex-1 bg-foreground/15" />
-          {t(s.followUp.gap)}
-          <span className="h-px flex-1 bg-foreground/15" />
+          <motion.span
+            className="h-px flex-1 origin-right bg-foreground/15"
+            initial={false}
+            animate={{ scaleX: at(2) ? 1 : 0 }}
+            transition={{ duration: 0.8, ease: EASE }}
+          />
+          <motion.span initial={false} animate={{ opacity: at(2) ? 1 : 0 }} transition={{ duration: 0.4 }}>
+            {t(s.followUp.gap)}
+          </motion.span>
+          <motion.span
+            className="h-px flex-1 origin-left bg-foreground/15"
+            initial={false}
+            animate={{ scaleX: at(2) ? 1 : 0 }}
+            transition={{ duration: 0.8, ease: EASE }}
+          />
         </div>
-        <p className="max-w-[82%] rounded-2xl rounded-bl-md border border-dashed border-foreground/30 px-4 py-2.5 text-[15px] italic text-muted-foreground">
-          {t(s.followUp.silence)}
-        </p>
+        <Beat on={at(3)}>
+          <p className="max-w-[82%] rounded-2xl rounded-bl-md border border-dashed border-foreground/30 px-4 py-2.5 text-[15px] italic text-muted-foreground">
+            {t(s.followUp.silence)}
+          </p>
+        </Beat>
       </MockFrame>
     );
   }
 
+  const { ref, at } = leaver;
   return (
-    <MockFrame className="flex min-h-[300px] flex-col justify-end gap-2.5">
+    <MockFrame frameRef={ref} className="flex min-h-[300px] flex-col justify-end gap-2.5">
       <div className="mb-auto flex items-center gap-2.5 border-b border-foreground/10 pb-3 pt-4">
         <span className="grid size-8 place-items-center rounded-full bg-foreground/[0.08] text-muted-foreground">
           <UserX className="size-4" />
         </span>
         <span className="text-[14px] font-medium text-foreground/80">{t(s.leaver.who)}</span>
       </div>
-      {/* The conversation is there but out of reach: blurred and hidden from screen readers. */}
-      <div aria-hidden="true" className="flex select-none flex-col gap-2.5 opacity-60 blur-[3px]">
+      {/* The conversation is there, then goes out of reach with the salesperson:
+          it blurs away. Hidden from screen readers; the line below says it. */}
+      <motion.div
+        aria-hidden="true"
+        className="flex select-none flex-col gap-2.5"
+        initial={false}
+        animate={
+          !at(0)
+            ? { opacity: 0, y: 10, filter: "blur(0px)" }
+            : at(1)
+              ? { opacity: 0.6, y: 0, filter: "blur(3px)" }
+              : { opacity: 1, y: 0, filter: "blur(0px)" }
+        }
+        transition={{ duration: at(1) && !reduce ? 1.1 : 0.45, ease: EASE }}
+      >
         <Bubble from="customer">{t(s.leaver.blurred[0])}</Bubble>
         <Bubble from="bot">{t(s.leaver.blurred[1])}</Bubble>
-      </div>
-      <p className="mt-1 flex items-center gap-2 text-[14px] text-foreground/80">
-        <Lock className="size-4 shrink-0 text-brand dark:text-brand-light" />
-        {t(s.leaver.locked)}
-      </p>
+      </motion.div>
+      <Beat on={at(2)}>
+        <p className="mt-1 flex items-center gap-2 text-[14px] text-foreground/80">
+          <Lock className="size-4 shrink-0 text-brand dark:text-brand-light" />
+          {t(s.leaver.locked)}
+        </p>
+      </Beat>
     </MockFrame>
   );
 }
@@ -211,10 +266,21 @@ export function Pain() {
  * hero phone); the problems and ordinary chatbots are drawn light. Contents
  * use theme tokens, so the `dark` class flips them.
  */
-function MockFrame({ children, className, tone = "light" }: { children: ReactNode; className?: string; tone?: "light" | "dark" }) {
+function MockFrame({
+  children,
+  className,
+  tone = "light",
+  frameRef,
+}: {
+  children: ReactNode;
+  className?: string;
+  tone?: "light" | "dark";
+  frameRef?: Ref<HTMLDivElement>;
+}) {
   const { t } = useLang();
   return (
     <div
+      ref={frameRef}
       className={cn(
         "relative rounded-3xl p-6 text-foreground sm:p-8",
         tone === "dark" ? "dark bg-ink" : "bg-card ring-1 ring-border",
@@ -270,47 +336,90 @@ function LevelVisual({ level }: { level: string }) {
       </MockFrame>
     );
   }
-  if (level === "l3") {
-    const last = how.l3.steps.length - 1;
-    return (
-      <MockFrame tone="dark">
-        <ol className="mt-4 grid gap-0">
-          {how.l3.steps.map((st, i) => (
-            <li key={st.day.en} className="relative flex gap-4 pb-5 last:pb-0">
-              {i < last ? <span className="absolute left-[11px] top-7 h-[calc(100%-20px)] w-px bg-foreground/15" /> : null}
-              <span className={cn("grid size-6 shrink-0 place-items-center rounded-full", i === last ? "bg-brand text-white" : "bg-foreground/15")}>
-                {i === last ? <Check className="size-3.5" strokeWidth={3} /> : <span className="size-1.5 rounded-full bg-foreground" />}
-              </span>
-              <div>
-                <p className="text-[12px] text-muted-foreground">{t(st.day)}</p>
-                <p className="text-[16px] font-medium">{t(st.text)}</p>
-              </div>
-            </li>
-          ))}
-        </ol>
-      </MockFrame>
-    );
-  }
+  return level === "l3" ? <FollowUpVisual /> : <ReportVisual />;
+}
+
+const FOLLOW_UP_BEATS = [250, 650, 650, 650];
+
+/** Level 3: the follow-up days light up in turn, ending on the booking. */
+function FollowUpVisual() {
+  const { t } = useLang();
+  const { ref, at } = usePlayback(FOLLOW_UP_BEATS, { onMount: true });
+  const last = how.l3.steps.length - 1;
   return (
-    <MockFrame tone="dark">
+    <MockFrame frameRef={ref} tone="dark">
+      <ol className="mt-4 grid gap-0">
+        {how.l3.steps.map((st, i) => (
+          <li key={st.day.en} className="relative flex gap-4 pb-5 last:pb-0">
+            {i < last ? (
+              <motion.span
+                className="absolute left-[11px] top-7 h-[calc(100%-20px)] w-px origin-top bg-foreground/15"
+                initial={false}
+                animate={{ scaleY: at(i + 1) ? 1 : 0 }}
+                transition={{ duration: 0.5, ease: EASE }}
+              />
+            ) : null}
+            <motion.span
+              className={cn("grid size-6 shrink-0 place-items-center rounded-full", i === last ? "bg-brand text-white" : "bg-foreground/15")}
+              initial={false}
+              animate={at(i) ? { scale: 1, opacity: 1 } : { scale: 0.4, opacity: 0 }}
+              transition={i === last ? { type: "spring", stiffness: 480, damping: 22 } : { duration: 0.3, ease: EASE }}
+            >
+              {i === last ? <Check className="size-3.5" strokeWidth={3} /> : <span className="size-1.5 rounded-full bg-foreground" />}
+            </motion.span>
+            <Beat on={at(i)}>
+              <p className="text-[12px] text-muted-foreground">{t(st.day)}</p>
+              <p className="text-[16px] font-medium">{t(st.text)}</p>
+            </Beat>
+          </li>
+        ))}
+      </ol>
+    </MockFrame>
+  );
+}
+
+const REPORT_BEATS = [250, 220, 220, 700];
+
+/** Level 4: the manager's report fills in, reason by reason, then advises. */
+function ReportVisual() {
+  const { t } = useLang();
+  const { ref, at } = usePlayback(REPORT_BEATS, { onMount: true });
+  const n = how.l4.reasons.length;
+  return (
+    <MockFrame frameRef={ref} tone="dark">
       <p className="mt-4 text-[13px] text-muted-foreground">{t(how.l4.reportTitle)}</p>
       <ul className="mt-4 grid gap-4">
-        {how.l4.reasons.map((r) => (
+        {how.l4.reasons.map((r, i) => (
           <li key={r.label.en}>
             <p className="flex justify-between text-[14px]">
               <span>{t(r.label)}</span>
-              <span className="tabular-nums text-muted-foreground">{Math.round(r.share * 100)}%</span>
+              <motion.span
+                className="tabular-nums text-muted-foreground"
+                initial={false}
+                animate={{ opacity: at(i) ? 1 : 0 }}
+                transition={{ duration: 0.3, delay: at(i) ? 0.5 : 0 }}
+              >
+                {Math.round(r.share * 100)}%
+              </motion.span>
             </p>
             <span className="mt-1.5 block h-2 rounded-full bg-foreground/[0.08]">
-              <span className="block h-full rounded-full bg-brand" style={{ width: `${r.share * 100}%` }} />
+              <motion.span
+                className="block h-full origin-left rounded-full bg-brand"
+                style={{ width: `${r.share * 100}%` }}
+                initial={false}
+                animate={{ scaleX: at(i) ? 1 : 0 }}
+                transition={{ duration: 0.9, ease: EASE }}
+              />
             </span>
           </li>
         ))}
       </ul>
-      <p className="mt-6 flex items-center gap-2 rounded-xl bg-foreground/[0.07] px-3 py-2.5 text-[14px] text-brand-light">
-        <Lightbulb className="size-4 shrink-0" />
-        {t(how.l4.action)}
-      </p>
+      <Beat on={at(n)}>
+        <p className="mt-6 flex items-center gap-2 rounded-xl bg-foreground/[0.07] px-3 py-2.5 text-[14px] text-brand-light">
+          <Lightbulb className="size-4 shrink-0" />
+          {t(how.l4.action)}
+        </p>
+      </Beat>
     </MockFrame>
   );
 }
