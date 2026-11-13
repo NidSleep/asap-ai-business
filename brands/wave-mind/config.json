@@ -1,0 +1,34 @@
+{
+  "slug": "wave-mind",
+  "name": "Wave Mind",
+  "logo": "/brands/wave-mind/assets/logo.svg",
+  "colors": {
+    "brand": "#7a2ff7",
+    "brandStrong": "#6324d6",
+    "brandLight": "#b794ff",
+    "ink": "#16131f",
+    "inkSoft": "#221d2e",
+    "background": "#ffffff",
+    "muted": "#f5f4f9",
+    "border": "#e8e6ef"
+  },
+  "contacts": {
+    "email": null,
+    "phone": null,
+    "whatsapp": null,
+    "socials": null,
+    "address": null
+  },
+  "contactCTA": {
+    "label": "Contact pending",
+    "url": null
+  },
+  "botID": null,
+  "analyticsID": null,
+  "status": "draft",
+  "domains": [],
+  "updatedAt": "2026-11-13T03:13:14.645468+00:00",
+  "showEvidence": true,
+  "showPricing": true,
+  "identityPending": false
+}

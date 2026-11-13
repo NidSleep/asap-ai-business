@@ -1,8 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Plain static files, served by Vercel exactly like the old site.
-  output: "export",
+  // Server rendering is required; the authenticated preview entrypoint owns internal routes.
   images: { unoptimized: true },
   turbopack: {
     rules: {

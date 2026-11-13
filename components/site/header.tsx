@@ -7,6 +7,7 @@ import { DemoLink } from "@/components/site/demo-link";
 import { WaveMark } from "@/components/site/mark";
 import { demo, nav } from "@/lib/content";
 import { useLang, type Lang } from "@/lib/i18n";
+import {useBrand} from "@/lib/brand";
 import { cn } from "@/lib/utils";
 
 const LANGS: { code: Lang; label: string; html: string }[] = [
@@ -49,17 +50,18 @@ export function LangSwitch({ className }: { className?: string }) {
 }
 
 export function Brand({ inverted = false }: { inverted?: boolean }) {
+  const brand=useBrand();
   return (
     <a
       href="#top"
-      aria-label="Wave AI"
+      aria-label={brand.name}
       className={cn(
         "inline-flex min-h-11 shrink-0 items-center gap-2.5 font-display text-[20px] font-extrabold tracking-tight",
         inverted ? "text-white" : "text-ink",
       )}
     >
       <WaveMark tone={inverted ? "dark" : "light"} className="h-[17px]" />
-      Wave AI
+      {brand.logo ? null : brand.name}
     </a>
   );
 }
@@ -72,6 +74,7 @@ const menuCopy = {
 /** Phones and small tablets: the section links and language, one tap away. */
 function MobileMenu() {
   const { t } = useLang();
+  const brand = useBrand();
   const reduce = useReducedMotion();
   const [open, setOpen] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -124,7 +127,7 @@ function MobileMenu() {
           >
             <nav aria-label="Sections">
               <ul>
-                {nav.map((item) => (
+                {nav.filter(item => brand.showPricing || item.href !== '#pricing').map((item) => (
                   <li key={item.href}>
                     <a
                       href={item.href}
@@ -147,6 +150,7 @@ function MobileMenu() {
 
 export function Header() {
   const { t } = useLang();
+  const brand = useBrand();
   return (
     <header className="sticky top-0 z-50 border-b border-border/70 bg-white/80 backdrop-blur-xl">
       <a
@@ -158,7 +162,7 @@ export function Header() {
       <div className="relative mx-auto flex h-16 max-w-[1200px] items-center gap-3 px-safe md:gap-8">
         <Brand />
         <nav aria-label="Primary" className="hidden items-center gap-1 md:flex lg:gap-3">
-          {nav.map((item) => (
+          {nav.filter(item => brand.showPricing || item.href !== '#pricing').map((item) => (
             <a key={item.href} href={item.href} className="inline-flex min-h-11 min-w-11 items-center justify-center px-2.5 text-[15px] text-muted-foreground transition-colors hover:text-ink">
               {t(item.label)}
             </a>
@@ -166,7 +170,7 @@ export function Header() {
         </nav>
         <div className="ml-auto flex items-center gap-1">
           {/* The one action that matters, on every screen size. 44px for touch, compact for a mouse. */}
-          <DemoLink size="sm" className="h-11 whitespace-nowrap px-3.5 text-[13px] font-semibold pointer-fine:h-9 sm:px-4">
+          <DemoLink size="sm" className="max-sm:hidden h-11 whitespace-nowrap px-3.5 text-[13px] font-semibold pointer-fine:h-9 sm:px-4">
             {t(demo)}
             <ArrowUpRight className="size-3.5 max-[359px]:hidden" />
           </DemoLink>

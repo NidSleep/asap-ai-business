@@ -9,8 +9,8 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-instrument), var(--font-noto-sc), "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
   --font-display: var(--font-bricolage), var(--font-noto-sc), "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
-  --color-wave: var(--wave);
-  --color-wave-soft: var(--wave-soft);
+  --color-signal: var(--signal);
+  --color-signal-soft: var(--signal-soft);
   --color-ink: var(--ink);
   --color-ink-soft: var(--ink-soft);
   --color-brand: var(--brand);
@@ -86,8 +86,8 @@
   --border: #e8e6ef;
   --input: #dcd9e4;
   --ring: #7a2ff7;
-  --wave: #7a2ff7;
-  --wave-soft: rgb(122 47 247 / 0.12);
+  --signal: #7a2ff7;
+  --signal-soft: rgb(122 47 247 / 0.12);
   --chart-1: #7a2ff7;
   --chart-2: #16131f;
   --chart-3: #5e5a6e;
@@ -125,8 +125,8 @@
   --border: rgb(255 255 255 / 0.09);
   --input: rgb(255 255 255 / 0.14);
   --ring: #b794ff;
-  --wave: #7a2ff7;
-  --wave-soft: rgb(183 148 255 / 0.16);
+  --signal: #7a2ff7;
+  --signal-soft: rgb(183 148 255 / 0.16);
   --chart-1: #b794ff;
   --chart-2: #a9a3b8;
   --chart-3: #6b6b75;
@@ -177,7 +177,7 @@
 
   /* Text selection in the brand palette instead of the browser default. */
   ::selection {
-    background: rgb(122 47 247 / 0.22);
+    background: color-mix(in srgb, var(--brand) 22%, transparent);
     color: var(--ink);
   }
 }
@@ -196,7 +196,7 @@ html {
 /* Faint violet wash behind the hero. */
 .ridge {
   background:
-    radial-gradient(60% 60% at 70% 30%, rgb(122 47 247 / 0.08), transparent 70%),
+    radial-gradient(60% 60% at 70% 30%, color-mix(in srgb, var(--brand) 8%, transparent), transparent 70%),
     radial-gradient(50% 50% at 15% 10%, rgb(22 19 31 / 0.05), transparent 70%);
 }
 
@@ -235,7 +235,7 @@ html[lang="zh-Hans"] .font-display {
    its lightest stop is 5.4:1; the focus ring turns white to stay visible. */
 .bg-brand-gradient {
   --focus-ring: #ffffff;
-  background: linear-gradient(150deg, #8b2cff 0%, #5a1fe0 55%, #3f17cc 100%);
+  background: linear-gradient(150deg, var(--brand) 0%, var(--brand-strong) 100%);
 }
 
 /* Buttons and links fade their colours on hover, but the focus ring must

@@ -1,0 +1,25 @@
+// Build a landing-only export. Never stage the internal server or config endpoints.
+import fs from 'node:fs';
+import path from 'node:path';
+import {execFileSync} from 'node:child_process';
+import {loadBrand,publicConfig} from '../server/brands.mjs';
+const root=process.cwd();
+const stage=path.join(root,'.tmp/landing-export');
+fs.mkdirSync(stage,{recursive:true});
+for(const dir of ['components','lib'])fs.cpSync(path.join(root,dir),path.join(stage,dir),{recursive:true});
+fs.mkdirSync(path.join(stage,'app'),{recursive:true});
+for(const file of ['app/globals.css','app/layout.tsx','package.json','tsconfig.json'])fs.copyFileSync(path.join(root,file),path.join(stage,file));
+let page=fs.readFileSync('app/[brand]/page.tsx','utf8');
+page=page.replace("import {notFound} from 'next/navigation';",'').replace("import {loadBrand,publicConfig} from '@/server/brands.mjs';",'');
+page=page.replace("export const dynamic='force-dynamic';",'');
+page=page.replace(/async function getBrand\(.*?\n/,`async function getBrand(_params:Promise<{brand:string}>):Promise<BrandConfig>{return ${JSON.stringify(publicConfig(loadBrand('asep')))}}\n`);
+page=page.replace('const b=await getBrand(params);','const b=await getBrand(Promise.resolve({brand:"asep"}));');
+fs.writeFileSync(path.join(stage,'app/page.tsx'),page);
+let config=fs.readFileSync('next.config.ts','utf8').replace('const nextConfig: NextConfig = {',"const nextConfig: NextConfig = {\n  output: 'export',");
+fs.writeFileSync(path.join(stage,'next.config.ts'),config);
+const assets=path.join(stage,'public/brands/asep/assets');fs.mkdirSync(assets,{recursive:true});fs.cpSync('brands/asep/assets',assets,{recursive:true});
+if(!fs.existsSync(path.join(stage,'node_modules')))fs.symlinkSync(path.join(root,'node_modules'),path.join(stage,'node_modules'),'dir');
+execFileSync(path.join(root,'node_modules/.bin/next'),['build'],{cwd:stage,stdio:'inherit'});
+const out=path.join(stage,'out');
+for(const forbidden of ['internal','server','api','brands/asep/config.json'])if(fs.existsSync(path.join(out,forbidden)))throw Error('Unsafe export: '+forbidden);
+console.log('Landing-only static export:',out);

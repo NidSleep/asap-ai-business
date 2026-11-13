@@ -9,6 +9,8 @@ import {
   type ReactNode,
 } from "react";
 
+import {useBrand} from "@/lib/brand";
+
 export type Lang = "en" | "zh";
 export type Copy = { en: string; zh: string };
 
@@ -24,12 +26,13 @@ type LangContextValue = {
 const LangContext = createContext<LangContextValue | null>(null);
 
 export function LangProvider({ children }: { children: ReactNode }) {
+  const brand=useBrand();
   const [lang, setLangState] = useState<Lang>("en");
 
   useEffect(() => {
     let saved: string | null = null;
     try {
-      saved = localStorage.getItem(STORAGE_KEY);
+      saved = localStorage.getItem(STORAGE_KEY+brand.slug);
     } catch {}
     const browserZh = navigator.language?.toLowerCase().startsWith("zh");
     const initial: Lang =
@@ -43,18 +46,18 @@ export function LangProvider({ children }: { children: ReactNode }) {
     document.documentElement.lang = lang === "zh" ? "zh-Hans" : "en";
     document.title =
       lang === "zh"
-        ? "Wave AI — 你的全天候 AI 销售团队"
-        : "Wave AI — Your 24/7 AI Sales Team";
-  }, [lang]);
+        ? `${brand.name} — 你的全天候 AI 销售团队`
+        : `${brand.name} — Your 24/7 AI Sales Team`;
+  }, [lang,brand.name]);
 
   const setLang = useCallback((next: Lang) => {
     setLangState(next);
     try {
-      localStorage.setItem(STORAGE_KEY, next);
+      localStorage.setItem(STORAGE_KEY+brand.slug, next);
     } catch {}
   }, []);
 
-  const t = useCallback((copy: Copy) => copy[lang], [lang]);
+  const t = useCallback((copy: Copy) => copy[lang].replaceAll("{brand}",brand.name), [lang,brand.name]);
 
   return (
     <LangContext.Provider value={{ lang, setLang, t }}>

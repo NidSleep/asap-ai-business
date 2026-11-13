@@ -1,0 +1,35 @@
+{
+  "slug": "asep",
+  "name": "ASEP",
+  "logo": "/brands/asep/assets/asep-wordmark.svg",
+  "favicon": "/brands/asep/assets/asep-favicon.svg",
+  "colors": {
+    "brand": "#333333",
+    "brandStrong": "#171717",
+    "brandLight": "#cccccc",
+    "ink": "#171717",
+    "inkSoft": "#252525",
+    "background": "#ffffff",
+    "muted": "#f5f5f5",
+    "border": "#dddddd"
+  },
+  "contacts": {
+    "email": null,
+    "phone": null,
+    "whatsapp": null,
+    "socials": null,
+    "address": null
+  },
+  "contactCTA": {
+    "label": "Contact pending",
+    "url": null
+  },
+  "botID": null,
+  "analyticsID": null,
+  "status": "draft",
+  "domains": [],
+  "updatedAt": "2026-11-13T03:13:15.395909+00:00",
+  "showEvidence": false,
+  "showPricing": false,
+  "identityPending": true
+}

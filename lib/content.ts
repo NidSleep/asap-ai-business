@@ -8,7 +8,7 @@ import type { Copy } from "@/lib/i18n";
  */
 type DemoChannel = "telegram" | "calendly" | "whatsapp";
 export const DEMO: { url: string; via: DemoChannel } = {
-  url: "https://t.me/presale_copyabc_bot",
+  url: "#contact-pending",
   via: "telegram",
 };
 export const DEMO_URL = DEMO.url;
@@ -111,7 +111,7 @@ export const heroChat = {
 };
 
 export const chatUi = {
-  answeredBy: { en: "Answered by Wave AI", zh: "由 Wave AI 回复" },
+  answeredBy: { en: "Answered by {brand}", zh: "由 {brand} 回复" },
 };
 
 /* ----------------------------------------------------------------- pain */
@@ -174,12 +174,12 @@ export const pain = {
 export const how = {
   title: { en: "From AI customer service to AI sales manager", zh: "从 AI 客服，到 AI 销售经理" },
   lede: {
-    en: "Most chatbots stop at level 1 or 2: they answer when asked. Wave AI works at levels 3 and 4, selling on its own and reviewing the results.",
-    zh: "大部分聊天机器人停在第 1、2 层：有人问才回答。Wave AI 做到第 3、4 层：主动销售，并复盘结果。",
+    en: "Most chatbots stop at level 1 or 2: they answer when asked. {brand} works at levels 3 and 4, selling on its own and reviewing the results.",
+    zh: "大部分聊天机器人停在第 1、2 层：有人问才回答。{brand} 做到第 3、4 层：主动销售，并复盘结果。",
   },
   service: { en: "Typical chatbots", zh: "一般聊天机器人" },
   serviceSub: { en: "answer when asked", zh: "被动回答" },
-  manager: { en: "Wave AI", zh: "Wave AI" },
+  manager: { en: "{brand}", zh: "{brand}" },
   managerSub: { en: "sells on its own", zh: "主动销售" },
   difference: {
     en: "AI customer service answers when someone asks. An AI sales team keeps pushing until the deal closes.",
@@ -295,10 +295,10 @@ export const features = {
 // PRODUCT.md, Evidence on Hand). Keep the "targets" framing until the client
 // supplies data and a case study.
 export const proof = {
-  title: { en: "What Wave AI is built to deliver", zh: "Wave AI 的目标效果" },
+  title: { en: "What {brand} is built to deliver", zh: "{brand} 的目标效果" },
   note: {
-    en: "These are targets set by the Wave AI team. Customer case studies are being prepared.",
-    zh: "下面是 Wave AI 团队设定的目标，客户案例整理中。",
+    en: "These are targets set by the {brand} team. Customer case studies are being prepared.",
+    zh: "下面是 {brand} 团队设定的目标，客户案例整理中。",
   },
   stats: [
     { value: "85%", label: { en: "of leads diagnosed correctly", zh: "线索精准诊断" } },

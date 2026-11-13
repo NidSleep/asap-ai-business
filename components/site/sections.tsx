@@ -16,6 +16,7 @@ import { ButtonLink } from "@/components/motion/button";
 import { DemoHint, DemoLink } from "@/components/site/demo-link";
 import { Brand, LangSwitch } from "@/components/site/header";
 import { HeroPhone } from "@/components/site/hero-phone";
+import {useBrand} from "@/lib/brand";
 import { WaveMark } from "@/components/site/mark";
 import { Beat, EASE, usePlayback } from "@/components/site/playback";
 import {
@@ -744,6 +745,7 @@ function CurrentYear() {
 /* ---------------------------------------------------------------- finale */
 
 export function Finale() {
+ const brand=useBrand();
   const { t } = useLang();
   return (
     <>
@@ -789,7 +791,7 @@ export function Finale() {
           <div className="flex flex-col gap-3 sm:items-end">
             <LangSwitch />
             <p>
-              © <CurrentYear /> Wave AI
+              © <CurrentYear /> {brand.name}
             </p>
           </div>
         </Shell>

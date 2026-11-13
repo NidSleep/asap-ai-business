@@ -102,7 +102,7 @@ export function WaveLine({
           <MessageBubbleContent className={cn(bubbleText, "text-white")}>
             <Said line={line} />
             {source ? (
-              <span className="mt-1.5 inline-flex items-center gap-1 rounded-full bg-wave-soft px-2 py-0.5 text-[10.5px] font-medium text-wave">
+              <span className="mt-1.5 inline-flex items-center gap-1 rounded-full bg-signal-soft px-2 py-0.5 text-[10.5px] font-medium text-signal">
                 <FileText className="size-3" />
                 {t(source)}
               </span>
@@ -120,7 +120,7 @@ export function WaveTyping() {
       <MessageContent>
         <MessageBubble variant="soft">
           <MessageBubbleContent className="px-3.5 py-2 text-muted-foreground">
-            <MessageTyping label="Wave AI is replying" />
+            <MessageTyping label="AI is replying" />
           </MessageBubbleContent>
         </MessageBubble>
       </MessageContent>
@@ -167,13 +167,13 @@ function StatusRow({ tone, icon, children }: { tone: "done" | "team"; icon: Reac
         "flex items-center gap-2 rounded-2xl border px-3 py-2 text-[12px] font-medium",
         tone === "done"
           ? "border-white/15 bg-white/[0.07] text-white"
-          : "border-wave/30 bg-wave-soft text-white/85",
+          : "border-signal/30 bg-signal-soft text-white/85",
       )}
     >
       <span
         className={cn(
           "grid size-5 shrink-0 place-items-center rounded-full text-ink",
-          tone === "done" ? "bg-white" : "bg-wave text-white",
+          tone === "done" ? "bg-white" : "bg-signal text-white",
         )}
       >
         {icon}
