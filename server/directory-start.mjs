@@ -1,0 +1,12 @@
+import http from 'node:http';import fs from 'node:fs';
+import {directoryHandler} from './directory-handler.mjs';
+const file=process.env.INTERNAL_CREDENTIAL_FILE;
+if(!file)throw Error('INTERNAL_CREDENTIAL_FILE required');
+const stat=fs.lstatSync(file);if(!stat.isFile()||stat.isSymbolicLink()||(stat.mode&0o077))throw Error('Private regular verifier file required');
+const credentials=JSON.parse(fs.readFileSync(file,'utf8'));
+if(credentials.password||!credentials.username||!/^[a-f0-9]{32}$/.test(credentials.salt||'')||!/^[a-f0-9]{64}$/.test(credentials.verifier||''))throw Error('Salted verifier required; legacy plaintext credentials are rejected');
+const port=Number(process.env.PORT||3417);
+const server=http.createServer(directoryHandler({credentials,origin:process.env.DIRECTORY_ORIGIN,mount:process.env.DIRECTORY_MOUNT||'/asep-directory'}));
+server.requestTimeout=15000;server.headersTimeout=10000;
+server.listen(port,'127.0.0.1',()=>console.log('Protected directory ready on loopback'));
+for(const signal of ['SIGINT','SIGTERM'])process.on(signal,()=>server.close(()=>process.exit(0)));

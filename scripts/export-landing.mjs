@@ -5,6 +5,7 @@ import {execFileSync} from 'node:child_process';
 import {loadBrand,publicConfig} from '../server/brands.mjs';
 const root=process.cwd();
 const stage=path.join(root,'.tmp/landing-export');
+fs.rmSync(stage,{recursive:true,force:true});
 fs.mkdirSync(stage,{recursive:true});
 for(const dir of ['components','lib'])fs.cpSync(path.join(root,dir),path.join(stage,dir),{recursive:true});
 fs.mkdirSync(path.join(stage,'app'),{recursive:true});

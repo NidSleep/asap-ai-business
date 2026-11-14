@@ -12,6 +12,7 @@ export function publicConfig(c) {
  const logo = localAsset(c.logo);
  return {slug:c.slug,name:string(c.name)||'Untitled',logo, favicon:localAsset(c.favicon),colors,contacts,
  contactCTA:{label:string(c.contactCTA?.label)||'Contact pending',url: typeof c.contactCTA?.url==='string' && /^https:\/\//.test(c.contactCTA.url) ? c.contactCTA.url:null},
+ webCTA:{label:string(c.webCTA?.label)||'Web chat pending',url: typeof c.webCTA?.url==='string' && /^https:\/\//.test(c.webCTA.url) ? c.webCTA.url:null},
  botID:string(c.botID),analyticsID:string(c.analyticsID),showEvidence:c.showEvidence===true,showPricing:c.showPricing===true,identityPending:c.identityPending===true};
 }
 export function loadBrand(slug,base=root) {
@@ -26,7 +27,7 @@ export function listBrands(base=root) {return fs.readdirSync(base).filter(validS
 export function copyBrand(source,slug,name,base=root) {
  if(!validSlug(slug) || typeof name !== 'string' || !name.trim() || name.length>80) throw new Error('Invalid name or slug');
  const original=publicConfig(loadBrand(source,base));
- const config={...original,slug,name:name.trim(),logo:null,favicon:null,contacts:{email:null,phone:null,whatsapp:null,socials:null,address:null},contactCTA:{label:'Contact pending',url:null},botID:null,analyticsID:null,status:'draft',domains:[],updatedAt:new Date().toISOString(),showEvidence:false,showPricing:false,identityPending:true};
+ const config={...original,slug,name:name.trim(),logo:null,favicon:null,contacts:{email:null,phone:null,whatsapp:null,socials:null,address:null},contactCTA:{label:'Contact pending',url:null},botID:null,analyticsID:null,status:'draft',directoryDraft:true,webCTA:{label:'Web chat pending',url:null},domains:[],updatedAt:new Date().toISOString(),showEvidence:false,showPricing:false,identityPending:true};
  const destination=path.join(base,slug);
  // Exclusive directory reservation prevents both overwrite and races. Publish config last, by atomic rename.
  fs.mkdirSync(destination,{mode:0o700});
@@ -34,4 +35,21 @@ export function copyBrand(source,slug,name,base=root) {
  catch(e){fs.rmSync(destination,{recursive:true,force:true});throw e;}
  return config;
 }
-export function internalConfig(c) {return {...publicConfig(c),status:c.status==='live'?'live':'draft',domains:Array.isArray(c.domains)?c.domains.filter(x=>typeof x==='string'):[],updatedAt:string(c.updatedAt),botStatus:c.botID?'configured (not connected in preview)':'disabled'};}
+function editableDraft(slug,base){
+ const c=loadBrand(slug,base);
+ if(c.status!=='draft'||c.directoryDraft!==true)throw new Error('Only directory-created drafts can be changed');
+ return c;
+}
+export function updateDraft(slug,name,base=root){
+ const c=editableDraft(slug,base);
+ if(typeof name!=='string'||!name.trim()||name.length>80)throw new Error('Invalid name');
+ c.name=name.trim();c.updatedAt=new Date().toISOString();
+ const temp=path.join(base,slug,'.update.tmp');
+ fs.writeFileSync(temp,JSON.stringify(c,null,2)+'\n',{flag:'wx',mode:0o600});
+ fs.renameSync(temp,path.join(base,slug,'config.json'));return c;
+}
+export function deleteDraft(slug,confirmation,base=root){
+ editableDraft(slug,base);if(confirmation!==slug)throw new Error('Confirmation required');
+ fs.rmSync(path.join(base,slug),{recursive:true});
+}
+export function internalConfig(c) {return {...publicConfig(c),directoryDraft:c.directoryDraft===true,status:c.status==='live'?'live':'draft',domains:Array.isArray(c.domains)?c.domains.filter(x=>typeof x==='string'):[],updatedAt:string(c.updatedAt),botStatus:c.botID?'configured (not connected in preview)':'disabled'};}

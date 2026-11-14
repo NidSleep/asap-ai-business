@@ -21,8 +21,12 @@
     "address": null
   },
   "contactCTA": {
-    "label": "Contact pending",
-    "url": null
+    "label": "Try Telegram demo",
+    "url": "https://t.me/ASEP_Demobot"
+  },
+  "webCTA": {
+    "label": "Try web chat",
+    "url": "https://asep-radxa.tail435239.ts.net/asep-demo/"
   },
   "botID": null,
   "analyticsID": null,

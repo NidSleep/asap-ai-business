@@ -1,8 +1,12 @@
-import {timingSafeEqual,createHash} from 'node:crypto';
+import {timingSafeEqual,scryptSync,createHash} from 'node:crypto';
 export function authorized(header,config){
- if(!config?.username || !config?.password || !header?.startsWith('Basic ') || header.length>2048) return false;
+ if(!config?.username || config.password || !/^[a-f0-9]{32}$/.test(config.salt||'') || !/^[a-f0-9]{64}$/.test(config.verifier||'') || !header?.startsWith('Basic ') || header.length>2048) return false;
+ const raw=Buffer.from(header.slice(6),'base64').toString('utf8');const split=raw.indexOf(':');
+ if(split<1)return false;
  const hash=x=>createHash('sha256').update(x).digest();
- return timingSafeEqual(hash(Buffer.from(header.slice(6),'base64')),hash(Buffer.from(`${config.username}:${config.password}`)));
+ const usernameOK=timingSafeEqual(hash(raw.slice(0,split)),hash(config.username));
+ const passwordOK=timingSafeEqual(scryptSync(raw.slice(split+1),Buffer.from(config.salt,'hex'),32),Buffer.from(config.verifier,'hex'));
+ return usernameOK && passwordOK;
 }
 export function validOrigin(origin,expected){return typeof origin==='string' && origin===expected;}
 export function allowedPreviewHost(host,port,origin){
