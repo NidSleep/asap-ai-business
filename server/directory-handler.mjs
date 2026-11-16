@@ -1,13 +1,14 @@
-import {randomBytes,createHmac,timingSafeEqual} from 'node:crypto';
-import {authorized,validOrigin,securityHeaders} from './security.mjs';
+import {timingSafeEqual} from 'node:crypto';
+import {validOrigin,securityHeaders} from './security.mjs';
+import {validateSession} from './sso.mjs';
 import {root,loadBrand,listBrands,internalConfig,copyBrand,updateDraft,deleteDraft} from './brands.mjs';
 import {directory} from './directory.mjs';
 // Dedicated directory listener: no Next.js, public config, landing, filesystem or asset fallback.
-export function directoryHandler({base=root,credentials,origin,mount='/asep-directory'}){
+export function directoryHandler({base=root,origin,mount='/asep-directory',sso=validateSession}){
  const external=new URL(origin);
  if(external.origin!==origin||!['https:','http:'].includes(external.protocol)|| (external.protocol==='http:'&&!['localhost','127.0.0.1'].includes(external.hostname)))throw Error('Exact HTTPS origin required');
  if(!/^\/[a-z][a-z0-9-]*$/.test(mount))throw Error('Invalid mount');
- const csrf=createHmac('sha256',randomBytes(32)).update(credentials?.verifier||'unconfigured').digest('hex');
+
  const failures=new Map();
  return async(req,res)=>{
   const send=(status,body,type='text/plain; charset=utf-8')=>{res.writeHead(status,{'Content-Type':type});res.end(body)};
@@ -20,10 +21,16 @@ export function directoryHandler({base=root,credentials,origin,mount='/asep-dire
   for(const [k,v]of failures)if(v.until<=now)failures.delete(k);
   const fail=failures.get(key);
   if(fail?.count>=20){res.setHeader('Retry-After','60');return send(429,'Too many attempts')}
-  if(!authorized(req.headers.authorization,credentials)){
+  let session;try{session=await sso(req.headers.cookie||'')}catch{return send(503,'Sign-in service unavailable')}
+  if(!session){
    failures.set(key,{count:(fail?.count||0)+1,until:fail?.until||now+60000});
-   res.setHeader('WWW-Authenticate','Basic realm="ASEP directory", charset="UTF-8"');return send(401,'Authentication required');
+   const route=req.url.split('?')[0];
+   if(req.method==='GET'&&['/',mount,mount+'/'].includes(route)){res.setHeader('Location','/asep-demo-crm/login?next=/asep-directory/');return send(302,'Google sign-in required')}
+   return send(401,'Google sign-in required');
   }
+  if(session.role!=='owner')return send(403,'Owner required');
+  const csrf=session.csrf;
+  if(!/^[A-Za-z0-9_-]{40,64}$/.test(csrf||''))return send(503,'Sign-in service unavailable');
   failures.delete(key);
   let p=req.url.split('?')[0];
   if(p.includes('%')||p.includes('\\')||p.split('/').some(x=>x==='.'||x==='..')||p.includes('//'))return send(404,'Not found');
@@ -40,7 +47,7 @@ export function directoryHandler({base=root,credentials,origin,mount='/asep-dire
     if(Number(req.headers['content-length']||0)>4096)return send(413,'Request too large');
     let length=0;const chunks=[];for await(const part of req){length+=part.length;if(length>4096)return send(413,'Request too large');chunks.push(part)}
     const data=new URLSearchParams(Buffer.concat(chunks).toString('utf8')),given=data.get('csrf')||'';
-    if(!/^[a-f0-9]{64}$/.test(given)||!timingSafeEqual(Buffer.from(given),Buffer.from(csrf)))return send(403,'CSRF denied');
+    if(given.length!==csrf.length||!timingSafeEqual(Buffer.from(given),Buffer.from(csrf)))return send(403,'CSRF denied');
     let destination=mount+'/';
     if(p==='/api/copy'){const c=copyBrand(data.get('source'),data.get('slug'),data.get('name'),base);destination=mount+'/brands/'+c.slug}
     if(p==='/api/update'){const c=updateDraft(data.get('slug'),data.get('name'),base);destination=mount+'/brands/'+c.slug}

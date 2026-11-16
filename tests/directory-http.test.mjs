@@ -5,14 +5,15 @@ test('mounted directory is fail-closed and supports only isolated CSRF-protected
  const base=fs.mkdtempSync(path.join(os.tmpdir(),'asep-http-'));fs.mkdirSync(path.join(base,'source'));fs.writeFileSync(path.join(base,'source/config.json'),JSON.stringify({slug:'source',name:'DEMO source',status:'live',secret:'never-expose',botID:'synthetic',contacts:{email:'synthetic@example.invalid'}}));
  const salt='1234567890abcdef1234567890abcdef',password='synthetic-test-only';const credentials={username:'tester',salt,verifier:scryptSync(password,Buffer.from(salt,'hex'),32).toString('hex')};
  const origin='https://directory.example.invalid',mount='/asep-directory';
- const server=http.createServer(directoryHandler({base,credentials,origin,mount}));await new Promise(r=>server.listen(0,'127.0.0.1',r));
- const request=(route,options={})=>new Promise((resolve,reject)=>{const req=http.request({host:'127.0.0.1',port:server.address().port,path:route,method:options.body?'POST':'GET',headers:{Host:'directory.example.invalid',...(options.auth?{Authorization:'Basic '+Buffer.from('tester:'+password).toString('base64')} : {}),...options.headers}},res=>{let body='';res.on('data',b=>body+=b);res.on('end',()=>resolve({status:res.statusCode,headers:res.headers,body}))});req.on('error',reject);req.end(options.body)});
+ const session='s'.repeat(43); const sso=async(cookie)=>cookie==='__Host-asep_session='+session?{role:'owner',csrf:'c'.repeat(43)}:null;
+ const server=http.createServer(directoryHandler({base,credentials,origin,mount,sso}));await new Promise(r=>server.listen(0,'127.0.0.1',r));
+ const request=(route,options={})=>new Promise((resolve,reject)=>{const req=http.request({host:'127.0.0.1',port:server.address().port,path:route,method:options.body?'POST':'GET',headers:{Host:'directory.example.invalid',...(options.auth?{Cookie:'__Host-asep_session='+session} : {}),...options.headers}},res=>{let body='';res.on('data',b=>body+=b);res.on('end',()=>resolve({status:res.statusCode,headers:res.headers,body}))});req.on('error',reject);req.end(options.body)});
  try{
- for(const route of ['/',mount+'/',mount+'/api/brands',mount+'/api/brands/source','/api/brands','/assets/nope','/internal'])assert.equal((await request(route)).status,401);
+ for(const route of ['/',mount+'/',mount+'/api/brands',mount+'/api/brands/source','/api/brands','/assets/nope','/internal'])assert.equal((await request(route)).status,['/',mount+'/'].includes(route)?302:401);
  assert.equal((await request('/',{auth:true,headers:{Host:'evil.invalid'}})).status,403);
  const page=await request(mount+'/',{auth:true});assert.equal(page.status,200);assert.match(page.headers['content-security-policy'],/script-src 'none'/);assert.ok(!page.body.includes('never-expose'));
  assert.ok(!/href="\/(?!asep-directory\/)/.test(page.body));assert.match(page.body,/name="csrf"/);
- const csrf=page.body.match(/name="csrf" value="([a-f0-9]+)"/)[1];
+ const csrf=page.body.match(/name="csrf" value="([A-Za-z0-9_-]+)"/)[1];
  const post=(route,body,extra={})=>request(mount+route,{auth:true,body:new URLSearchParams(body).toString(),headers:{Origin:origin,'Content-Type':'application/x-www-form-urlencoded',...extra}});
  assert.equal((await post('/api/copy',{source:'source',slug:'demo',name:'DEMO'})).status,403);
  assert.equal((await post('/api/copy',{csrf,source:'source',slug:'demo',name:'DEMO'},{Origin:'https://evil.invalid'})).status,403);
