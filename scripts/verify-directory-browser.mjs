@@ -5,10 +5,11 @@ const base=fs.mkdtempSync(path.join(os.tmpdir(),'asep-browser-fixture-'));
 fs.mkdirSync(path.join(base,'source'));const original=JSON.stringify({slug:'source',name:'DEMO Source',status:'live',botID:'synthetic-client',contacts:{email:'source@example.invalid'},domains:['source.invalid']});fs.writeFileSync(path.join(base,'source/config.json'),original);
 const username='synthetic-test',password='not-a-real-password-fixture',salt='1234567890abcdef1234567890abcdef';
 const credentials={username,salt,verifier:scryptSync(password,Buffer.from(salt,'hex'),32).toString('hex')};
-let handler;const server=http.createServer((req,res)=>handler(req,res));await new Promise(r=>server.listen(0,'127.0.0.1',r));const origin='http://127.0.0.1:'+server.address().port;handler=directoryHandler({base,credentials,origin});
+let handler;const server=http.createServer((req,res)=>handler(req,res));await new Promise(r=>server.listen(0,'127.0.0.1',r));const origin='http://127.0.0.1:'+server.address().port;handler=directoryHandler({base,origin,sso:async cookie=>cookie==='fixture=synthetic-owner'?{role:'owner',csrf:'c'.repeat(43)}:null});
 const browser=await chromium.launch({headless:true,executablePath:process.env.CHROMIUM_PATH,args:['--no-sandbox']});fs.mkdirSync('evidence/directory-final',{recursive:true});
 try{for(const width of [320,390,1440]){
- const context=await browser.newContext({viewport:{width,height:900},httpCredentials:{username,password},isMobile:width<500,hasTouch:width<500});
+ const context=await browser.newContext({viewport:{width,height:900},isMobile:width<500,hasTouch:width<500});
+ await context.addCookies([{name:'fixture',value:'synthetic-owner',url:origin}]);
  const page=await context.newPage();page.on('response',async r=>{if(r.status()>=400)console.log('HTTP test response',r.status(),new URL(r.url()).pathname,await r.text(),'origin',r.request().headers().origin)});const errors=[];page.on('pageerror',e=>errors.push(e.message));
  assert.equal((await page.goto(origin+'/asep-directory/')).status(),200);
  assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
