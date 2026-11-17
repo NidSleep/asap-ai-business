@@ -13,6 +13,11 @@ try{for(const width of [320,390,1440]){
  const page=await context.newPage();page.on('response',async r=>{if(r.status()>=400)console.log('HTTP test response',r.status(),new URL(r.url()).pathname,await r.text(),'origin',r.request().headers().origin)});const errors=[];page.on('pageerror',e=>errors.push(e.message));
  assert.equal((await page.goto(origin+'/asep-directory/')).status(),200);
  assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
+ assert.equal(await page.locator('.grid article').count(),4);
+ assert.equal(await page.locator('pre').count(),0);
+ for(const link of await page.locator('.launch').all()){assert.ok((await link.getAttribute('href')).startsWith('https://'));assert.ok((await link.boundingBox()).height>=44);}
+ await page.screenshot({path:`evidence/directory-final/projects-${width}.png`,fullPage:true});
+ await page.getByRole('link',{name:'Brand drafts',exact:true}).click();
  await page.getByText('Copy a brand',{exact:true}).click();await page.getByLabel('New brand name').fill('DEMO Copy');await page.getByLabel('New URL slug').fill('demo-copy');await page.getByRole('button',{name:'Create draft',exact:true}).click();
  await page.waitForURL('**/brands/demo-copy');assert.equal(await page.locator('h1').innerText(),'DEMO Copy');
  let data=JSON.parse(fs.readFileSync(path.join(base,'demo-copy/config.json')));assert.equal(data.botID,null);assert.equal(data.contacts.email,null);assert.deepEqual(data.domains,[]);assert.equal(data.webCTA.url,null);

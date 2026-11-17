@@ -2,7 +2,7 @@ import {timingSafeEqual} from 'node:crypto';
 import {validOrigin,securityHeaders} from './security.mjs';
 import {validateSession} from './sso.mjs';
 import {root,loadBrand,listBrands,internalConfig,copyBrand,updateDraft,deleteDraft} from './brands.mjs';
-import {directory} from './directory.mjs';
+import {directory,draftDirectory} from './directory.mjs';
 // Dedicated directory listener: no Next.js, public config, landing, filesystem or asset fallback.
 export function directoryHandler({base=root,origin,mount='/asep-directory',sso=validateSession}){
  const external=new URL(origin);
@@ -36,6 +36,7 @@ export function directoryHandler({base=root,origin,mount='/asep-directory',sso=v
   if(p.includes('%')||p.includes('\\')||p.split('/').some(x=>x==='.'||x==='..')||p.includes('//'))return send(404,'Not found');
   if(p===mount)p='/';else if(p.startsWith(mount+'/'))p=p.slice(mount.length);
   try{
+   if(req.method==='GET'&&p==='/drafts')return send(200,draftDirectory(null,{base,mount,csrf}),'text/html; charset=utf-8');
    if(req.method==='GET'&&p==='/')return send(200,directory(null,{base,mount,csrf}),'text/html; charset=utf-8');
    if(req.method==='GET'&&p==='/api/brands')return send(200,JSON.stringify(listBrands(base).map(internalConfig)),'application/json');
    const detail=p.match(/^\/brands\/([a-z0-9-]+)$/),config=p.match(/^\/api\/brands\/([a-z0-9-]+)$/);
