@@ -1,2 +1,9 @@
+import {projects} from '../server/projects.mjs';
+test('catalog hides only the requested draft and utility groups',()=>{
+ assert.deepEqual(projects.map(p=>p.name),['ASEP demo use','Wave AI']);
+ assert.deepEqual(projects.map(p=>p.links.map(([label])=>label)),[['Landing','Chat','Web demo','Telegram','Admin','Studio'],['Landing','Telegram','Admin']]);
+ const html=directory();
+ for(const text of ['Furniture store demo','Studio draft','Unpublished assistant. Open Studio to edit.','Apple stock bot','Utility','Deployment information. Public chat link not configured.','Studio registry'])assert.ok(!html.includes(text),text);
+});
 import test from 'node:test';import assert from 'node:assert/strict';import {directory} from '../server/directory.mjs';
 test('home launches verified projects directly without config or intermediate details',()=>{const html=directory();assert.match(html,/<h1>Projects<\/h1>/);for(const url of ['https://asep-demo-landing.vercel.app','https://asep-ai-business.vercel.app','https://t.me/ASEP_Demobot','https://asep-radxa.tail435239.ts.net/bot-studio/chat/acp-5e96be'])assert.ok(html.includes('href="'+url+'"'),url);assert.ok(!html.includes('<pre>'));assert.ok(!html.includes('View details'));assert.match(html,/ASEP demo use/);assert.match(html,/Google sign-in/);});

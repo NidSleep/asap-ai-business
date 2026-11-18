@@ -4,8 +4,6 @@ const host='https://asep-radxa.tail435239.ts.net';
 export const projects=Object.freeze([
  {name:'ASEP demo use',type:'ASEP',description:'Business demo and published Studio chat.',links:[['Landing','https://asep-demo-landing.vercel.app'],['Chat',host+'/bot-studio/chat/acp-5e96be'],['Web demo',host+'/asep-demo/'],['Telegram','https://t.me/ASEP_Demobot'],['Admin',host+'/asep-demo-crm/'],['Studio',host+'/bot-studio/']]},
  {name:'Wave AI',type:'Client',description:'Client website, Telegram and protected admin.',links:[['Landing','https://asep-ai-business.vercel.app'],['Telegram','https://t.me/presale_copyabc_bot'],['Admin',host+'/admin']]},
- {name:'Furniture store demo',type:'Studio draft',description:'Unpublished assistant. Open Studio to edit.',links:[['Studio',host+'/bot-studio/']]},
- {name:'Apple stock bot',type:'Utility',description:'Deployment information. Public chat link not configured.',links:[['Studio registry',host+'/bot-studio/deployments/apple18-stock']]}
 ]);
 // Exact destinations, not a user-controlled redirect service.
 export const allowedDestinations=new Set(projects.flatMap(p=>p.links.map(([,href])=>href)));
